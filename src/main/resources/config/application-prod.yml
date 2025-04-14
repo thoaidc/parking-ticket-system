@@ -1,0 +1,117 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overridden by the Spring profile you use
+# For example: application-dev.yml if you use the "dev" profile.
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# https://docs.spring.io/spring-boot/reference/features/profiles.html
+# ===================================================================
+
+logging:
+  level:
+    root: info
+    com.dct.parkingticket: info
+    org.hibernate.sql: info
+  charset:
+    console: UTF-8
+    file: UTF-8
+  # Custom properties to define logs file paths according to different profiles
+  file-path: /mnt/logs
+
+spring:
+  datasource:
+    url: jdbc:sqlite:${DB_PATH} # get from ENV provided by docker-compose
+    driver-class-name: org.sqlite.JDBC
+  sql:
+    init:
+      mode: never
+
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    # Avoid causing LazyInitializationException if querying outside the scope of EntityManager or causing poor performance
+    open-in-view: false
+    hibernate:
+      # Hibernate only checks if the current schema matches the entity
+      # If it does not match, the application will not start
+      # Do not make any changes to the schema
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+          ddl-auto: validate
+
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST}
+    virtual-host: ${RABBIT_MQ_VIRTUAL_HOST}
+    port: ${RABBIT_MQ_PORT}
+    username: ${RABBIT_MQ_USERNAME}
+    password: ${RABBIT_MQ_PASSWORD}
+    ssl:
+      enabled: true
+    exchange:
+      direct: amq.direct
+    producer:
+      reply-timeout: 60000
+    consumer:
+      max-concurrent-consumer: 2
+      concurrent-consumer: 2
+      prefetch-count: 10
+    queues:
+      notifications:
+        name: notification.queue
+        routing-key: notification.routingKey
+
+server:
+  servlet:
+    session:
+      cookie:
+        # The session cookie that Spring Boot creates will have the HttpOnly attribute
+        # Setting HttpOnly helps protect cookies from Cross-Site Scripting (XSS) attacks
+        # Cookies will still be sent with each HTTP request (and can therefore be used for session authentication)
+        # But Cookies cannot be accessed from the client side using JavaScript (e.g. via document.cookie)
+        http-only: true
+  port: 8080
+
+dct-base:
+  domain: http://localhost:${server.port}
+
+  jpa:
+    persistence-unit-name: dct-packing-ticket-persistence
+    base-entity-packages:
+      - com.dct.parkingticket.entity
+    base-repository-packages:
+      - com.dct.parkingticket.repositories
+
+  datasource:
+    hikari:
+      poolName: Hikari
+      # AllowPoolSuspension means pause connection when there is a problem
+      # When the setting is false, the system will not allow to pause connections in pool
+      # Helping to maintain continuous system operation even when there is a problem
+      allow-pool-suspension: false
+      auto-commit: false # Do not automatically commit transactions
+      maximumPoolSize: 15 # Maximum database connections
+      minimumIdle: 2 # At least connections will be kept idle, ready for use
+      maxLifetime: 1200000 # Maximum time (20 minutes) that a connection can exist in the pool before being closed and recreated
+      idleTimeout: 600000 # Maximum time (10 minutes) that a connection can be idle before being closed
+      connectionTimeout: 60000 # Maximum time (1 minutes) to wait for connection from pool when no connection is available
+      leak-detection-threshold: 60000 # If a connection is not returned to the pool after 2 minutes, it will be detected as a "leak"
+
+  security:
+    auth:
+      enabled-tls: true
+      base64-secret-key: ${SECRET_KEY}
+      # Token is valid default in 1 hour and 24 hours for remember me
+      token-validity: 3600000 # milliseconds
+      token-validity-for-remember-me: 86400000 # milliseconds
+
+  resources:
+    upload:
+      upload-path: ${UPLOADS_PATH}
