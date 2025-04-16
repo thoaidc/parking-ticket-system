@@ -1,5 +1,5 @@
 {
-  "$schema": "node_modules/@angular/cli/lib/config/schema.json",
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -8,45 +8,52 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
       "root": "",
-      "sourceRoot": "src",
+      "sourceRoot": "src/main/webapp",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "build",
+            "outputPath": "target/classes/static/",
             "index": "src/main/webapp/index.html",
-            "browser": "src/main/webapp/main.ts",
+            "main": "src/main/webapp/main.ts",
             "polyfills": [
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/main/webapp/assets/images/logo/favicon.ico",
+              "src/main/webapp/manifest.webapp",
+              "src/main/webapp/robots.txt",
+              "src/main/webapp/assets"
             ],
             "styles": [
-              "src/main/webapp/contents/scss/styles.scss"
+              "src/main/webapp/assets/scss/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": [],
-            "server": "src/main/webapp/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
+                  "maximumWarning": "750kB",
                   "maximumError": "1MB"
                 },
                 {
@@ -54,19 +61,24 @@
                   "maximumWarning": "3kB",
                   "maximumError": "4kB"
                 }
-              ],
-              "outputHashing": "all"
+              ]
             },
             "development": {
-              "optimization": false,
+              "buildOptimizer": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "namedChunks": true,
+              "optimization": false,
+              "sourceMap": true,
+              "vendorChunk": true
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "open": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "webapp:build:production"
@@ -96,12 +108,21 @@
               }
             ],
             "styles": [
-              "src/main/webapp/contents/scss/styles.scss"
+              "src/main/webapp/assets/scss/styles.scss"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "cache": {
+      "enabled": true,
+      "path": "./target/angular/",
+      "environment": "all"
+    },
+    "packageManager": "npm",
+    "analytics": "7fbd9657-7178-4c41-8739-35474f2aaa35"
   }
 }

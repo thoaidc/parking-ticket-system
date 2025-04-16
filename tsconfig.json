@@ -3,7 +3,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/out-tsc",
+    "baseUrl": "src/main/webapp/",
+    "outDir": "./target/out-tsc/root",
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -20,14 +21,21 @@
     "target": "ES2022",
     "module": "ES2022",
     "lib": [
+      "ES2020",
       "ES2022",
       "dom"
     ]
   },
+  "references": [
+    {
+      "path": "tsconfig.spec.json"
+    }
+  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "preserveWhitespaces": true
   }
 }

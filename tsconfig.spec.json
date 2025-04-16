@@ -3,13 +3,16 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/spec",
+    "composite": true,
+    "outDir": "target/out-tsc/spec",
     "types": [
-      "jasmine"
+      "jasmine",
+      "node"
     ]
   },
   "include": [
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "src/main/webapp/**/*.ts",
+    "src/main/webapp**/*.spec.ts",
+    "src/main/webapp**/*.d.ts"
   ]
 }
