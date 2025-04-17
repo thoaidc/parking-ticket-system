@@ -5,6 +5,8 @@
   "compilerOptions": {
     "baseUrl": "src/main/webapp/",
     "outDir": "./target/out-tsc/root",
+    "forceConsistentCasingInFileNames": true,
+    "downlevelIteration": true,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -24,7 +26,8 @@
       "ES2020",
       "ES2022",
       "dom"
-    ]
+    ],
+    "useDefineForClassFields": false
   },
   "references": [
     {

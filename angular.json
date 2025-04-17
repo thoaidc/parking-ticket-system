@@ -84,7 +84,8 @@
               "buildTarget": "webapp:build:production"
             },
             "development": {
-              "buildTarget": "webapp:build:development"
+              "buildTarget": "webapp:build:development",
+              "hmr": true
             }
           },
           "defaultConfiguration": "development"
@@ -101,12 +102,6 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
             "styles": [
               "src/main/webapp/assets/scss/styles.scss"
             ],

@@ -10,7 +10,8 @@ import {
   HttpClient,
   HttpRequest,
   HttpResponse,
-  HttpErrorResponse
+  HttpErrorResponse,
+  withFetch
 } from '@angular/common/http';
 import {AuthExpiredInterceptorFn} from './core/interceptors/auth-expired.interceptor';
 import {ErrorHandlerInterceptorFn} from './core/interceptors/error-handler.interceptor';
@@ -55,6 +56,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideHttpClient(
+      withFetch(), // To let HttpClient use Fetch API instead of XMLHttpRequest (XHR)
       withInterceptors([
         AuthExpiredInterceptorFn,
         ErrorHandlerInterceptorFn,

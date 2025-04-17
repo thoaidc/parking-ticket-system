@@ -205,3 +205,5 @@ Desktop.ini
 /db.sqlite
 /db-test.sqlite
 /.env
+/.nx/
+dist/
