@@ -35,11 +35,16 @@
               "src/main/webapp/assets"
             ],
             "styles": [
+              "src/main/webapp/assets/scss/global.scss",
+              "src/main/webapp/assets/scss/app.min.scss",
               "src/main/webapp/assets/scss/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/main/webapp/assets/js/app.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -60,6 +65,12 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "3kB",
                   "maximumError": "4kB"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/main/webapp/environments/environment.ts",
+                  "with": "src/main/webapp/environments/environment.prod.ts"
                 }
               ]
             },

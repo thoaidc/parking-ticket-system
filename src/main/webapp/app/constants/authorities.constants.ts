@@ -1,3 +1,5 @@
+export const LOCAL_AUTHORITIES_KEY = 'DCT_PARKING_TICKET_AUTHORITIES_KEY';
+
 export enum Authorities {
 
   SYSTEM = "01",

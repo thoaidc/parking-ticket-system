@@ -6,10 +6,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CustomUserDetails extends User {
 
     private final Account account;
+    private final Set<String> authorities = new HashSet<>();
 
     private CustomUserDetails(Account account,
                               Collection<? extends GrantedAuthority> authorities,
@@ -28,10 +32,15 @@ public class CustomUserDetails extends User {
         );
 
         this.account = account;
+        this.authorities.addAll(authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
     }
 
     public Account getAccount() {
         return account;
+    }
+
+    public Set<String> getSetAuthorities() {
+        return authorities;
     }
 
     public static Builder customBuilder() {

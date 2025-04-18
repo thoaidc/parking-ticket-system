@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class StateStorageService {
-  private previousUrlKey = 'previousUrl';
+  private previousPageKey = 'DCT_PARKING_TICKET_PREVIOUS_PAGE_URL';
 
-  storeUrl(url: string): void {
-    sessionStorage.setItem(this.previousUrlKey, url);
+  savePreviousPage(url: string): void {
+    sessionStorage.setItem(this.previousPageKey, url);
   }
 
-  getUrl(): string | null {
-    return sessionStorage.getItem(this.previousUrlKey) as string | null;
+  getPreviousPage(): string | null {
+    return sessionStorage.getItem(this.previousPageKey) as string | null;
   }
 
-  clearUrl(): void {
-    sessionStorage.removeItem(this.previousUrlKey);
+  clearPreviousPage(): void {
+    sessionStorage.removeItem(this.previousPageKey);
   }
 }

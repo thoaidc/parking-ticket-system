@@ -1,7 +1,6 @@
-import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
+import {ApplicationConfig, LOCALE_ID, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
-import {provideClientHydration} from '@angular/platform-browser';
 import {
   provideHttpClient,
   withInterceptors,
@@ -18,6 +17,11 @@ import {ErrorHandlerInterceptorFn} from './core/interceptors/error-handler.inter
 import {NotificationInterceptorFn} from './core/interceptors/notification.interceptor';
 import {ApiInterceptorFn} from './core/interceptors/api.interceptor';
 import {ResponseInterceptorFn} from './core/interceptors/response.interceptor';
+import {provideToastr} from 'ngx-toastr';
+import {provideAnimations} from '@angular/platform-browser/animations';
+import {provideTranslateService} from '@ngx-translate/core';
+import {NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateDayjsAdapter} from './core/config/datepicker.config';
 
 /**
  * {@link provideHttpClient} configure HTTP Interceptors in Angular
@@ -52,9 +56,14 @@ import {ResponseInterceptorFn} from './core/interceptors/response.interceptor';
  */
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({eventCoalescing: true}),
+    provideZoneChangeDetection({ eventCoalescing: true }), // Optional: to optimize change detection
     provideRouter(routes),
-    provideClientHydration(),
+    provideTranslateService(),
+    provideAnimations(),
+    provideToastr(),
+    //MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    { provide: LOCALE_ID, useValue: 'en' }, // Locale configuration
+    { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter }, // Date adapter
     provideHttpClient(
       withFetch(), // To let HttpClient use Fetch API instead of XMLHttpRequest (XHR)
       withInterceptors([

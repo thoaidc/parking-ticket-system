@@ -6,6 +6,7 @@ import com.dct.parkingticket.constants.ResultConstants;
 import com.dct.parkingticket.dto.request.AuthRequestDTO;
 import com.dct.parkingticket.dto.request.CreateAccountRequestDTO;
 import com.dct.parkingticket.dto.request.RegisterRequestDTO;
+import com.dct.parkingticket.dto.response.AuthenticationResponseDTO;
 import com.dct.parkingticket.dto.response.BaseResponseDTO;
 import com.dct.parkingticket.entity.Account;
 import com.dct.parkingticket.exception.BaseBadRequestException;
@@ -58,11 +59,12 @@ public class AuthResource {
     @PostMapping("/login")
     public BaseResponseDTO login(@Valid @RequestBody AuthRequestDTO requestDTO, HttpServletResponse response) {
         BaseResponseDTO responseDTO = authService.authenticate(requestDTO);
-        String jwt = (String) responseDTO.getResult();
-        Cookie secureCookie = authService.createSecureCookie(jwt, requestDTO.getRememberMe());
+        AuthenticationResponseDTO authenticationDTO = (AuthenticationResponseDTO) responseDTO.getResult();
+        Cookie secureCookie = authService.createSecureCookie(authenticationDTO.getToken(), requestDTO.getRememberMe());
 
+        authenticationDTO.setToken(null); // Clear token in response body
         response.addCookie(secureCookie); // Send secure cookie with token to client in HttpOnly
-        responseDTO.setResult(null); // Clear token in response body
+        responseDTO.setResult(authenticationDTO);
 
         return responseDTO;
     }

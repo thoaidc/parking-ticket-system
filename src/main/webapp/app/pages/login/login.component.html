@@ -1,0 +1,50 @@
+<div class="body-login">
+  <div class="login-img">
+    <div class="image-login">
+      <img src="/assets/images/background/background.png" alt=""/>
+    </div>
+  </div>
+
+  <div class="login-info">
+    <div class="form-login justify-content-center">
+      <div class="form">
+        <span class="d-flex justify-content-center">
+          <img src="./assets/images/logo/favicon.ico" alt=""/>
+        </span>
+        <div class="info">
+          <span class="title-login">ĐĂNG NHẬP TÀI KHOẢN</span>
+          <div class="input-login">
+            <input
+              class="form-control"
+              [(ngModel)]="loginRequest.username"
+              (keyup.enter)="login()"
+              placeholder="Tài khoản"
+            />
+          </div>
+          <div class="input-login position-relative">
+            <input
+              [type]="isHiddenPassword ? 'password' : 'text'"
+              class="form-control"
+              [(ngModel)]="loginRequest.password"
+              (keyup.enter)="login()"
+              placeholder="Mật khẩu"
+            />
+            <div *ngIf="!isHiddenPassword" class="display-password" (click)="toggleDisplayPassword()">
+              <span [innerHTML]="ICON_EYE | safeHtml"></span>
+            </div>
+            <div *ngIf="isHiddenPassword" class="display-password" (click)="toggleDisplayPassword()">
+              <span [innerHTML]="ICON_EYE_CROSS | safeHtml"></span>
+            </div>
+          </div>
+          <div class="remember">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="flexCheckChecked" [(ngModel)]="isRememberMe"/>
+              <label class="form-check-label" for="flexCheckChecked">Ghi nhớ tài khoản</label>
+            </div>
+          </div>
+          <button class="button-login" (click)="login()">Đăng nhập</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

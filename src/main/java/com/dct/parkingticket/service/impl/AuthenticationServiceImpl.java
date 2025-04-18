@@ -7,6 +7,7 @@ import com.dct.parkingticket.constants.ResultConstants;
 import com.dct.parkingticket.constants.SecurityConstants;
 import com.dct.parkingticket.dto.auth.BaseAuthTokenDTO;
 import com.dct.parkingticket.dto.request.AuthRequestDTO;
+import com.dct.parkingticket.dto.response.AuthenticationResponseDTO;
 import com.dct.parkingticket.dto.response.BaseResponseDTO;
 import com.dct.parkingticket.entity.Account;
 import com.dct.parkingticket.exception.BaseAuthenticationException;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -97,6 +99,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Account account = userDetails.getAccount();
+        AuthenticationResponseDTO results = new AuthenticationResponseDTO();
+        BeanUtils.copyProperties(account, results);
+        results.setAuthorities(userDetails.getSetAuthorities());
         String newDeviceId = authRequestDTO.getDeviceId();
 
         if (!StringUtils.hasText(newDeviceId)) {
@@ -113,12 +118,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             .build();
 
         String jwtToken = tokenProvider.createToken(authTokenDTO);
+        results.setToken(jwtToken);
 
         return BaseResponseDTO.builder()
             .code(HttpStatusConstants.ACCEPTED)
             .message(ResultConstants.LOGIN_SUCCESS)
             .success(HttpStatusConstants.STATUS.SUCCESS)
-            .result(jwtToken)
+            .result(results)
             .build();
     }
 
