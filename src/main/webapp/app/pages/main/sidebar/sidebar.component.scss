@@ -17,6 +17,14 @@ $text-color: #58647a;
   }
 }
 
+.app-sidebar {
+  .menu {
+    .menu-caret:before {
+      font-size: 1.5rem !important;
+    }
+  }
+}
+
 .app-sidebar--show-all {
   width: $sidebar-width !important;
 
@@ -25,7 +33,7 @@ $text-color: #58647a;
       .menu-profile {
         background: $text-color-active !important;
         height: $sidebar-height;
-        padding: 10px 24px !important;
+        padding: 10px 10px 10px 24px !important;
         border-bottom: 1px solid #d9eaf5;
         display: flex;
         justify-content: space-between;
@@ -165,7 +173,7 @@ $text-color: #58647a;
       justify-content: center;
       align-items: center;
 
-      .logo-img-custom:last-child {
+      .logo-img-custom {
         position: absolute;
         transition: none !important;
         width: 36px !important;
@@ -173,12 +181,6 @@ $text-color: #58647a;
         margin: auto;
         visibility: visible;
         opacity: 1;
-      }
-
-      .logo-img-custom:first-child {
-        position: absolute;
-        visibility: hidden;
-        opacity: 0;
       }
 
       .logo-action {
@@ -269,12 +271,7 @@ $text-color: #58647a;
         max-width: 100%;
       }
 
-      .logo-img-custom:last-child {
-        visibility: hidden;
-        opacity: 0;
-      }
-
-      .logo-img-custom:first-child {
+      .logo-img-custom {
         height: 70%;
         object-fit: cover;
         max-width: 100%;

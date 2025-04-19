@@ -45,6 +45,11 @@ export class NavbarComponent implements OnInit {
     this.showDropdown = this.showDropdown == 'USER_INFO' ? '' : 'USER_INFO';
   }
 
+  toggleLanguage(event: any) {
+    event.stopPropagation();
+    this.showDropdown = this.showDropdown == 'LANGUAGE' ? '' : 'LANGUAGE';
+  }
+
   logOut() {
     this.authService.logout();
   }

@@ -13,6 +13,7 @@ import {ICON_CLOSE_SIDEBAR, ICON_EXPAND_SIDEBAR} from '../../../shared/utils/ico
 import {SafeHtmlPipe} from '../../../shared/pipes/safe-html.pipe';
 import {NgClass, NgFor, NgIf} from '@angular/common';
 import {HasAuthorityDirective} from '../../../shared/directives/has-authority.directive';
+import {slideUp} from '../../../shared/composables/slideCommonStyles';
 
 @Component({
   selector: 'app-sidebar',
@@ -52,49 +53,65 @@ export class SidebarComponent implements AfterViewInit{
   }
 
   ngAfterViewInit() {
-    // const menuBaseSelector = '.app-sidebar .menu > .menu-item.has-sub';
-    // const submenuBaseSelector = ' > .menu-submenu > .menu-item.has-sub';
-    //
-    // // menu
-    // const menuLinkSelector = menuBaseSelector + ' > .menu-link';
-    // const menus = [].slice.call(document.querySelectorAll(menuLinkSelector));
-    // this.handleSidebarMenuToggle(menus);
-    //
-    // // submenu
-    // const submenuLvl1Selector = menuBaseSelector + submenuBaseSelector;
-    // const submenusLvl1 = [].slice.call(document.querySelectorAll(submenuLvl1Selector + ' > .menu-link'));
-    // this.handleSidebarMenuToggle(submenusLvl1);
+    const menuBaseSelector = '.app-sidebar .menu > .menu-item.has-sub';
+    const submenuBaseSelector = ' > .menu-submenu > .menu-item.has-sub';
+
+    // menu
+    const menuLinkSelector = menuBaseSelector + ' > .menu-link';
+    const menus = Array.from(document.querySelectorAll(menuLinkSelector)) as HTMLElement[];
+
+    if (menus.length > 0) {
+      this.handleSidebarMenuToggle(menus);
+    }
+
+    // submenu
+    const submenuSelector = menuBaseSelector + submenuBaseSelector;
+    const submenus = Array.from(document.querySelectorAll(submenuSelector + ' > .menu-link')) as HTMLElement[];
+
+    if (submenus.length > 0) {
+      this.handleSidebarMenuToggle(submenus);
+    }
   }
 
-  // handleSidebarMenuToggle(menus) {
-  //   menus.map(function (menu) {
-  //     menu.onclick = function (e) {
-  //       e.preventDefault();
-  //       const target = this.nextElementSibling;
-  //
-  //       if (target) {
-  //         menus.map(function (m) {
-  //           const otherTarget = m.nextElementSibling;
-  //           if (otherTarget && otherTarget !== target) {
-  //             slideUp(otherTarget);
-  //             otherTarget.closest('.menu-item').classList.remove('expand');
-  //             otherTarget.closest('.menu-item').classList.add('closed');
-  //           }
-  //         });
-  //
-  //         const targetItemElm = target.closest('.menu-item');
-  //
-  //         if (targetItemElm.classList.contains('expand') || (targetItemElm.classList.contains('active') && !target.style.display)) {
-  //           targetItemElm.classList.remove('expand');
-  //           targetItemElm.classList.add('closed');
-  //         } else {
-  //           targetItemElm.classList.add('expand');
-  //           targetItemElm.classList.remove('closed');
-  //         }
-  //       }
-  //     };
-  //   });
-  // }
+  handleSidebarMenuToggle(menus: HTMLElement[]) {
+    menus.forEach((menu) => {
+      menu.onclick = (e) => {
+        e.preventDefault();
+        const target = menu.nextElementSibling;
+
+        if (target && target instanceof HTMLElement) {
+          menus.forEach((m) => {
+            const otherTarget = m.nextElementSibling;
+
+            if (otherTarget && otherTarget !== target && otherTarget instanceof HTMLElement) {
+              slideUp(otherTarget);
+              const otherItem = otherTarget.closest('.menu-item');
+
+              if (otherItem instanceof HTMLElement) {
+                otherItem.classList.remove('expand');
+                otherItem.classList.add('closed');
+              }
+            }
+          });
+
+          const targetItemElm = target.closest('.menu-item');
+
+          if (targetItemElm instanceof HTMLElement) {
+            if (
+              targetItemElm.classList.contains('expand') ||
+              (targetItemElm.classList.contains('active') && !target.style.display)
+            ) {
+              targetItemElm.classList.remove('expand');
+              targetItemElm.classList.add('closed');
+            } else {
+              targetItemElm.classList.add('expand');
+              targetItemElm.classList.remove('closed');
+            }
+          }
+        }
+      };
+    });
+  }
 
   getLink(path: string, ignore?: boolean) {
     if (ignore) {
