@@ -116,6 +116,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public AccountDTO findAccountByUsername(String username) {
+        Optional<IAccountDTO> accountOptional = accountRepository.findByAccountByUsername(username);
+
+        if (accountOptional.isEmpty()) {
+            throw new BaseBadRequestException(ENTITY_NAME, ExceptionConstants.ACCOUNT_NOT_EXISTED);
+        }
+
+        AccountDTO accountDTO = new AccountDTO();
+        BeanUtils.copyProperties(accountOptional.get(), accountDTO);
+
+        return accountDTO;
+    }
+
+    @Override
     @Transactional
     public BaseResponseDTO updateAccount(UpdateAccountRequestDTO request) {
         Long existedAccounts = accountRepository.countByUsernameOrEmailAndIdNot(

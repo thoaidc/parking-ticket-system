@@ -7,12 +7,14 @@ import {
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
 import {AuthService} from '../services/auth.service';
+import {ApplicationConfigService} from '../config/application-config.service';
 
 export const ApiInterceptorFn: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn) => {
   // const loading = inject(LoadingOption);
   const toast = inject(ToastrService);
   const router = inject(Router);
   const loginService = inject(AuthService);
+  const appConfig = inject(ApplicationConfigService);
 
   // intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
   //   this.loading.isLoading = true;
@@ -41,5 +43,8 @@ export const ApiInterceptorFn: HttpInterceptorFn = (req: HttpRequest<any>, next:
   //     ),
   //   );
   // }
-  return next(req);
+
+  const isApiRequest = req.url.startsWith(appConfig.getEndpointFor(''));
+  const modifiedReq = isApiRequest ? req.clone({ withCredentials: true }) : req;
+  return next(modifiedReq);
 };

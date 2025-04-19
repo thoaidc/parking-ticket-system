@@ -1,0 +1,53 @@
+<ngx-loading-bar height="4px" color="#0376B9"></ngx-loading-bar>
+
+<div
+  id="app"
+  class="app"
+  [ngClass]="{
+    'app-sidebar-minified': appSettings.appSidebarMinified,
+    'app-sidebar-fixed': !appSettings.appSidebarNone && appSettings.appSidebarFixed,
+    'app-header-fixed': !appSettings.appHeaderNone && appSettings.appHeaderFixed,
+    'app-without-sidebar': appSettings.appSidebarNone || appSettings.appEmpty,
+    'app-without-header': appSettings.appHeaderNone || appSettings.appEmpty,
+    'app-with-end-sidebar': appSettings.appSidebarEnd,
+    'app-with-two-sidebar': appSettings.appSidebarTwo,
+    'app-with-wide-sidebar': appSettings.appSidebarWide,
+    'app-with-light-sidebar': appSettings.appSidebarLight,
+    'app-sidebar-end-toggled': appSettings.appSidebarEndToggled,
+    'app-sidebar-mobile-toggled': appSettings.appSidebarMobileToggled,
+    'app-content-full-height': appSettings.appContentFullHeight,
+    'app-with-top-menu': appSettings.appTopMenu,
+    'app-sidebar-end-mobile-toggled': appSettings.appSidebarEndMobileToggled,
+    'app-gradient-enabled': appSettings.appGradientEnabled,
+    'p-0': appSettings.appEmpty
+  }"
+>
+  <app-navbar
+    (appSidebarMobileToggled)="onAppSidebarMobileToggled()"
+    (appSidebarEndToggled)="onAppSidebarEndToggled()"
+    (appSidebarEndMobileToggled)="onAppSidebarEndMobileToggled()"
+    [appSidebarTwo]="appSettings.appSidebarTwo"
+    [isSidebarShown]="isSidebarShown"
+    *ngIf="!appSettings.appEmpty && !appSettings.appHeaderNone"
+  >
+  </app-navbar>
+
+  <app-sidebar
+    (appSidebarMinifiedToggled)="onAppSidebarMinifiedToggled()"
+    (appSidebarMobileToggled)="onAppSidebarMobileToggled()"
+    [appSidebarTransparent]="appSettings.appSidebarTransparent"
+    [appSidebarMinified]="appSettings.appSidebarMinified"
+    [appSidebarGrid]="appSettings.appSidebarGrid"
+    [appSidebarFixed]="appSettings.appSidebarFixed"
+    [(isSidebarShown)]="isSidebarShown"
+    *ngIf="!appSettings.appSidebarNone && !appSettings.appEmpty"
+  >
+  </app-sidebar>
+
+  <div
+    class="app-content p-4"
+    [ngClass]="appSettings.appContentClass + ' ' + (appSettings.appEmpty ? 'p-0 m-0' : '') + (isSidebarShown ? 'show-all-content' : 'mini-content')"
+  >
+    <router-outlet></router-outlet>
+  </div>
+</div>

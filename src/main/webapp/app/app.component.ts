@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {AuthService} from './core/services/auth.service';
+import {LOCAL_USER_AUTHORITIES_KEY} from './constants/local-storage.constants';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,11 @@ import {AuthService} from './core/services/auth.service';
 export class AppComponent {
 
   constructor(private authService: AuthService, private router: Router) {
-    if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['login']).then();
-    }
+    authService.authenticate().subscribe(account => {
+      if (account) {
+        localStorage.setItem(LOCAL_USER_AUTHORITIES_KEY, JSON.stringify(account.authorities));
+        this.router.navigate(['']).then();
+      }
+    });
   }
 }

@@ -5,7 +5,11 @@ import {HttpClient} from '@angular/common/http';
 import {StateStorageService} from './state-storage.service';
 import {Router} from '@angular/router';
 import {ApplicationConfigService} from '../config/application-config.service';
-import {API_COMMON_LOGIN, API_COMMON_LOGOUT} from '../../constants/api.constants';
+import {
+  API_COMMON_CHECK_AUTHENTICATION_STATUS,
+  API_COMMON_LOGIN,
+  API_COMMON_LOGOUT
+} from '../../constants/api.constants';
 import {LoginRequest} from '../models/login.model';
 import {BaseResponse} from '../models/response.model';
 import {filter} from 'rxjs/operators';
@@ -23,7 +27,7 @@ export class AuthService {
     private applicationConfigService: ApplicationConfigService
   ) {}
 
-  authenticate(loginRequest: LoginRequest, forceLogin?: boolean): Observable<Account | null> {
+  authenticate(loginRequest?: LoginRequest, forceLogin?: boolean): Observable<Account | null> {
     if (!this.accountCache$ || forceLogin) {
       this.accountCache$ = this.checkAuthenticateFromBe(loginRequest).pipe(
         catchError(() => {
@@ -73,10 +77,13 @@ export class AuthService {
     );
   }
 
-  private checkAuthenticateFromBe(loginRequest: LoginRequest): Observable<Account | null> {
+  private checkAuthenticateFromBe(loginRequest?: LoginRequest): Observable<Account | null> {
     const apiUrl = this.applicationConfigService.getEndpointFor(API_COMMON_LOGIN);
+    const apiStatusUrl = this.applicationConfigService.getEndpointFor(API_COMMON_CHECK_AUTHENTICATION_STATUS);
+    const url = loginRequest ? apiUrl : apiStatusUrl;
+    const requestBody = loginRequest ? loginRequest: {};
 
-    return this.http.post<BaseResponse<Account>>(apiUrl, loginRequest).pipe(
+    return this.http.post<BaseResponse<Account>>(url, requestBody).pipe(
       map(response => {
         if (response.status && response.result) {
           return response.result as Account;

@@ -8,7 +8,7 @@ import {LoginRequest} from '../../core/models/login.model';
 import {SafeHtmlPipe} from '../../shared/pipes/safe-html.pipe';
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
-import {LOCAL_AUTHORITIES_KEY} from '../../constants/authorities.constants';
+import {LOCAL_USER_AUTHORITIES_KEY} from '../../constants/local-storage.constants';
 
 @Component({
   selector: 'app-login',
@@ -56,7 +56,7 @@ export class LoginComponent {
     this.authService.authenticate(this.loginRequest, true)
       .subscribe(account => {
         if (account) {
-          localStorage.setItem(LOCAL_AUTHORITIES_KEY, JSON.stringify(account.authorities));
+          localStorage.setItem(LOCAL_USER_AUTHORITIES_KEY, JSON.stringify(account.authorities));
           const redirectUrl = this.utilsService.findFirstAccessibleRoute(account.authorities);
           this.router.navigate([redirectUrl]).then();
         }

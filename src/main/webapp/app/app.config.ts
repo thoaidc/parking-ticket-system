@@ -1,6 +1,6 @@
 import {ApplicationConfig, LOCALE_ID, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
-import {routes} from './app.routes';
+import {APP_ROUTES} from './app.routes';
 import {
   provideHttpClient,
   withInterceptors,
@@ -57,7 +57,7 @@ import {NgbDateDayjsAdapter} from './core/config/datepicker.config';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), // Optional: to optimize change detection
-    provideRouter(routes),
+    provideRouter(APP_ROUTES),
     provideTranslateService(),
     provideAnimations(),
     provideToastr(),

@@ -31,6 +31,16 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query(
         value = """
+            SELECT id, email, fullname, device_id as deviceId, status
+            FROM account
+            WHERE username = ?1 AND status <> 'DELETED'
+        """,
+        nativeQuery = true
+    )
+    Optional<IAccountDTO> findByAccountByUsername(String username);
+
+    @Query(
+        value = """
             SELECT a.id, a.username, a.password, a.email, a.status, a.device_id as deviceId
             FROM account a WHERE a.username = ?1 AND status <> 'DELETED'
         """,

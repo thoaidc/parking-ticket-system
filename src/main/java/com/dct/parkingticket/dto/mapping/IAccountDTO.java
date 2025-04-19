@@ -8,4 +8,5 @@ public interface IAccountDTO {
     String getEmail();
     String getPhone();
     String getStatus();
+    String getDeviceId();
 }

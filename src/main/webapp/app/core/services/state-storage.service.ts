@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import {LOCAL_PREVIOUS_PAGE_URL_KEY} from '../../constants/local-storage.constants';
 
 @Injectable({ providedIn: 'root' })
 export class StateStorageService {
-  private previousPageKey = 'DCT_PARKING_TICKET_PREVIOUS_PAGE_URL';
+  private previousPageKey = LOCAL_PREVIOUS_PAGE_URL_KEY;
 
   savePreviousPage(url: string): void {
     sessionStorage.setItem(this.previousPageKey, url);
