@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import {AuthService} from '../../../core/services/auth.service';
 import {SafeHtmlPipe} from '../../../shared/pipes/safe-html.pipe';
 import {NgIf} from '@angular/common';
@@ -16,14 +16,8 @@ import {ICON_ENGLISH, ICON_LOGOUT, ICON_NOTIFICATION, ICON_VIETNAMESE} from '../
 })
 export class NavbarComponent implements OnInit {
   @Input() isSidebarShown!: boolean;
-  @Input() appSidebarTwo: any;
-  @Output() appSidebarEndToggled = new EventEmitter<boolean>();
-  @Output() appSidebarMobileToggled = new EventEmitter<boolean>();
-  @Output() appSidebarEndMobileToggled = new EventEmitter<boolean>();
-  @Output() appSidebarNone = new EventEmitter<boolean>();
-
   showDropdown = '';
-  userName: any = '';
+  userName: string | null = '';
 
   constructor(private authService: AuthService) {}
 

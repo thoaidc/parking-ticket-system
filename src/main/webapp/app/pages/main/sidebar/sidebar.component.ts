@@ -10,7 +10,6 @@ import {
 import {Router, RouterLink} from '@angular/router';
 import {SIDEBAR_ROUTES} from './route.config';
 import {ICON_CLOSE_SIDEBAR, ICON_EXPAND_SIDEBAR} from '../../../shared/utils/icon';
-// import {slideUp} from '../../../shared/composables/slideCommonStyles';
 import {SafeHtmlPipe} from '../../../shared/pipes/safe-html.pipe';
 import {NgClass, NgFor, NgIf} from '@angular/common';
 import {HasAuthorityDirective} from '../../../shared/directives/has-authority.directive';
@@ -36,18 +35,7 @@ export class SidebarComponent implements AfterViewInit{
   mobileMode: boolean = false;
   desktopMode: boolean = false;
 
-  @Input() appSidebarTransparent: boolean = false;
-  @Input() appSidebarGrid: boolean = false;
-  @Input() appSidebarFixed: boolean = false;
-  @Input() appSidebarMinified: boolean = false;
   @Input() isSidebarShown!: boolean;
-
-  @Output() appSidebarMinifiedToggled = new EventEmitter<boolean>();
-  @Output() hideMobileSidebar = new EventEmitter<boolean>();
-  @Output() setPageFloatSubMenu = new EventEmitter();
-  @Output() appSidebarEndMobileToggled = new EventEmitter<boolean>();
-  @Output() appSidebarNone = new EventEmitter<boolean>();
-  @Output() appSidebarMobileToggled = new EventEmitter<boolean>();
   @Output() isSidebarShownChange = new EventEmitter<boolean>();
 
   constructor(private router: Router) {}
@@ -118,7 +106,6 @@ export class SidebarComponent implements AfterViewInit{
   }
 
   toggleAppSidebar() {
-    this.appSidebarNone.emit(false);
     this.isSidebarShown = !this.isSidebarShown;
     this.isSidebarShownChange.emit(this.isSidebarShown);
 
