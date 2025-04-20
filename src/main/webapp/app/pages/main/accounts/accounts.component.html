@@ -19,9 +19,10 @@
       <span>Trạng thái</span>
       <div class="select-search-custom">
         <ng-select
-          [items]="LIST_STATUS"
+          [items]="ACCOUNT_STATUS"
           bindLabel="name"
           bindValue="value"
+          clearable="false"
           placeholder="Chọn trạng thái"
           [(ngModel)]="accountsFilter.status"
           (ngModelChange)="onSearch()"

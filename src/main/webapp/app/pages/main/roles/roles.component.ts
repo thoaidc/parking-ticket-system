@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import {Component, OnInit} from '@angular/core';
+import {ToastrService} from 'ngx-toastr';
 import {NgbModal, NgbModalRef, NgbPagination, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { RolesService } from '../../../core/services/roles.service';
-import { CreateRolesComponent } from './create-roles/create-roles.component';
+import {Subscription} from 'rxjs';
+import {RolesService} from '../../../core/services/roles.service';
+import {CreateRolesComponent} from './create-roles/create-roles.component';
 import {ICON_COPY, ICON_DELETE, ICON_PLUS, ICON_SEARCH, ICON_UPDATE} from '../../../shared/utils/icon';
 import {Authorities} from '../../../constants/authorities.constants';
 import {ModalConfirmDialogComponent} from '../../../shared/modals/modal-confirm-dialog/modal-confirm-dialog.component';
@@ -93,9 +93,8 @@ export class RolesComponent implements OnInit {
   }
 
   openModalCreateRole(id: any) {
-    this.modalRef = this.modalService.open(CreateRolesComponent, { size: 'xl', backdrop: 'static' });
+    this.modalRef = this.modalService.open(CreateRolesComponent, {size: 'xl', backdrop: 'static'});
     this.modalRef.componentInstance.idRole = JSON.parse(JSON.stringify(id));
-    this.modalRef.closed.subscribe(() => {});
   }
 
   async onDetailRoles(id: any) {
@@ -103,18 +102,14 @@ export class RolesComponent implements OnInit {
   }
 
   delete(role: any) {
-    this.modalRef = this.modalService.open(ModalConfirmDialogComponent, {
-      size: 'dialog-centered',
-      backdrop: 'static',
-    });
-
+    this.modalRef = this.modalService.open(ModalConfirmDialogComponent, {backdrop: 'static'});
     this.modalRef.componentInstance.title = 'Bạn có chắc chắn muốn xoá vai trò này?';
-    this.modalRef.componentInstance.classBtn = 'save-button-dialog';
+    this.modalRef.componentInstance.classBtn = 'btn-delete';
 
     this.modalRef.closed.subscribe((isConfirmed?: boolean) => {
       if (isConfirmed) {
         this.roleService.delete(role.id).subscribe(response => {
-          if (response && response.status){
+          if (response && response.status) {
             this.toast.success(response.message || 'Xóa thành công', 'Thông báo');
             this.getRoles();
           } else {
@@ -129,18 +124,16 @@ export class RolesComponent implements OnInit {
     this.roleService.getRoleDetail(id).subscribe(roleDetail => {
       if (roleDetail) {
         this.toast.success('Sao chép quyền của vai trò ' + roleDetail.name + ' thành công.');
-        this.modalRef = this.modalService.open(CreateRolesComponent, { size: 'xl', backdrop: 'static' });
+        this.modalRef = this.modalService.open(CreateRolesComponent, {size: 'xl', backdrop: 'static'});
         this.modalRef.componentInstance.listSelected = JSON.parse(JSON.stringify(this.permissions));
-        this.modalRef.closed.subscribe(() => {});
       }
     });
   }
 
-  view(id: any) {
-    this.modalRef = this.modalService.open(CreateRolesComponent, { size: 'xl', backdrop: 'static' });
-    this.modalRef.componentInstance.idRole = JSON.parse(JSON.stringify(id));
+  view(roleId: number) {
+    this.modalRef = this.modalService.open(CreateRolesComponent, {size: 'xl', backdrop: 'static'});
+    this.modalRef.componentInstance.roleId = roleId;
     this.modalRef.componentInstance.isView = true;
-    this.modalRef.closed.subscribe(() => {});
   }
 
   protected readonly ICON_SEARCH = ICON_SEARCH;

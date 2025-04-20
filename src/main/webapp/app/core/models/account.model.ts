@@ -24,7 +24,7 @@ export interface Authority {
 }
 
 export interface AccountDetail {
-  id?: number;
+  id: number;
   email: string;
   username: string;
   status: string;
@@ -33,11 +33,11 @@ export interface AccountDetail {
   address?: string;
   fullname?: string;
   deviceId?: string;
-  createdByStr: string;
-  createdDateStr: string;
-  lastModifiedByStr: string;
-  lastModifiedDateStr: string;
-  authorities: Authority[];
+  createdByStr?: string;
+  createdDateStr?: string;
+  lastModifiedByStr?: string;
+  lastModifiedDateStr?: string;
+  authorities?: Authority[];
 }
 
 export enum AccountStatus {

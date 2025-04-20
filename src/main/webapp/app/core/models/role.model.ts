@@ -1,14 +1,14 @@
 import {Pagination} from './request.model';
 
 export interface Role {
-  id?: string;
-  name?: string;
+  id: number;
+  name: string;
   code: string;
 }
 
 export interface RoleDetail {
-  id?: string;
-  name?: string;
+  id: number;
+  name: string;
   code: string;
   createdByStr?: string;
   createdDateStr?: string;
@@ -34,12 +34,12 @@ export interface RolesFilter extends Pagination {
 }
 
 export interface TreeViewItem {
-  id: any;
+  id: number;
   name: string;
-  code: any;
+  code: string;
   disabled: boolean;
   checked: boolean;
   collapsed: boolean;
   children?: TreeViewItem[];
-  parentId?: any;
+  parentId?: number[];
 }

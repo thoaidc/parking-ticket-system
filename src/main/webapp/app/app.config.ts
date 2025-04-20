@@ -14,9 +14,7 @@ import {
 } from '@angular/common/http';
 import {AuthExpiredInterceptorFn} from './core/interceptors/auth-expired.interceptor';
 import {ErrorHandlerInterceptorFn} from './core/interceptors/error-handler.interceptor';
-import {NotificationInterceptorFn} from './core/interceptors/notification.interceptor';
 import {ApiInterceptorFn} from './core/interceptors/api.interceptor';
-import {ResponseInterceptorFn} from './core/interceptors/response.interceptor';
 import {provideToastr} from 'ngx-toastr';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideTranslateService} from '@ngx-translate/core';
@@ -50,9 +48,7 @@ import {NgbDateDayjsAdapter} from './core/config/datepicker.config';
  * Therefore, order interceptors by their role:
  *    - {@link AuthExpiredInterceptorFn}: Handle expired authentication
  *    - {@link ErrorHandlerInterceptorFn}: Handle global errors
- *    - {@link NotificationInterceptorFn}: Display notifications
  *    - {@link ApiInterceptorFn}: Logging / modify URLs
- *    - {@link ResponseInterceptorFn}:
  */
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -69,9 +65,7 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([
         AuthExpiredInterceptorFn,
         ErrorHandlerInterceptorFn,
-        NotificationInterceptorFn,
-        ApiInterceptorFn,
-        ResponseInterceptorFn
+        ApiInterceptorFn
       ])
     )
   ]

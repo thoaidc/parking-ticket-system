@@ -1,49 +1,39 @@
 <div class="modal-header">
-  <h5 class="modal-title">
-    {{ roleDetail.id ? 'Chi tiết vai trò' : 'Thêm vai trò' }}
-  </h5>
+  <h5 class="modal-title">{{ isView ? 'Chi tiết vai trò' : 'Thêm vai trò' }}</h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="dismiss($event)"></button>
 </div>
-<div
-  *ngIf="roleDetail.id > 0 && !isView"
-  style="background-color: #d9eaf5; color: #004671; display: flex; align-items: center; height: 30px"
->
-  <span style="padding-left: 20px">
+<div class="d-flex align-items-center role-wrapper" *ngIf="roleDetail && roleDetail.id > 0 && !isView">
+  <span class="ps-4">
     <i class="fa fa-exclamation-circle"></i>
   </span>
-  <div style="padding-left: 10px">Mọi chỉnh sửa sẽ được áp dụng cho tất cả nhân viên có vai trò này</div>
+  <div class="ps-3">Mọi chỉnh sửa sẽ được áp dụng cho tất cả tài khoản có vai trò này</div>
 </div>
-<div class="modal-body" id="modalBody">
+<div class="modal-body" id="modalBody" *ngIf="roleDetail">
   <div>
     <div class="input-text-custom">
       <div class="input-container">
         <div class="input-group">
-          <label class="title-info">Mã vai trò<span style="color: red; margin: 0">*</span></label>
+          <label class="title-info">Mã vai trò<span class="text-danger m-0">*</span></label>
           <input
             [disabled]="isView"
             class="input-value form-control"
             [(ngModel)]="roleDetail.code"
             alphanumericOnly
             [specialCharacter]="true"
-            placeholder="Ví dụ: Mã vai trò 1"
+            placeholder="Ví dụ: MANAGER"
           />
         </div>
         <div class="input-group">
-          <label class="title-info">Tên vai trò<span style="color: red; margin: 0">*</span></label>
+          <label class="title-info">Tên vai trò<span class="text-danger m-0">*</span></label>
           <input
             [disabled]="isView"
             class="input-value form-control"
             [(ngModel)]="roleDetail.name"
-            placeholder="Ví dụ: Tên vai trò 1"
+            placeholder="Ví dụ: Quản lý"
           />
         </div>
       </div>
-      <div class="input-container">
-        <div class="input-group">
-          <label class="title-info">Thông tin vai trò</label>
-          <textarea class="input-value form-control" [(ngModel)]="roleDetail.description" placeholder="Thông tin về vai trò"></textarea>
-        </div>
-      </div>
+
       <div class="container">
         <div class="row">
           <div class="col-12">

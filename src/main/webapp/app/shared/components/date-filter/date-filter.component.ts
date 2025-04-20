@@ -4,13 +4,22 @@ import { UtilsService } from '../../utils/utils.service';
 import {LIST_TIME_SELECT} from '../../../constants/common.constants';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule} from '@angular/forms';
+import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgIf} from '@angular/common';
+import {DateFormatDirective} from '../../directives/date-format.directive';
+import {ICON_CALENDER} from '../../utils/icon';
+import {SafeHtmlPipe} from '../../pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-date-filter',
   standalone: true,
   imports: [
     NgSelectModule,
-    FormsModule
+    FormsModule,
+    NgbDatepickerModule,
+    NgIf,
+    DateFormatDirective,
+    SafeHtmlPipe
   ],
   templateUrl: './date-filter.component.html',
   styleUrls: ['./date-filter.component.scss'],
@@ -26,7 +35,9 @@ export class DateFilterComponent implements OnChanges {
   constructor(public utilsService: UtilsService) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    this.periods = changes[this.periods].currentValue;
+    if (changes['periods']) {
+      this.periods = changes['periods'].currentValue;
+    }
   }
 
   changeDate() {
@@ -106,4 +117,5 @@ export class DateFilterComponent implements OnChanges {
   }
 
   protected readonly LIST_TIME_SELECT = LIST_TIME_SELECT;
+  protected readonly ICON_CALENDER = ICON_CALENDER;
 }

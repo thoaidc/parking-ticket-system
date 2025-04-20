@@ -70,6 +70,7 @@
 
     &:hover {
       background-color: rgba(223, 47, 76, 0.829);
+
       i {
         color: white;
       }
@@ -144,6 +145,7 @@ td {
 .with-label-name {
   width: 150px !important;
 }
+
 #panel-payment {
   background-color: var(--bs-gray-100);
   border-radius: 10px 10px 10px 10px;
@@ -203,12 +205,14 @@ button {
     right: 0.1rem !important;
   }
 }
+
 .panel-action {
   background-color: #0074bd;
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
+
 .sub-menu {
   padding: 0;
   margin-top: 2px;
@@ -218,10 +222,12 @@ button {
   list-style-type: none;
   border-bottom: 0.5px solid white;
 }
+
 .sub-menu .nav-action {
   border: 0.5px solid white;
   width: 200px;
 }
+
 .list-action {
   display: flex;
   margin: 0 auto;
@@ -229,7 +235,14 @@ button {
   justify-content: center;
   gap: 10px;
 }
+
 .search-citeria {
   align-items: end;
   margin-bottom: 12px;
+}
+
+.role-wrapper {
+  background-color: #d9eaf5;
+  color: #004671;
+  height: 30px;
 }

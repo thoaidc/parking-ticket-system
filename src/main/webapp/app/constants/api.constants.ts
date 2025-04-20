@@ -11,7 +11,7 @@ export const API_COMMON_ACCOUNTS_UPDATE_STATUS = `api/common/accounts`;
 
 // Roles API constants
 export const API_COMMON_ROLES = `api/common/roles`;
-export const API_COMMON_PERMISSIONS_TREE = `api/common/permissions`;
+export const API_COMMON_PERMISSIONS_TREE = `api/common/roles/permissions`;
 
 // Upload images API constants
 export const API_COMMON_UPLOAD_IMAGES = `api/common/upload/images`;

@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import {Component, OnInit} from '@angular/core';
+import {ToastrService} from 'ngx-toastr';
 import {NgFor, NgIf} from '@angular/common';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { RolesService } from '../../../../core/services/roles.service';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {RolesService} from '../../../../core/services/roles.service';
 import {Authorities} from '../../../../constants/authorities.constants';
 import {HasAuthorityDirective} from '../../../../shared/directives/has-authority.directive';
 import {FormsModule} from '@angular/forms';
 import {TreeViewComponent} from '../tree-view/tree-view.component';
 import {AlphanumericOnlyDirective} from '../../../../shared/directives/alphanumeric-only.directive';
-import {RoleDetail, TreeViewItem} from '../../../../core/models/role.model';
+import {CreateRoleRequest, RoleDetail, TreeViewItem, UpdateRoleRequest} from '../../../../core/models/role.model';
 
 @Component({
   selector: 'app-create-roles',
@@ -26,9 +26,9 @@ import {RoleDetail, TreeViewItem} from '../../../../core/models/role.model';
 })
 export class CreateRolesComponent implements OnInit {
   Authority = Authorities;
-  roleDetail: any = { id: null, code: null, name: null, description: null };
+  roleDetail: RoleDetail = { id: 0, name: '', code: '' };
   totalItems = 0;
-  idRole?: any = 0;
+  roleId: number = 0;
   children: any = [];
   listSelected: any = [];
   disableButton = false;
@@ -37,13 +37,14 @@ export class CreateRolesComponent implements OnInit {
   constructor(
     private rolesService: RolesService,
     private toast: ToastrService,
-    public activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal
   ) {}
 
   async ngOnInit() {
     this.onSearch();
-    if (this.idRole) {
-      this.onRoleDetail(this.idRole);
+
+    if (this.roleId) {
+      this.onRoleDetail(this.roleId);
     }
   }
 
@@ -63,36 +64,41 @@ export class CreateRolesComponent implements OnInit {
   }
 
   create() {
-    this.roleDetail.permissions = this.listSelected;
-    if (!this.checkRolePermission()) {
+    if (!this.roleDetail || !this.checkRolePermission()) {
       return;
     }
+
+    this.roleDetail.permissions = this.listSelected;
     this.disableButton = true;
-    const req = Object.assign({}, this.roleDetail);
-    if (this.idRole > 0) {
-      this.rolesService.update(req).subscribe(
-        value => {
-          this.toast.success(value.message, 'Thông báo');
+    const createRoleRequest: CreateRoleRequest = {
+      name: this.roleDetail.name,
+      code: this.roleDetail.code,
+      permissionIds: [1]
+    };
+
+    const updateRoleRequest: UpdateRoleRequest = {
+      ...createRoleRequest,
+      id: this.roleId
+    }
+
+    if (this.roleId > 0) {
+      this.rolesService.update(updateRoleRequest).subscribe(response => {
+        if (response && response.status) {
+          this.toast.success(response.message || 'Cập nhật thành công', 'Thông báo');
           this.searchRolesComponent();
-          this.dismiss(value);
+          this.dismiss(response);
           this.disableButton = false;
-        },
-        () => {
-          this.disableButton = false;
-        },
-      );
+        }
+      });
     } else {
-      this.rolesService.create(req).subscribe(
-        value => {
-          this.toast.success(value.message, 'Thông báo');
+      this.rolesService.create(createRoleRequest).subscribe(response => {
+        if (response && response.status) {
+          this.toast.success(response.message || 'Tạo mới thành công', 'Thông báo');
           this.searchRolesComponent();
-          this.dismiss(value);
+          this.dismiss(response);
           this.disableButton = false;
-        },
-        () => {
-          this.disableButton = false;
-        },
-      );
+        }
+      });
     }
   }
 
@@ -101,14 +107,17 @@ export class CreateRolesComponent implements OnInit {
       this.toast.error('Mã vai trò không được để trống', 'Thông báo');
       return false;
     }
+
     if (!this.roleDetail.name) {
       this.toast.error('Tên vai trò không được để trống', 'Thông báo');
       return false;
     }
+
     if (!this.roleDetail.permissions) {
       this.toast.error('Danh sách quyền không được để trống', 'Thông báo');
       return false;
     }
+
     return true;
   }
 

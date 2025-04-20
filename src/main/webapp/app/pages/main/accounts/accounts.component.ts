@@ -96,6 +96,7 @@ export class AccountsComponent implements OnInit {
     this.accountsFilter = {
       page: 1,
       size: 20,
+      status: '',
       fromDate: dayjs(),
       toDate: dayjs()
     };
@@ -154,20 +155,13 @@ export class AccountsComponent implements OnInit {
       return;
     }
 
-    this.modalRef = this.modalService.open(ModalAccountInfoComponent, {
-      size: 'lg',
-      backdrop: 'static',
-    });
-
+    this.modalRef = this.modalService.open(ModalAccountInfoComponent, { size: 'lg', backdrop: 'static' });
     this.modalRef.componentInstance.id = id || 0;
     this.modalRef.closed.subscribe(() => this.getAccounts());
   }
 
   updateUserStatus(id: any, status: any) {
-    this.modalRef = this.modalService.open(ModalConfirmDialogComponent, {
-      size: 'dialog-centered',
-      backdrop: 'static',
-    });
+    this.modalRef = this.modalService.open(ModalConfirmDialogComponent, { backdrop: 'static' });
 
     switch (status) {
       case AccountStatus.INACTIVE: {
@@ -200,11 +194,9 @@ export class AccountsComponent implements OnInit {
   }
 
   changePassword(account: any) {
-    this.modalRef = this.modalService.open(ModalChangePasswordComponent, {
-      size: 'dialog-centered',
-      backdrop: 'static',
-    });
+    this.modalRef = this.modalService.open(ModalChangePasswordComponent, {backdrop: 'static'});
     this.modalRef.componentInstance.id = account.id;
+
     this.modalRef.closed.subscribe(() => {
       if (account.username.toLowerCase() === this.userName.toLowerCase()) {
         this.toast.success('Đổi mật khẩu thành công, vui lòng đăng nhập lại', 'Thông báo');
@@ -221,14 +213,13 @@ export class AccountsComponent implements OnInit {
       this.toast.success('Không tìm thấy thông tin tài khoản', 'Thông báo');
       return;
     }
-    this.modalRef = this.modalService.open(ModalConfirmDialogComponent, {
-      size: 'dialog-centered',
-      backdrop: 'static',
-    });
+
+    this.modalRef = this.modalService.open(ModalConfirmDialogComponent, {backdrop: 'static'});
     this.modalRef.componentInstance.title = 'Bạn có chắc chắn muốn xoá tài khoản này?';
     this.modalRef.componentInstance.classBtn = 'btn-delete';
-    this.modalRef.closed.subscribe((res?: any) => {
-      if (res === 1) {
+
+    this.modalRef.closed.subscribe((isConfirmed?: boolean) => {
+      if (isConfirmed) {
         this.accountService.deleteAccount(id).subscribe(response => {
           if (response.status) {
             this.toast.success('Xóa tài khoản thành công', 'Thông báo');
@@ -248,7 +239,6 @@ export class AccountsComponent implements OnInit {
 
   protected readonly ICON_RELOAD = ICON_RELOAD;
   protected readonly ICON_SEARCH = ICON_SEARCH;
-  protected readonly LIST_STATUS = ACCOUNT_STATUS;
   protected readonly ICON_PLUS = ICON_PLUS;
   protected readonly ICON_UPDATE = ICON_UPDATE;
   protected readonly ICON_STOP = ICON_STOP;
@@ -257,4 +247,5 @@ export class AccountsComponent implements OnInit {
   protected readonly Authorities = Authorities;
   protected readonly ICON_DELETE = ICON_DELETE;
   protected readonly PAGINATION_PAGE_SIZE = PAGINATION_PAGE_SIZE;
+  protected readonly ACCOUNT_STATUS = ACCOUNT_STATUS;
 }

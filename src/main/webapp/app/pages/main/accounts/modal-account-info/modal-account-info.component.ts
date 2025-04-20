@@ -12,7 +12,7 @@ import {HasAuthorityDirective} from '../../../../shared/directives/has-authority
 import {AlphanumericOnlyDirective} from '../../../../shared/directives/alphanumeric-only.directive';
 import {FormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {AccountDetail} from '../../../../core/models/account.model';
+import {AccountDetail, AccountStatus, Authority} from '../../../../core/models/account.model';
 import {Role, RolesFilter} from '../../../../core/models/role.model';
 
 @Component({
@@ -31,7 +31,7 @@ import {Role, RolesFilter} from '../../../../core/models/role.model';
 })
 export class ModalAccountInfoComponent implements OnInit {
   id: number = 0;
-  accountDetail!: AccountDetail;
+  accountDetail: AccountDetail = { id: 0, username: '', email: '', status: AccountStatus.ACTIVE };
   roles: Role[] = [];
   isLoading = false;
   hide = true;
@@ -60,6 +60,8 @@ export class ModalAccountInfoComponent implements OnInit {
 
     this.getRoles();
   }
+
+  compareRoles = (a: Authority, b: Authority) => a && b && a.id === b.id;
 
   onSave() {
     if (!this.accountDetail) {
