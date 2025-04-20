@@ -10,7 +10,7 @@ public class RoleDTO extends AuditingEntityDTO {
     private Integer id;
     private String name;
     private String code;
-    Set<String> permissions = new HashSet<>();
+    Set<Integer> permissions = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -36,11 +36,11 @@ public class RoleDTO extends AuditingEntityDTO {
         this.code = code;
     }
 
-    public Set<String> getPermissions() {
+    public Set<Integer> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Set<String> permissions) {
+    public void setPermissions(Set<Integer> permissions) {
         this.permissions = permissions;
     }
 }

@@ -14,7 +14,7 @@ export interface RoleDetail {
   createdDateStr?: string;
   lastModifiedByStr?: string;
   lastModifiedDateStr?: string;
-  permissions?: string[];
+  permissions?: number[];
 }
 
 export interface CreateRoleRequest {

@@ -1,12 +1,16 @@
 package com.dct.parkingticket.entity;
 
+import com.dct.parkingticket.common.datetime.InstantStringConverterForSQLite;
 import com.dct.parkingticket.config.PersistenceConfig;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedBy;
@@ -56,6 +60,7 @@ public abstract class AbstractAuditingEntity implements Serializable {
     // Automatically saves the time the record was created (usually using system time)
     @CreatedDate
     @Column(name = "created_date", updatable = false)
+    @Convert(converter = InstantStringConverterForSQLite.class)
     private Instant createdDate;
 
     /**
@@ -70,6 +75,7 @@ public abstract class AbstractAuditingEntity implements Serializable {
     // Automatically saves the time of the last edit (usually using system time)
     @LastModifiedDate
     @Column(name = "last_modified_date", updatable = false)
+    @Convert(converter = InstantStringConverterForSQLite.class)
     private Instant lastModifiedDate;
 
     public Integer getId() {

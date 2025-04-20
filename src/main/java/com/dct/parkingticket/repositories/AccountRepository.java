@@ -60,7 +60,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     boolean existsByUsernameOrEmail(String username, String email);
 
     @Query("SELECT COUNT(a.id) FROM Account a WHERE (a.username = ?1 OR a.email = ?2) AND a.id <> ?3")
-    Long countByUsernameOrEmailAndIdNot(String username, String email, Integer accountId);
+    long countByUsernameOrEmailAndIdNot(String username, String email, Integer accountId);
 
     @Modifying
     @Query(value = "UPDATE account SET status = ?2 WHERE id = ?1", nativeQuery = true)

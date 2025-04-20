@@ -157,7 +157,7 @@ public class RoleServiceImpl implements RoleService {
         Role role = roleOptional.get();
 
         // If the updated role content already exists
-        if (roleRepository.existsByCodeOrNameAndIdNot(request.getCode(), request.getName(), role.getId())) {
+        if (roleRepository.countByCodeOrNameAndIdNot(request.getCode(), request.getName(), role.getId()) > 0) {
             throw new BaseBadRequestException(ENTITY_NAME, ExceptionConstants.ROLE_EXISTED);
         }
 

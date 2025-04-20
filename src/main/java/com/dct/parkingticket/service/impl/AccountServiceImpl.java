@@ -132,7 +132,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public BaseResponseDTO updateAccount(UpdateAccountRequestDTO request) {
-        Long existedAccounts = accountRepository.countByUsernameOrEmailAndIdNot(
+        long existedAccounts = accountRepository.countByUsernameOrEmailAndIdNot(
             request.getUsername(),
             request.getEmail(),
             request.getId()

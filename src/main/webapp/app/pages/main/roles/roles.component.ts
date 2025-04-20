@@ -88,17 +88,9 @@ export class RolesComponent implements OnInit {
     this.getRoles();
   }
 
-  async onCreateRole() {
-    this.openModalCreateRole(0);
-  }
-
-  openModalCreateRole(id: any) {
+  openModalCreateRole(roleId?: any) {
     this.modalRef = this.modalService.open(CreateRolesComponent, {size: 'xl', backdrop: 'static'});
-    this.modalRef.componentInstance.idRole = JSON.parse(JSON.stringify(id));
-  }
-
-  async onDetailRoles(id: any) {
-    this.openModalCreateRole(id);
+    this.modalRef.componentInstance.roleId = roleId || 0;
   }
 
   delete(role: any) {
@@ -125,7 +117,9 @@ export class RolesComponent implements OnInit {
       if (roleDetail) {
         this.toast.success('Sao chép quyền của vai trò ' + roleDetail.name + ' thành công.');
         this.modalRef = this.modalService.open(CreateRolesComponent, {size: 'xl', backdrop: 'static'});
-        this.modalRef.componentInstance.listSelected = JSON.parse(JSON.stringify(this.permissions));
+        this.modalRef.componentInstance.listSelected = JSON.parse(JSON.stringify(roleDetail.permissions));
+      } else {
+        this.toast.error('Sao chép thất bại');
       }
     });
   }

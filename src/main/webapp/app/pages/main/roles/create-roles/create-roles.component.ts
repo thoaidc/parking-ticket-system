@@ -9,6 +9,8 @@ import {FormsModule} from '@angular/forms';
 import {TreeViewComponent} from '../tree-view/tree-view.component';
 import {AlphanumericOnlyDirective} from '../../../../shared/directives/alphanumeric-only.directive';
 import {CreateRoleRequest, RoleDetail, TreeViewItem, UpdateRoleRequest} from '../../../../core/models/role.model';
+import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
+import {ICON_ATTENTION} from '../../../../shared/utils/icon';
 
 @Component({
   selector: 'app-create-roles',
@@ -21,7 +23,8 @@ import {CreateRoleRequest, RoleDetail, TreeViewItem, UpdateRoleRequest} from '..
     TreeViewComponent,
     AlphanumericOnlyDirective,
     NgFor,
-    NgIf
+    NgIf,
+    SafeHtmlPipe
   ]
 })
 export class CreateRolesComponent implements OnInit {
@@ -30,7 +33,7 @@ export class CreateRolesComponent implements OnInit {
   totalItems = 0;
   roleId: number = 0;
   children: any = [];
-  listSelected: any = [];
+  listSelected: number[] = [];
   disableButton = false;
   isView = false;
 
@@ -41,15 +44,11 @@ export class CreateRolesComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.onSearch();
+    this.getPermission();
 
     if (this.roleId) {
       this.onRoleDetail(this.roleId);
     }
-  }
-
-  onSearch() {
-    this.getPermission();
   }
 
   getPermission() {
@@ -64,16 +63,17 @@ export class CreateRolesComponent implements OnInit {
   }
 
   create() {
-    if (!this.roleDetail || !this.checkRolePermission()) {
+    this.roleDetail.permissions = this.listSelected;
+
+    if (!this.checkRolePermission()) {
       return;
     }
 
-    this.roleDetail.permissions = this.listSelected;
     this.disableButton = true;
     const createRoleRequest: CreateRoleRequest = {
       name: this.roleDetail.name,
       code: this.roleDetail.code,
-      permissionIds: [1]
+      permissionIds: this.roleDetail.permissions
     };
 
     const updateRoleRequest: UpdateRoleRequest = {
@@ -84,22 +84,28 @@ export class CreateRolesComponent implements OnInit {
     if (this.roleId > 0) {
       this.rolesService.update(updateRoleRequest).subscribe(response => {
         if (response && response.status) {
-          this.toast.success(response.message || 'Cập nhật thành công', 'Thông báo');
+          this.toast.success('Cập nhật vai trò thành công', 'Thông báo');
           this.searchRolesComponent();
           this.dismiss(response);
           this.disableButton = false;
+        } else {
+          this.toast.error(response.message || 'Cật nhật vai trò thất bại', 'Thông báo');
         }
       });
     } else {
       this.rolesService.create(createRoleRequest).subscribe(response => {
         if (response && response.status) {
-          this.toast.success(response.message || 'Tạo mới thành công', 'Thông báo');
+          this.toast.success('Tạo mới vai trò thành công', 'Thông báo');
           this.searchRolesComponent();
           this.dismiss(response);
           this.disableButton = false;
+        } else {
+          this.toast.error(response.message || 'Tạo mới vai trò thất bại', 'Thông báo');
         }
       });
     }
+
+    this.disableButton = false;
   }
 
   checkRolePermission() {
@@ -137,4 +143,6 @@ export class CreateRolesComponent implements OnInit {
   receiveListSelected(data: number[]) {
     this.listSelected = data;
   }
+
+  protected readonly ICON_ATTENTION = ICON_ATTENTION;
 }

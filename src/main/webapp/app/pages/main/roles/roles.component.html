@@ -1,6 +1,6 @@
 <div class="title-feature form-space-between">
   <span>Vai trò</span>
-  <button class="success-button-dialog ms-3" *hasAuthorities="Authorities.ROLE_CREATE" (click)="onCreateRole()">
+  <button class="success-button-dialog ms-3" *hasAuthorities="Authorities.ROLE_CREATE" (click)="openModalCreateRole()">
     <span [innerHTML]="ICON_PLUS | safeHtml"></span>
     Tạo vai trò
   </button>
@@ -9,13 +9,14 @@
 <div class="field-search">
   <div class="search-citeria">
     <div class="item-search">
-      <span>Từ khoá</span>
+      <label for="search-role-keyword">Từ khoá</label>
       <div class="input-text-custom">
         <input
           [(ngModel)]="rolesFilter.keyword"
           name="keyword"
           class="form-control"
           type="search"
+          id="search-role-keyword"
           placeholder="Mã vai trò, tên vai trò"
           (keyup.enter)="onSearch()"
         />
@@ -53,7 +54,7 @@
                         <span
                           [innerHTML]="ICON_UPDATE | safeHtml"
                           ngbTooltip="Cập nhật"
-                          (click)="onDetailRoles(role.id)"
+                          (click)="openModalCreateRole(role.id)"
                           *hasAuthorities="Authorities.ROLE_UPDATE"
                         ></span>
                       </ng-container>

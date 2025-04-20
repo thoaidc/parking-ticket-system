@@ -38,5 +38,7 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
     Optional<IRoleDTO> findIRoleById(Integer roleId);
 
     boolean existsByCodeOrName(String code, String name);
-    boolean existsByCodeOrNameAndIdNot(String code, String name, Integer id);
+
+    @Query("SELECT COUNT(r.id) FROM Role r WHERE (r.code = ?1 OR r.name = ?2) AND r.id <> ?3")
+    long countByCodeOrNameAndIdNot(String code, String name, Integer id);
 }

@@ -5,9 +5,10 @@
 <div class="modal-body" *ngIf="accountDetail">
   <div class="form-space-between flex-wrap">
     <div class="item-search w-50">
-      <span>Tên đăng nhập <span class="text-danger">*</span></span>
+      <label for="username-login">Tên đăng nhập <span class="text-danger">*</span></label>
       <div class="input-text-custom">
         <input
+          id="username-login"
           class="form-control"
           [(ngModel)]="accountDetail.username"
           type="text"
@@ -18,15 +19,16 @@
       </div>
     </div>
     <div class="item-search w-50">
-      <span>Họ và tên</span>
+      <label for="fullname">Họ và tên</label>
       <div class="input-text-custom">
-        <input class="form-control" [(ngModel)]="accountDetail.fullname" type="text" placeholder="Tên đầy đủ"/>
+        <input id="fullname" class="form-control" [(ngModel)]="accountDetail.fullname" type="text" placeholder="Tên đầy đủ"/>
       </div>
     </div>
     <div class="item-search w-50">
-      <span>Email <span class="text-danger">*</span></span>
+      <label for="email-login">Email <span class="text-danger">*</span></label>
       <div class="input-text-custom">
         <input
+          id="email-login"
           class="form-control"
           [(ngModel)]="accountDetail.email"
           type="email"
@@ -56,9 +58,10 @@
   </form>
   <div class="form-space-between">
     <form class="item-search w-50" *ngIf="!id">
-      <span>Mật khẩu <span class="text-danger">*</span></span>
+      <label for="password-login">Mật khẩu <span class="text-danger">*</span></label>
       <div class="input-text-custom" [class.input-password]="hide">
         <input
+          id="password-login"
           class="form-control"
           [(ngModel)]="accountDetail.password"
           type="text"
@@ -79,6 +82,7 @@
     </form>
   </div>
 </div>
+
 <div class="modal-footer">
   <button class="cancel-button-dialog" (click)="dismiss()">Huỷ</button>
   <button
