@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -45,7 +46,7 @@ public class AccountResource {
 
     @GetMapping
     @CheckAuthorize(authorities = RoleConstants.Account.VIEW)
-    public BaseResponseDTO getAccountsWithPaging(@RequestBody BaseRequestDTO request) {
+    public BaseResponseDTO getAccountsWithPaging(@ModelAttribute BaseRequestDTO request) {
         return accountService.getAccountsWithPaging(request);
     }
 

@@ -11,6 +11,7 @@ import com.dct.parkingticket.service.RoleService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,7 +32,7 @@ public class RoleResource {
 
     @GetMapping
     @CheckAuthorize(authorities = RoleConstants.Role.VIEW)
-    public BaseResponseDTO getAllRolesWithPaging(@RequestBody BaseRequestDTO request) {
+    public BaseResponseDTO getAllRolesWithPaging(@ModelAttribute BaseRequestDTO request) {
         return roleService.getRolesWithPaging(request);
     }
 

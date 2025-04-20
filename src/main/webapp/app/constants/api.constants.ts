@@ -6,6 +6,8 @@ export const API_COMMON_LOGOUT = `api/p/common/auth/logout`;
 
 // Accounts API constants
 export const API_COMMON_ACCOUNTS = `api/common/accounts`;
+export const API_COMMON_ACCOUNTS_UPDATE_STATUS = `api/common/accounts`;
+
 
 // Roles API constants
 export const API_COMMON_ROLES = `api/common/roles`;

@@ -50,7 +50,7 @@ export class AuthService {
 
     const requiredAuthorities = Array.isArray(authorities) ? authorities : [authorities];
 
-    return requiredAuthorities.every(required => this.userIdentity!.authorities.includes(required));
+    return requiredAuthorities.every(required => this.userIdentity!.authorities?.includes(required));
   }
 
   isAuthenticated(): boolean {

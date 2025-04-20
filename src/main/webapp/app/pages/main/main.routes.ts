@@ -8,5 +8,68 @@ export const MAIN_ROUTES: Routes = [
     pathMatch: 'full',
     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
     canActivate: [AuthGuardFn]
+  },
+  // {
+  //   path: 'customers',
+  //   title: 'Quản lý khách hàng',
+  //   pathMatch: 'full',
+  //   loadComponent: () => import('./').then(m => m.),
+  //   canActivate: [AuthGuardFn]
+  // },
+  {
+    path: 'admin',
+    loadChildren: () => ADMIN_ROUTES,
+    canActivate: [AuthGuardFn]
   }
 ];
+
+export const ADMIN_ROUTES: Routes = [
+  {
+    path: 'accounts',
+    title: 'Quản lý tài khoản',
+    pathMatch: 'full',
+    loadComponent: () => import('./accounts/accounts.component').then(m => m.AccountsComponent),
+    canActivate: [AuthGuardFn]
+  },
+  {
+    path: 'roles',
+    title: 'Quản lý vai trò',
+    pathMatch: 'full',
+    loadComponent: () => import('./roles/roles.component').then(m => m.RolesComponent),
+    canActivate: [AuthGuardFn]
+  },
+];
+
+// export const REPORT_ROUTES: Routes = [
+//   {
+//     path: '',
+//     title: 'Trang chủ',
+//     pathMatch: 'full',
+//     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
+//     canActivate: [AuthGuardFn]
+//   },
+//   {
+//     path: '',
+//     title: 'Trang chủ',
+//     pathMatch: 'full',
+//     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
+//     canActivate: [AuthGuardFn]
+//   },
+// ];
+//
+// export const SYSTEM_MANAGEMENT_ROUTES: Routes = [
+//   {
+//     path: '',
+//     title: 'Trang chủ',
+//     pathMatch: 'full',
+//     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
+//     canActivate: [AuthGuardFn]
+//   },
+//   {
+//     path: '',
+//     title: 'Trang chủ',
+//     pathMatch: 'full',
+//     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
+//     canActivate: [AuthGuardFn]
+//   },
+// ];

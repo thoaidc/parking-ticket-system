@@ -4,7 +4,6 @@ export enum Authorities {
   SYSTEM = '01',
   SYSTEM_VIEW = '0101',
   SYSTEM_VIEW_LOGS = '0102',
-  SYSTEM_VIEW_METRICS = '0103',
 
   ACCOUNT = '02',
   ACCOUNT_VIEW = '0201',
@@ -21,5 +20,4 @@ export enum Authorities {
   CUSTOMER = '',
   REPORT = '',
   CONFIG = '',
-
 }

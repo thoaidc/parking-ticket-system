@@ -1,0 +1,79 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ id ? 'Cập nhật tài khoản' : 'Thêm mới tài khoản' }}</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="dismiss()"></button>
+</div>
+<div class="modal-body">
+  <div class="form-space-between">
+    <div class="item-search">
+      <span>Tên đăng nhập <span class="text-danger">*</span></span>
+      <div class="input-text-custom">
+        <input
+          class="form-control"
+          [(ngModel)]="accountDetail.username"
+          type="text"
+          placeholder="Tên đăng nhập"
+          alphanumericOnly
+          autocomplete="off"
+        />
+      </div>
+    </div>
+    <div class="item-search">
+      <span>Họ và tên<span style="color: red">*</span></span>
+      <div class="input-text-custom">
+        <input class="form-control" [(ngModel)]="accountDetail.fullname" type="text" placeholder="Tên đầy đủ"/>
+      </div>
+    </div>
+  </div>
+  <form class="w-100 mb-3" style="padding: 6px">
+    <span>Vai trò <span style="color: red">*</span></span>
+    <div class="select-search-custom">
+      <ng-select
+        [items]="roles"
+        bindLabel="name"
+        bindValue="id"
+        [multiple]="true"
+        [selectableGroup]="true"
+        placeholder="Chọn vai trò"
+        [(ngModel)]="accountDetail.authorities"
+        [closeOnSelect]="false"
+        name="roleList"
+      >
+      </ng-select>
+    </div>
+  </form>
+  <div class="form-space-between">
+    <form class="item-search" *ngIf="!id">
+      <span>Mật khẩu <span class="text-danger">*</span></span>
+      <div class="input-text-custom" [class.input-password]="hide">
+        <input
+          class="form-control"
+          [(ngModel)]="accountDetail.password"
+          type="text"
+          placeholder="Mật khẩu"
+          alphanumericOnly
+          [isPassword]="hide"
+          [specialCharacter]="true"
+          autocomplete="off"
+          name="password"
+        />
+        <div *ngIf="!hide" class="display-password" (click)="hide = !hide">
+          <span [innerHTML]="ICON_EYE | safeHtml"></span>
+        </div>
+        <div *ngIf="hide" class="display-password" (click)="hide = !hide">
+          <span [innerHTML]="ICON_EYE_CROSS | safeHtml"></span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="cancel-button-dialog" (click)="dismiss()">Huỷ</button>
+  <button
+    class="save-button-dialog"
+    *hasAuthorities="[Authorities.ACCOUNT_UPDATE, Authorities.ACCOUNT]"
+    (click)="onSave()"
+    [disabled]="isLoading"
+  >
+    Lưu
+  </button>
+</div>

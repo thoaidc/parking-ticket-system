@@ -1,0 +1,73 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    {{ roleDetail.id ? 'Chi tiết vai trò' : 'Thêm vai trò' }}
+  </h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="dismiss($event)"></button>
+</div>
+<div
+  *ngIf="roleDetail.id > 0 && !isView"
+  style="background-color: #d9eaf5; color: #004671; display: flex; align-items: center; height: 30px"
+>
+  <span style="padding-left: 20px">
+    <i class="fa fa-exclamation-circle"></i>
+  </span>
+  <div style="padding-left: 10px">Mọi chỉnh sửa sẽ được áp dụng cho tất cả nhân viên có vai trò này</div>
+</div>
+<div class="modal-body" id="modalBody">
+  <div>
+    <div class="input-text-custom">
+      <div class="input-container">
+        <div class="input-group">
+          <label class="title-info">Mã vai trò<span style="color: red; margin: 0">*</span></label>
+          <input
+            [disabled]="isView"
+            class="input-value form-control"
+            [(ngModel)]="roleDetail.code"
+            alphanumericOnly
+            [specialCharacter]="true"
+            placeholder="Ví dụ: Mã vai trò 1"
+          />
+        </div>
+        <div class="input-group">
+          <label class="title-info">Tên vai trò<span style="color: red; margin: 0">*</span></label>
+          <input
+            [disabled]="isView"
+            class="input-value form-control"
+            [(ngModel)]="roleDetail.name"
+            placeholder="Ví dụ: Tên vai trò 1"
+          />
+        </div>
+      </div>
+      <div class="input-container">
+        <div class="input-group">
+          <label class="title-info">Thông tin vai trò</label>
+          <textarea class="input-value form-control" [(ngModel)]="roleDetail.description" placeholder="Thông tin về vai trò"></textarea>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <app-tree-view
+              [tree]="children"
+              [listSelected]="listSelected"
+              [isView]="isView"
+              (sendListEvent)="receiveListSelected($event)"
+            ></app-tree-view>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="cancel-button-dialog" (click)="dismiss($event)">Huỷ</button>
+  <button
+    class="save-button-dialog"
+    (click)="create()"
+    [disabled]="disableButton"
+    [hidden]="isView"
+    *hasAuthorities="[Authority.ROLE_CREATE, Authority.ROLE_UPDATE]"
+  >
+    Lưu
+  </button>
+</div>

@@ -11,22 +11,27 @@
         <span class="d-flex justify-content-center">
           <img src="./assets/images/logo/favicon.ico" alt=""/>
         </span>
-        <div class="info">
+
+        <form autocomplete="on" class="info">
           <span class="title-login">ĐĂNG NHẬP TÀI KHOẢN</span>
           <div class="input-login">
             <input
+              type="text"
               class="form-control"
+              name="username"
+              required
               [(ngModel)]="loginRequest.username"
-              (keyup.enter)="login()"
               placeholder="Tài khoản"
             />
           </div>
+
           <div class="input-login position-relative">
             <input
               [type]="isHiddenPassword ? 'password' : 'text'"
               class="form-control"
+              name="password"
+              required
               [(ngModel)]="loginRequest.password"
-              (keyup.enter)="login()"
               placeholder="Mật khẩu"
             />
             <div *ngIf="!isHiddenPassword" class="display-password" (click)="toggleDisplayPassword()">
@@ -36,14 +41,16 @@
               <span [innerHTML]="ICON_EYE_CROSS | safeHtml"></span>
             </div>
           </div>
+
           <div class="remember">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="flexCheckChecked" [(ngModel)]="isRememberMe"/>
-              <label class="form-check-label" for="flexCheckChecked">Ghi nhớ tài khoản</label>
+              <input class="form-check-input" name="remember" type="checkbox" id="remember" [(ngModel)]="isRememberMe"/>
+              <label class="form-check-label" for="remember">Ghi nhớ tài khoản</label>
             </div>
           </div>
-          <button class="button-login" (click)="login()">Đăng nhập</button>
-        </div>
+
+          <button class="button-login" (click)="login()" type="submit">Đăng nhập</button>
+        </form>
       </div>
     </div>
   </div>
