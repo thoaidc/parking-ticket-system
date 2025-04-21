@@ -16,3 +16,9 @@ export const API_COMMON_PERMISSIONS_TREE = `api/common/roles/permissions`;
 
 // Upload images API constants
 export const API_COMMON_UPLOAD_IMAGES = `api/common/upload/images`;
+
+// Ticket management
+export const API_TICKETS_MANAGEMENT = `api/tickets`;
+export const API_TICKETS_SCAN_LOGS = `api/tickets/logs`;
+export const API_TICKETS_UPDATE_STATUS = `api/tickets/status`;
+export const API_TICKETS_WRITE_NFC = `api/tickets/write-nfc`;

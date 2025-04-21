@@ -9,13 +9,13 @@ export const MAIN_ROUTES: Routes = [
     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
     canActivate: [AuthGuardFn]
   },
-  // {
-  //   path: 'customers',
-  //   title: 'Quản lý khách hàng',
-  //   pathMatch: 'full',
-  //   loadComponent: () => import('./').then(m => m.),
-  //   canActivate: [AuthGuardFn]
-  // },
+  {
+    path: 'tickets',
+    title: 'Thẻ vé xe',
+    pathMatch: 'full',
+    loadComponent: () => import('./tickets/tickets.component').then(m => m.TicketsComponent),
+    canActivate: [AuthGuardFn]
+  },
   {
     path: 'admin',
     loadChildren: () => ADMIN_ROUTES,

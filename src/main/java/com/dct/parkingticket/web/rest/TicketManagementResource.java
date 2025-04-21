@@ -8,6 +8,7 @@ import com.dct.parkingticket.service.TicketManagementService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,7 +27,7 @@ public class TicketManagementResource {
     }
 
     @GetMapping
-    public BaseResponseDTO getAllTicketsWithPaging(@RequestBody BaseRequestDTO requestDTO) {
+    public BaseResponseDTO getAllTicketsWithPaging(@ModelAttribute BaseRequestDTO requestDTO) {
         return ticketManagementService.getAllTicketsWithPaging(requestDTO);
     }
 
@@ -52,7 +53,7 @@ public class TicketManagementResource {
     }
 
     @GetMapping("/logs")
-    public BaseResponseDTO getAllTicketScanLogsWithPaging(@RequestBody BaseRequestDTO requestDTO) {
+    public BaseResponseDTO getAllTicketScanLogsWithPaging(@ModelAttribute BaseRequestDTO requestDTO) {
         return ticketManagementService.getAllScanLogsWithPaging(requestDTO);
     }
 }

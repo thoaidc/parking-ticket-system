@@ -3,13 +3,12 @@ import {
   ICON_DASHBOARD,
   ICON_ADMIN_MANAGEMENT,
   ICON_CHART,
-  ICON_CUSTOMER,
   ICON_HISTORY_LOG,
   ICON_OTP,
   ICON_SYSTEM,
   ICON_USER_PERMISSION,
   ICON_LIST,
-  ICON_USER,
+  ICON_USER, ICON_CUSTOMER_CARD,
 } from '../../../shared/utils/icon';
 import {
   SIDEBAR_ADMIN_AUTHORIZATION_ACCOUNTS_MANAGEMENT_TITLE,
@@ -18,11 +17,11 @@ import {
   SIDEBAR_CLASS_DROPDOWN,
   SIDEBAR_CLASS_DROPDOWN_ITEM,
   SIDEBAR_CONFIGS_TITLE,
-  SIDEBAR_CUSTOMERS_TITLE,
   SIDEBAR_HOME_TITLE,
   SIDEBAR_REPORTS_TITLE,
   SIDEBAR_SYSTEM_LOGGING_MANAGEMENT_TITLE,
-  SIDEBAR_SYSTEM_MANAGEMENT_TITLE
+  SIDEBAR_SYSTEM_MANAGEMENT_TITLE,
+  SIDEBAR_TICKETS_MANAGEMENT_TITLE
 } from '../../../constants/sidebar.constant';
 import {Authorities} from '../../../constants/authorities.constants';
 import {SidebarNavItem} from '../../../core/models/sidebar.model';
@@ -63,12 +62,12 @@ export const SIDEBAR_ROUTES: SidebarNavItem[] = [
     ],
   },
   {
-    path: '/customers',
-    title: SIDEBAR_CUSTOMERS_TITLE,
-    icon: ICON_CUSTOMER,
+    path: '/tickets',
+    title: SIDEBAR_TICKETS_MANAGEMENT_TITLE,
+    icon: ICON_CUSTOMER_CARD,
     class: SIDEBAR_CLASS_DROPDOWN_ITEM,
     isExternalLink: false,
-    permission: Authorities.CUSTOMER,
+    permission: [],
   },
   {
     path: '/report',

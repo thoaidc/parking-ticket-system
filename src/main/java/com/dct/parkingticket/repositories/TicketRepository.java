@@ -19,10 +19,22 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 
     boolean existsByUid(String uid);
 
-    @Query(value = "SELECT t.id, t.status, t.uid FROM ticket t WHERE status <> 'DELETED'", nativeQuery = true)
+    @Query(
+        value = """
+            SELECT t.id, t.status, t.uid, t.created_by as createdBy, t.created_date as createdDate
+            FROM ticket t WHERE status <> 'DELETED'
+        """,
+        nativeQuery = true
+    )
     Page<ITicketDTO> findAllWithPaging(Pageable pageable);
 
-    @Query(value = "SELECT t.id, t.status, t.uid FROM ticket t WHERE status <> 'DELETED' LIMIT 20", nativeQuery = true)
+    @Query(
+        value = """
+            SELECT t.id, t.status, t.uid, t.created_by as createdBy, t.created_date as createdDate
+            FROM ticket t WHERE status <> 'DELETED' LIMIT 20
+        """,
+        nativeQuery = true
+    )
     List<ITicketDTO> findAllNonPaging();
 
     @Modifying
