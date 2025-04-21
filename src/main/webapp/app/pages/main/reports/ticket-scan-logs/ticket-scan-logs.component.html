@@ -1,0 +1,95 @@
+<label class="title-feature">Nhật ký sử dụng thẻ</label>
+<div class="field-search">
+  <div class="search-citeria">
+    <app-date-filter
+      [class]="periods == 8 ? 'col-9' : 'col-3'"
+      (timeChange)="onTimeChange($event)"
+      [periods]="periods"
+      [clearable]="false"
+    >
+    </app-date-filter>
+
+    <div class="item-search">
+      <span>Kết quả quét</span>
+      <div class="select-search-custom">
+        <ng-select
+          [items]="Object.values(TicketScanLogResultType)"
+          bindLabel="label"
+          bindValue="value"
+          [(ngModel)]="logsFilter.result"
+          placeholder="Kết quả quét"
+          (ngModelChange)="onSearch()"
+        ></ng-select>
+      </div>
+    </div>
+
+    <div class="item-search">
+      <span>Hành động quét</span>
+      <div class="select-search-custom">
+        <ng-select
+          [items]="Object.values(TicketScanLogType)"
+          bindLabel="label"
+          bindValue="value"
+          [(ngModel)]="logsFilter.type"
+          placeholder="Hành động quét"
+          (ngModelChange)="onSearch()"
+        ></ng-select>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-btn-search">
+    <button class="cancel-button-dialog" (click)="onReload()" [disabled]="isLoading">
+      <span [innerHTML]="ICON_RELOAD | safeHtml"></span>Đặt lại
+    </button>
+    <button class="save-button-dialog ms-3" (click)="onSearch()" [disabled]="isLoading">
+      <span [innerHTML]="ICON_SEARCH | safeHtml"></span>Tìm kiếm
+    </button>
+  </div>
+</div>
+
+<div class="table-responsive" *hasAuthorities="Authorities.REPORT">
+  <table class="table editing-table">
+    <thead>
+      <tr class="table-custom-header">
+        <th>STT</th>
+        <th>UID thẻ</th>
+        <th>Hành động quét</th>
+        <th>Kết quả quét</th>
+        <th>Thời gian quét</th>
+        <th>Thông báo lỗi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let log of ticketScanLogs; index as i">
+        <tr [ngClass]="{ 'odd-row': i % 2 === 1, 'even-row': i % 2 === 0 }" class="table-custom-body">
+          <td class="text-center">{{ i + 1 + (logsFilter.page - 1) * logsFilter.size }}</td>
+          <td class="text-center">{{ log.uid }}</td>
+          <td class="text-center">{{ log.type }}</td>
+          <td class="text-center" [class]="log.result === TicketScanLogResultType.VALID ? 'success-color' : 'danger-color'">
+            <span *ngIf="log.result === TicketScanLogResultType.VALID">Hợp lệ</span>
+            <span *ngIf="log.result === TicketScanLogResultType.ERROR">Không hợp lệ</span>
+          </td>
+          <td class="text-center">{{ log.scanTime | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <td class="text-center">{{ log.message }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<div class="from-pagination">
+  <div class="total">
+    <span class="label-total">Tổng: {{ totalItems | number }}</span>
+    <ng-select [items]="PAGINATION_PAGE_SIZE" [(ngModel)]="logsFilter.size" (ngModelChange)="getTicketScanLogs()"></ng-select>
+  </div>
+  <ngb-pagination
+    class="pagination"
+    [collectionSize]="totalItems"
+    [pageSize]="logsFilter.size"
+    [page]="logsFilter.page"
+    [directionLinks]="true"
+    [maxSize]="5"
+    (pageChange)="loadMore($event)"
+  ></ngb-pagination>
+</div>

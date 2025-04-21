@@ -2,15 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {ToastrService} from 'ngx-toastr';
 import {NgFor, NgIf} from '@angular/common';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {RolesService} from '../../../../core/services/roles.service';
-import {Authorities} from '../../../../constants/authorities.constants';
-import {HasAuthorityDirective} from '../../../../shared/directives/has-authority.directive';
+import {RolesService} from '../../../../../core/services/roles.service';
+import {Authorities} from '../../../../../constants/authorities.constants';
+import {HasAuthorityDirective} from '../../../../../shared/directives/has-authority.directive';
 import {FormsModule} from '@angular/forms';
 import {TreeViewComponent} from '../tree-view/tree-view.component';
-import {AlphanumericOnlyDirective} from '../../../../shared/directives/alphanumeric-only.directive';
-import {CreateRoleRequest, RoleDetail, TreeViewItem, UpdateRoleRequest} from '../../../../core/models/role.model';
-import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
-import {ICON_ATTENTION} from '../../../../shared/utils/icon';
+import {AlphanumericOnlyDirective} from '../../../../../shared/directives/alphanumeric-only.directive';
+import {CreateRoleRequest, RoleDetail, TreeViewItem, UpdateRoleRequest} from '../../../../../core/models/role.model';
+import {SafeHtmlPipe} from '../../../../../shared/pipes/safe-html.pipe';
+import {ICON_ATTENTION} from '../../../../../shared/utils/icon';
 
 @Component({
   selector: 'app-create-roles',

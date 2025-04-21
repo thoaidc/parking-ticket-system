@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {Location, NgIf} from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import {UtilsService} from '../../../../shared/utils/utils.service';
-import {AccountsService} from '../../../../core/services/accounts.service';
-import {RolesService} from '../../../../core/services/roles.service';
-import {ICON_EYE, ICON_EYE_CROSS} from '../../../../shared/utils/icon';
-import {Authorities} from '../../../../constants/authorities.constants';
-import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
-import {HasAuthorityDirective} from '../../../../shared/directives/has-authority.directive';
-import {AlphanumericOnlyDirective} from '../../../../shared/directives/alphanumeric-only.directive';
+import {UtilsService} from '../../../../../shared/utils/utils.service';
+import {AccountsService} from '../../../../../core/services/accounts.service';
+import {RolesService} from '../../../../../core/services/roles.service';
+import {ICON_EYE, ICON_EYE_CROSS} from '../../../../../shared/utils/icon';
+import {Authorities} from '../../../../../constants/authorities.constants';
+import {SafeHtmlPipe} from '../../../../../shared/pipes/safe-html.pipe';
+import {HasAuthorityDirective} from '../../../../../shared/directives/has-authority.directive';
+import {AlphanumericOnlyDirective} from '../../../../../shared/directives/alphanumeric-only.directive';
 import {FormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {
@@ -18,8 +18,8 @@ import {
   Authority,
   CreateAccountRequest,
   UpdateAccountRequest
-} from '../../../../core/models/account.model';
-import {Role, RolesFilter} from '../../../../core/models/role.model';
+} from '../../../../../core/models/account.model';
+import {Role, RolesFilter} from '../../../../../core/models/role.model';
 
 @Component({
   selector: 'app-modal-account-info',

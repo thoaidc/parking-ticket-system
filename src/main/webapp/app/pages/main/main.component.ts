@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {NgClass, NgIf} from '@angular/common';
 import {NgxLoadingBar} from '@ngx-loading-bar/core';
-import {SidebarComponent} from './sidebar/sidebar.component';
-import {NavbarComponent} from './navbar/navbar.component';
+import {SidebarComponent} from './layouts/sidebar/sidebar.component';
+import {NavbarComponent} from './layouts/navbar/navbar.component';
 import {AuthService} from '../../core/services/auth.service';
 
 @Component({

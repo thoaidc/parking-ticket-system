@@ -20,6 +20,11 @@ export const MAIN_ROUTES: Routes = [
     path: 'admin',
     loadChildren: () => ADMIN_ROUTES,
     canActivate: [AuthGuardFn]
+  },
+  {
+    path: 'reports',
+    loadChildren: () => REPORT_ROUTES,
+    canActivate: [AuthGuardFn]
   }
 ];
 
@@ -28,35 +33,35 @@ export const ADMIN_ROUTES: Routes = [
     path: 'accounts',
     title: 'Quản lý tài khoản',
     pathMatch: 'full',
-    loadComponent: () => import('./accounts/accounts.component').then(m => m.AccountsComponent),
+    loadComponent: () => import('./auth/accounts/accounts.component').then(m => m.AccountsComponent),
     canActivate: [AuthGuardFn]
   },
   {
     path: 'roles',
     title: 'Quản lý vai trò',
     pathMatch: 'full',
-    loadComponent: () => import('./roles/roles.component').then(m => m.RolesComponent),
+    loadComponent: () => import('./auth/roles/roles.component').then(m => m.RolesComponent),
     canActivate: [AuthGuardFn]
   },
 ];
 
-// export const REPORT_ROUTES: Routes = [
-//   {
-//     path: '',
-//     title: 'Trang chủ',
-//     pathMatch: 'full',
-//     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
-//     canActivate: [AuthGuardFn]
-//   },
-//   {
-//     path: '',
-//     title: 'Trang chủ',
-//     pathMatch: 'full',
-//     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
-//     canActivate: [AuthGuardFn]
-//   },
-// ];
-//
+export const REPORT_ROUTES: Routes = [
+  {
+    path: 'ticket-scan-logs',
+    title: 'Nhật ký sử dụng thẻ',
+    pathMatch: 'full',
+    loadComponent: () => import('./reports/ticket-scan-logs/ticket-scan-logs.component').then(m => m.TicketScanLogsComponent),
+    canActivate: [AuthGuardFn]
+  },
+  // {
+  //   path: 'customers',
+  //   title: 'Thống kê khách hàng đăng ký',
+  //   pathMatch: 'full',
+  //   loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
+  //   canActivate: [AuthGuardFn]
+  // }
+];
+
 // export const SYSTEM_MANAGEMENT_ROUTES: Routes = [
 //   {
 //     path: '',

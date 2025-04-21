@@ -8,11 +8,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
-import {ICON_CLOSE_SIDEBAR, ICON_EXPAND_SIDEBAR} from '../../../shared/utils/icon';
-import {SafeHtmlPipe} from '../../../shared/pipes/safe-html.pipe';
+import {ICON_CLOSE_SIDEBAR, ICON_EXPAND_SIDEBAR} from '../../../../shared/utils/icon';
+import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
 import {NgClass, NgFor, NgIf} from '@angular/common';
-import {HasAuthorityDirective} from '../../../shared/directives/has-authority.directive';
-import {slideUp} from '../../../shared/composables/slideCommonStyles';
+import {HasAuthorityDirective} from '../../../../shared/directives/has-authority.directive';
+import {slideUp} from '../../../../shared/composables/slideCommonStyles';
 import {SIDEBAR_ROUTES} from './sidebar.route';
 
 @Component({

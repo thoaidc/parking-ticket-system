@@ -1,10 +1,10 @@
 import {Component, Input} from '@angular/core';
-import {RolesService} from '../../../../core/services/roles.service';
-import {ICON_CARET_DOWN, ICON_CARET_RIGHT} from '../../../../shared/utils/icon';
-import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
+import {RolesService} from '../../../../../core/services/roles.service';
+import {ICON_CARET_DOWN, ICON_CARET_RIGHT} from '../../../../../shared/utils/icon';
+import {SafeHtmlPipe} from '../../../../../shared/pipes/safe-html.pipe';
 import {NgClass, NgFor, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {TreeViewItem} from '../../../../core/models/role.model';
+import {TreeViewItem} from '../../../../../core/models/role.model';
 
 @Component({
   selector: 'app-tree-view-item',

@@ -9,7 +9,7 @@ import {
   ICON_USER_PERMISSION,
   ICON_LIST,
   ICON_USER, ICON_CUSTOMER_CARD,
-} from '../../../shared/utils/icon';
+} from '../../../../shared/utils/icon';
 import {
   SIDEBAR_ADMIN_AUTHORIZATION_ACCOUNTS_MANAGEMENT_TITLE,
   SIDEBAR_ADMIN_AUTHORIZATION_MANAGEMENT_TITLE,
@@ -17,14 +17,14 @@ import {
   SIDEBAR_CLASS_DROPDOWN,
   SIDEBAR_CLASS_DROPDOWN_ITEM,
   SIDEBAR_CONFIGS_TITLE,
-  SIDEBAR_HOME_TITLE,
+  SIDEBAR_HOME_TITLE, SIDEBAR_REPORTS_CUSTOMERS_TITLE, SIDEBAR_REPORTS_TICKET_SCAN_LOGS_TITLE,
   SIDEBAR_REPORTS_TITLE,
   SIDEBAR_SYSTEM_LOGGING_MANAGEMENT_TITLE,
   SIDEBAR_SYSTEM_MANAGEMENT_TITLE,
   SIDEBAR_TICKETS_MANAGEMENT_TITLE
-} from '../../../constants/sidebar.constant';
-import {Authorities} from '../../../constants/authorities.constants';
-import {SidebarNavItem} from '../../../core/models/sidebar.model';
+} from '../../../../constants/sidebar.constant';
+import {Authorities} from '../../../../constants/authorities.constants';
+import {SidebarNavItem} from '../../../../core/models/sidebar.model';
 
 export const SIDEBAR_ROUTES: SidebarNavItem[] = [
   {
@@ -70,7 +70,7 @@ export const SIDEBAR_ROUTES: SidebarNavItem[] = [
     permission: [],
   },
   {
-    path: '/report',
+    path: '/reports',
     title: SIDEBAR_REPORTS_TITLE,
     icon: ICON_LIST,
     class: SIDEBAR_CLASS_DROPDOWN,
@@ -78,16 +78,16 @@ export const SIDEBAR_ROUTES: SidebarNavItem[] = [
     permission: Authorities.REPORT,
     submenu: [
       {
-        path: '/register-customer-count',
-        title: 'Tổng hợp số lượng KH đăng ký',
+        path: '/ticket-scan-logs',
+        title: SIDEBAR_REPORTS_TICKET_SCAN_LOGS_TITLE,
         icon: ICON_CHART,
         class: SIDEBAR_CLASS_DROPDOWN_ITEM,
         isExternalLink: false,
         permission: Authorities.REPORT
       },
       {
-        path: '/otp-customer-count',
-        title: 'Tổng hợp số lượt sử dụng vé',
+        path: '/customers',
+        title: SIDEBAR_REPORTS_CUSTOMERS_TITLE,
         icon: ICON_OTP,
         class: SIDEBAR_CLASS_DROPDOWN_ITEM,
         isExternalLink: false,

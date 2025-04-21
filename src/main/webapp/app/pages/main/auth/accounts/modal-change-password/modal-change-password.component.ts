@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {Location, NgIf} from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import {AccountsService} from '../../../../core/services/accounts.service';
-import {UtilsService} from '../../../../shared/utils/utils.service';
-import {ICON_EYE, ICON_EYE_CROSS} from '../../../../shared/utils/icon';
-import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
+import {AccountsService} from '../../../../../core/services/accounts.service';
+import {UtilsService} from '../../../../../shared/utils/utils.service';
+import {ICON_EYE, ICON_EYE_CROSS} from '../../../../../shared/utils/icon';
+import {SafeHtmlPipe} from '../../../../../shared/pipes/safe-html.pipe';
 import {FormsModule} from '@angular/forms';
-import {AlphanumericOnlyDirective} from '../../../../shared/directives/alphanumeric-only.directive';
-import {UpdateAccountPasswordRequest} from '../../../../core/models/account.model';
+import {AlphanumericOnlyDirective} from '../../../../../shared/directives/alphanumeric-only.directive';
+import {UpdateAccountPasswordRequest} from '../../../../../core/models/account.model';
 
 @Component({
   selector: 'app-modal-change-password',

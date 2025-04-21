@@ -2,18 +2,18 @@ import {Component, OnInit} from '@angular/core';
 import {ToastrService} from 'ngx-toastr';
 import {NgbModal, NgbModalRef, NgbPagination, NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import {Subscription} from 'rxjs';
-import {RolesService} from '../../../core/services/roles.service';
+import {RolesService} from '../../../../core/services/roles.service';
 import {CreateRolesComponent} from './create-roles/create-roles.component';
-import {ICON_COPY, ICON_DELETE, ICON_PLUS, ICON_SEARCH, ICON_UPDATE} from '../../../shared/utils/icon';
-import {Authorities} from '../../../constants/authorities.constants';
-import {ModalConfirmDialogComponent} from '../../../shared/modals/modal-confirm-dialog/modal-confirm-dialog.component';
-import {SafeHtmlPipe} from '../../../shared/pipes/safe-html.pipe';
-import {HasAuthorityDirective} from '../../../shared/directives/has-authority.directive';
+import {ICON_COPY, ICON_DELETE, ICON_PLUS, ICON_SEARCH, ICON_UPDATE} from '../../../../shared/utils/icon';
+import {Authorities} from '../../../../constants/authorities.constants';
+import {ModalConfirmDialogComponent} from '../../../../shared/modals/modal-confirm-dialog/modal-confirm-dialog.component';
+import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
+import {HasAuthorityDirective} from '../../../../shared/directives/has-authority.directive';
 import {FormsModule} from '@angular/forms';
 import {DecimalPipe, NgClass, NgFor, NgIf} from '@angular/common';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {Role, RolesFilter, TreeViewItem} from '../../../core/models/role.model';
-import {PAGINATION_PAGE_SIZE} from '../../../constants/common.constants';
+import {Role, RolesFilter, TreeViewItem} from '../../../../core/models/role.model';
+import {PAGINATION_PAGE_SIZE} from '../../../../constants/common.constants';
 
 @Component({
   selector: 'app-roles',
@@ -42,7 +42,7 @@ export class RolesComponent implements OnInit {
     page: 1,
     size: 10,
   };
-  idRole: any = 0;
+
   user: any;
   isLoading = false;
 

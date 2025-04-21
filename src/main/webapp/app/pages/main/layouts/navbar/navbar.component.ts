@@ -1,8 +1,8 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
-import {AuthService} from '../../../core/services/auth.service';
-import {SafeHtmlPipe} from '../../../shared/pipes/safe-html.pipe';
+import {AuthService} from '../../../../core/services/auth.service';
+import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
 import {NgIf} from '@angular/common';
-import {ICON_ENGLISH, ICON_LOGOUT, ICON_NOTIFICATION, ICON_VIETNAMESE} from '../../../shared/utils/icon';
+import {ICON_ENGLISH, ICON_LOGOUT, ICON_NOTIFICATION, ICON_VIETNAMESE} from '../../../../shared/utils/icon';
 
 @Component({
   selector: 'app-navbar',

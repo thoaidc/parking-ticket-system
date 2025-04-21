@@ -43,7 +43,6 @@ export interface SearchTicketRequest extends Pagination {
 }
 
 export interface SearchTicketScanLogRequest extends Pagination {
-  status?: string;
   fromDate?: string;
   toDate?: string;
   type?: string;
@@ -58,7 +57,6 @@ export interface TicketFilter extends Pagination {
 }
 
 export interface TicketScanLogFilter extends Pagination {
-  status?: string;
   fromDate?: Dayjs;
   toDate?: Dayjs;
   type?: string;

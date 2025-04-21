@@ -9,13 +9,13 @@ import {
   ACCOUNT_STATUS,
   AccountStatus,
   UpdateAccountStatusRequest
-} from '../../../core/models/account.model';
-import {AccountsFilter, SearchAccountRequest} from '../../../core/models/account.model';
-import {AccountsService} from '../../../core/services/accounts.service';
-import {UtilsService} from '../../../shared/utils/utils.service';
-import {AuthService} from '../../../core/services/auth.service';
-import {Authorities} from '../../../constants/authorities.constants';
-import {ModalConfirmDialogComponent} from '../../../shared/modals/modal-confirm-dialog/modal-confirm-dialog.component';
+} from '../../../../core/models/account.model';
+import {AccountsFilter, SearchAccountRequest} from '../../../../core/models/account.model';
+import {AccountsService} from '../../../../core/services/accounts.service';
+import {UtilsService} from '../../../../shared/utils/utils.service';
+import {AuthService} from '../../../../core/services/auth.service';
+import {Authorities} from '../../../../constants/authorities.constants';
+import {ModalConfirmDialogComponent} from '../../../../shared/modals/modal-confirm-dialog/modal-confirm-dialog.component';
 import {
   ICON_DELETE,
   ICON_KEY,
@@ -25,16 +25,16 @@ import {
   ICON_SEARCH,
   ICON_STOP,
   ICON_UPDATE
-} from '../../../shared/utils/icon';
-import {SafeHtmlPipe} from '../../../shared/pipes/safe-html.pipe';
-import {HasAuthorityDirective} from '../../../shared/directives/has-authority.directive';
+} from '../../../../shared/utils/icon';
+import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
+import {HasAuthorityDirective} from '../../../../shared/directives/has-authority.directive';
 import {DatePipe, DecimalPipe, NgClass, NgFor, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {DateFilterComponent} from '../../../shared/components/date-filter/date-filter.component';
-import {PAGINATION_PAGE_SIZE} from '../../../constants/common.constants';
-import {LOCAL_USER_AUTHORITIES_KEY} from '../../../constants/local-storage.constants';
-import {BaseResponse} from '../../../core/models/response.model';
+import {DateFilterComponent} from '../../../../shared/components/date-filter/date-filter.component';
+import {PAGINATION_PAGE_SIZE} from '../../../../constants/common.constants';
+import {LOCAL_USER_AUTHORITIES_KEY} from '../../../../constants/local-storage.constants';
+import {BaseResponse} from '../../../../core/models/response.model';
 
 @Component({
   selector: 'app-accounts-management',

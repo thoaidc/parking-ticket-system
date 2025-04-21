@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
-import {RolesService} from '../../../../core/services/roles.service';
+import {RolesService} from '../../../../../core/services/roles.service';
 import {TreeViewItemComponent} from '../tree-view-item/tree-view-item.component';
-import {TreeViewItem} from '../../../../core/models/role.model';
+import {TreeViewItem} from '../../../../../core/models/role.model';
 
 @Component({
   selector: 'app-tree-view',
