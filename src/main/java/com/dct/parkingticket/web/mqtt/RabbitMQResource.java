@@ -1,26 +1,37 @@
 package com.dct.parkingticket.web.mqtt;
 
-import com.dct.parkingticket.constants.RabbitMQConstants;
+import com.dct.parkingticket.common.JsonUtils;
+import com.dct.parkingticket.dto.esp32.Message;
 import com.dct.parkingticket.dto.response.BaseResponseDTO;
-import com.dct.parkingticket.service.mqtt.RabbitMQProducer;
+import com.dct.parkingticket.service.mqtt.MqttProducer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/common/mqtt")
+@RequestMapping("/api/p/common/mqtt")
 public class RabbitMQResource {
 
-    private final RabbitMQProducer rabbitMQProducer;
+    private static final Logger log = LoggerFactory.getLogger(RabbitMQResource.class);
+    private final MqttProducer mqttService;
 
-    public RabbitMQResource(RabbitMQProducer rabbitMQProducer) {
-        this.rabbitMQProducer = rabbitMQProducer;
+    public RabbitMQResource(MqttProducer mqttService) {
+        this.mqttService = mqttService;
     }
 
     @PostMapping
-    public BaseResponseDTO sendMessage() {
-        rabbitMQProducer.sendMessage(RabbitMQConstants.RoutingKey.NOTIFICATION, "Hello");
+    public BaseResponseDTO sendMessage(@RequestParam("action") int action, @RequestParam("uid") String uid) {
+        Message message = new Message();
+        message.setAction(action);
+        message.setMessage(uid);
+
+        mqttService.sendToEsp32(JsonUtils.toJsonString(message));
+        log.info("Send to ESP32: " + message.getMessage());
+
         return BaseResponseDTO.builder().ok();
     }
 }

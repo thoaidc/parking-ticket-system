@@ -53,6 +53,7 @@
     <logger name="com.zaxxer.hikari.pool.PoolBase" level="INFO" additivity="false">
         <appender-ref ref="CONNECTION_POOL_FILE"/>
     </logger>
+    <logger name="org.eclipse.paho.client.mqttv3" level="INFO"/>
     <logger name="ch.qos.logback" level="ERROR"/>
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>

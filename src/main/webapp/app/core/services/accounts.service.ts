@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import {catchError, map, Observable, of} from 'rxjs';
 import {
   API_COMMON_ACCOUNTS,
-  API_COMMON_ACCOUNTS_UPDATE_STATUS
+  API_COMMON_ACCOUNTS_UPDATE_STATUS,
+  API_COMMON_CHANGE_PASSWORD
 } from '../../constants/api.constants';
 import {ApplicationConfigService} from '../config/application-config.service';
 import {createSearchRequestParams} from '../utils/request.util';
@@ -14,7 +15,8 @@ import {
   CreateAccountRequest,
   UpdateAccountRequest,
   SearchAccountRequest,
-  UpdateAccountStatusRequest
+  UpdateAccountStatusRequest,
+  UpdateAccountPasswordRequest
 } from '../models/account.model';
 
 @Injectable({
@@ -29,6 +31,7 @@ export class AccountsService {
 
   private accountsUrl = this.applicationConfigService.getEndpointFor(API_COMMON_ACCOUNTS);
   private accountStatusUrl = this.applicationConfigService.getEndpointFor(API_COMMON_ACCOUNTS_UPDATE_STATUS);
+  private accountPasswordUrl = this.applicationConfigService.getEndpointFor(API_COMMON_CHANGE_PASSWORD);
 
   getAccountsWithPaging(searchRequest: SearchAccountRequest): Observable<BaseResponse<Account[]>> {
     const params = createSearchRequestParams(searchRequest);
@@ -58,6 +61,10 @@ export class AccountsService {
 
   updateAccountStatus(updateAccountStatusRequest: UpdateAccountStatusRequest): Observable<BaseResponse<any>> {
     return this.http.put<BaseResponse<any>>(`${this.accountStatusUrl}`, updateAccountStatusRequest);
+  }
+
+  updateAccountPassword(updateAccountPasswordRequest: UpdateAccountPasswordRequest): Observable<BaseResponse<any>> {
+    return this.http.put<BaseResponse<any>>(`${this.accountPasswordUrl}`, updateAccountPasswordRequest);
   }
 
   deleteAccount(accountId: number): Observable<BaseResponse<any>> {

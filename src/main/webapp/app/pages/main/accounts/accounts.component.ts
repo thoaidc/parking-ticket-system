@@ -34,6 +34,7 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {DateFilterComponent} from '../../../shared/components/date-filter/date-filter.component';
 import {PAGINATION_PAGE_SIZE} from '../../../constants/common.constants';
 import {LOCAL_USER_AUTHORITIES_KEY} from '../../../constants/local-storage.constants';
+import {BaseResponse} from '../../../core/models/response.model';
 
 @Component({
   selector: 'app-accounts-management',
@@ -147,7 +148,7 @@ export class AccountsComponent implements OnInit {
     });
   }
 
-  onAccountDetail(id?: number) {
+  onAccountDetail(accountId?: number) {
     let roles: string[] = JSON.parse(localStorage.getItem(LOCAL_USER_AUTHORITIES_KEY) || '') as string[];
 
     if (roles && (!roles.includes(Authorities.ACCOUNT_VIEW) || !roles.includes(Authorities.ROLE_VIEW))) {
@@ -156,11 +157,11 @@ export class AccountsComponent implements OnInit {
     }
 
     this.modalRef = this.modalService.open(ModalAccountInfoComponent, { size: 'lg', backdrop: 'static' });
-    this.modalRef.componentInstance.id = id || 0;
+    this.modalRef.componentInstance.accountId = accountId || 0;
     this.modalRef.closed.subscribe(() => this.getAccounts());
   }
 
-  updateUserStatus(id: any, status: any) {
+  updateUserStatus(accountId: any, status: any) {
     this.modalRef = this.modalService.open(ModalConfirmDialogComponent, { backdrop: 'static' });
 
     switch (status) {
@@ -179,7 +180,7 @@ export class AccountsComponent implements OnInit {
 
     this.modalRef.closed.subscribe((isConfirmed?: boolean) => {
       if (isConfirmed) {
-        const request: UpdateAccountStatusRequest = { id: id, status: status };
+        const request: UpdateAccountStatusRequest = { id: accountId, status: status };
 
         this.accountService.updateAccountStatus(request).subscribe(response => {
           if (response && response.status) {
@@ -195,21 +196,27 @@ export class AccountsComponent implements OnInit {
 
   changePassword(account: any) {
     this.modalRef = this.modalService.open(ModalChangePasswordComponent, {backdrop: 'static'});
-    this.modalRef.componentInstance.id = account.id;
+    this.modalRef.componentInstance.accountId = account.id;
 
-    this.modalRef.closed.subscribe(() => {
-      if (account.username.toLowerCase() === this.userName.toLowerCase()) {
-        this.toast.success('Đổi mật khẩu thành công, vui lòng đăng nhập lại', 'Thông báo');
-        this.authService.logout();
-      } else {
-        this.toast.success('Đổi mật khẩu thành công', 'Thông báo');
-        this.getAccounts();
+    this.modalRef.closed.subscribe((response?: BaseResponse<any>) => {
+      if (response && response.status) {
+        if (account.username.toLowerCase() === this.userName.toLowerCase()) {
+          this.toast.success('Đổi mật khẩu thành công, vui lòng đăng nhập lại', 'Thông báo');
+          this.authService.logout();
+        } else {
+          this.toast.success('Đổi mật khẩu thành công', 'Thông báo');
+          this.getAccounts();
+        }
+      }
+
+      if (response && !response.status) {
+        this.toast.error('Cập nhật thất bại', 'Thông báo');
       }
     });
   }
 
-  deleteUser(id: any) {
-    if (!id) {
+  deleteUser(accountId: any) {
+    if (!accountId) {
       this.toast.success('Không tìm thấy thông tin tài khoản', 'Thông báo');
       return;
     }
@@ -220,7 +227,7 @@ export class AccountsComponent implements OnInit {
 
     this.modalRef.closed.subscribe((isConfirmed?: boolean) => {
       if (isConfirmed) {
-        this.accountService.deleteAccount(id).subscribe(response => {
+        this.accountService.deleteAccount(accountId).subscribe(response => {
           if (response.status) {
             this.toast.success('Xóa tài khoản thành công', 'Thông báo');
             this.getAccounts();

@@ -63,6 +63,18 @@ spring:
         name: notification.queue
         routing-key: notification.routingKey
 
+# MQTT Broker configuration
+mqtt:
+  broker:
+    url: tcp://${RABBIT_MQ_HOST}:1883
+    username: ${RABBIT_MQ_USERNAME}:${RABBIT_MQ_USERNAME}
+    password: ${RABBIT_MQ_PASSWORD}
+  client:
+    id: spring-server-1
+  topic:
+    send: esp32.client.queue
+    receive: esp32.server.queue
+
 server:
   servlet:
     session:

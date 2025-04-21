@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.util.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -19,6 +20,7 @@ import java.net.UnknownHostException;
 import java.util.Optional;
 
 @SpringBootApplication
+@EnableAsync
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableConfigurationProperties({ Hikari.class, Security.class })
 public class ParkingTicketApplication {

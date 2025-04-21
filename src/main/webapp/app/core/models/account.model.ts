@@ -87,7 +87,7 @@ export interface CreateAccountRequest {
   fullname?: string;
   address?: string;
   phone?: string;
-  roleIds: number[]
+  roleIds: number[];
 }
 
 export interface UpdateAccountRequest {
@@ -104,4 +104,10 @@ export interface UpdateAccountRequest {
 export interface UpdateAccountStatusRequest {
   id: number;
   status: string;
+}
+
+export interface UpdateAccountPasswordRequest {
+  id: number;
+  oldPassword: string;
+  newPassword: string;
 }

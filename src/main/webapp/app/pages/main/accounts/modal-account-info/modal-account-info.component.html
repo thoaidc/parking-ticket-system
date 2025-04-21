@@ -1,8 +1,9 @@
 <div class="modal-header">
-  <h5 class="modal-title">{{ id ? 'Cập nhật tài khoản' : 'Thêm mới tài khoản' }}</h5>
+  <h5 class="modal-title">{{ isOnlyView ? 'Chi tiết tài khoản' : (accountId ? 'Cập nhật tài khoản' : 'Thêm mới tài khoản') }}</h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="dismiss()"></button>
 </div>
-<div class="modal-body" *ngIf="accountDetail">
+
+<div class="modal-body">
   <div class="form-space-between flex-wrap">
     <div class="item-search w-50">
       <label for="username-login">Tên đăng nhập <span class="text-danger">*</span></label>
@@ -10,7 +11,7 @@
         <input
           id="username-login"
           class="form-control"
-          [(ngModel)]="accountDetail.username"
+          [(ngModel)]="accountData.username"
           type="text"
           placeholder="Tên đăng nhập"
           alphanumericOnly
@@ -18,19 +19,21 @@
         />
       </div>
     </div>
+
     <div class="item-search w-50">
       <label for="fullname">Họ và tên</label>
       <div class="input-text-custom">
-        <input id="fullname" class="form-control" [(ngModel)]="accountDetail.fullname" type="text" placeholder="Tên đầy đủ"/>
+        <input id="fullname" class="form-control" [(ngModel)]="accountData.fullname" type="text" placeholder="Tên đầy đủ"/>
       </div>
     </div>
+
     <div class="item-search w-50">
       <label for="email-login">Email <span class="text-danger">*</span></label>
       <div class="input-text-custom">
         <input
           id="email-login"
           class="form-control"
-          [(ngModel)]="accountDetail.email"
+          [(ngModel)]="accountData.email"
           type="email"
           placeholder="Email"
           autocomplete="off"
@@ -38,6 +41,7 @@
       </div>
     </div>
   </div>
+
   <form class="w-100 mb-3 p-2">
     <span>Vai trò <span class="text-danger">*</span></span>
     <div class="select-search-custom">
@@ -48,7 +52,7 @@
         [multiple]="true"
         [selectableGroup]="true"
         placeholder="Chọn vai trò"
-        [(ngModel)]="accountDetail.authorities"
+        [(ngModel)]="accountData.roles"
         [compareWith]="compareRoles"
         [closeOnSelect]="false"
         name="roleList"
@@ -56,26 +60,27 @@
       </ng-select>
     </div>
   </form>
+
   <div class="form-space-between">
-    <form class="item-search w-50" *ngIf="!id">
+    <form class="item-search w-50" *ngIf="!accountId">
       <label for="password-login">Mật khẩu <span class="text-danger">*</span></label>
-      <div class="input-text-custom" [class.input-password]="hide">
+      <div class="input-text-custom" [class.input-password]="hiddenPassword">
         <input
           id="password-login"
           class="form-control"
-          [(ngModel)]="accountDetail.password"
+          [(ngModel)]="accountData.password"
           type="text"
           placeholder="Mật khẩu"
           alphanumericOnly
-          [isPassword]="hide"
+          [isPassword]="hiddenPassword"
           [specialCharacter]="true"
           autocomplete="off"
           name="password"
         />
-        <div *ngIf="!hide" class="display-password" (click)="hide = !hide">
+        <div *ngIf="!hiddenPassword" class="display-password" (click)="hiddenPassword = !hiddenPassword">
           <span [innerHTML]="ICON_EYE | safeHtml"></span>
         </div>
-        <div *ngIf="hide" class="display-password" (click)="hide = !hide">
+        <div *ngIf="hiddenPassword" class="display-password" (click)="hiddenPassword = !hiddenPassword">
           <span [innerHTML]="ICON_EYE_CROSS | safeHtml"></span>
         </div>
       </div>
@@ -85,12 +90,15 @@
 
 <div class="modal-footer">
   <button class="cancel-button-dialog" (click)="dismiss()">Huỷ</button>
-  <button
-    class="save-button-dialog"
-    *hasAuthorities="[Authorities.ACCOUNT_UPDATE, Authorities.ACCOUNT]"
-    (click)="onSave()"
-    [disabled]="isLoading"
-  >
-    Lưu
-  </button>
+
+  <ng-container *ngIf="!isOnlyView">
+    <button
+      class="save-button-dialog"
+      *hasAuthorities="[Authorities.ACCOUNT_UPDATE, Authorities.ACCOUNT]"
+      (click)="onSave()"
+      [disabled]="isLoading"
+    >
+      Lưu
+    </button>
+  </ng-container>
 </div>

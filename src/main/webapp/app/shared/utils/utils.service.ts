@@ -235,7 +235,29 @@ export class UtilsService {
     const isValidPassword = password.length >= minLength && hasLowerCase && hasUpperCase && hasDigit && hasSpecialChar;
 
     if (!isValidPassword) {
-      this.toast.error('Mật khẩu phải bao gồm ít nhất 12 ký tự bao gồm chữ, số, ký tự in hoa và ký tự đặc biệt');
+      let errorMessage = 'Mật khẩu không hợp lệ.';
+
+      if (password.length < minLength) {
+        errorMessage += ' Cần ít nhất 8 ký tự.';
+      }
+
+      if (!hasLowerCase) {
+        errorMessage += ' Cần ít nhất một chữ cái thường.';
+      }
+
+      if (!hasUpperCase) {
+        errorMessage += ' Cần ít nhất một chữ cái hoa.';
+      }
+
+      if (!hasDigit) {
+        errorMessage += ' Cần ít nhất một số.';
+      }
+
+      if (!hasSpecialChar) {
+        errorMessage += ' Cần ít nhất một ký tự đặc biệt.';
+      }
+
+      this.toast.error(errorMessage);
     }
 
     return isValidPassword;

@@ -12,7 +12,13 @@ import {HasAuthorityDirective} from '../../../../shared/directives/has-authority
 import {AlphanumericOnlyDirective} from '../../../../shared/directives/alphanumeric-only.directive';
 import {FormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {AccountDetail, AccountStatus, Authority} from '../../../../core/models/account.model';
+import {
+  AccountDetail,
+  AccountStatus,
+  Authority,
+  CreateAccountRequest,
+  UpdateAccountRequest
+} from '../../../../core/models/account.model';
 import {Role, RolesFilter} from '../../../../core/models/role.model';
 
 @Component({
@@ -30,11 +36,15 @@ import {Role, RolesFilter} from '../../../../core/models/role.model';
   ]
 })
 export class ModalAccountInfoComponent implements OnInit {
-  id: number = 0;
+  accountId: number = 0;
   accountDetail: AccountDetail = { id: 0, username: '', email: '', status: AccountStatus.ACTIVE };
+
+  accountData = { username: '', fullname: '', email: '', password: '', phone: '', roles: [] }
+
   roles: Role[] = [];
   isLoading = false;
-  hide = true;
+  hiddenPassword = true;
+  isOnlyView: boolean = true;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -44,14 +54,12 @@ export class ModalAccountInfoComponent implements OnInit {
     private toast: ToastrService,
     private roleService: RolesService
   ) {
-    this.location.subscribe(() => {
-      this.activeModal.dismiss();
-    });
+    this.location.subscribe(() => this.activeModal.dismiss());
   }
 
   ngOnInit(): void {
-    if (this.id) {
-      this.accountsService.getAccountDetail(this.id).subscribe(response => {
+    if (this.accountId) {
+      this.accountsService.getAccountDetail(this.accountId).subscribe(response => {
         if (response) {
           this.accountDetail = response;
         }
@@ -64,10 +72,6 @@ export class ModalAccountInfoComponent implements OnInit {
   compareRoles = (a: Authority, b: Authority) => a && b && a.id === b.id;
 
   onSave() {
-    if (!this.accountDetail) {
-      return;
-    }
-
     if (!this.accountDetail.username) {
       this.toast.error('Tài khoản không được để trống', 'Thông báo');
       return;
@@ -78,7 +82,7 @@ export class ModalAccountInfoComponent implements OnInit {
       return;
     }
 
-    if (this.accountDetail.id && this.accountDetail.id > 0) {
+    if (this.accountDetail.id > 0) {
       if (!this.accountDetail.password) {
         this.toast.error('Mật khẩu không được để trống', 'Thông báo');
         return;
@@ -92,17 +96,33 @@ export class ModalAccountInfoComponent implements OnInit {
       return;
     }
 
-    // if (!this.id) {
-    //   this.accountsService.createAccount(this.accountDetail).subscribe(value => {
-    //     this.toast.success(value.message, 'Thông báo');
-    //     this.activeModal.close(value);
-    //   });
-    // } else {
-    //   this.accountsService.updateAccount(this.accountDetail).subscribe(value => {
-    //     this.toast.success(value.message, 'Thông báo');
-    //     this.activeModal.close(value);
-    //   });
-    // }
+    const updateAccountRequest: UpdateAccountRequest = {
+      id: this.accountDetail.id,
+      username: this.accountDetail.username,
+      phone: this.accountDetail.phone,
+      email: this.accountDetail.email,
+      status: this.accountDetail.status,
+      roleIds: this.accountDetail.authorities.map(authority => authority.id)
+    }
+
+    const createAccountRequest: CreateAccountRequest = {
+      username: this.accountDetail.username,
+      password: this.accountDetail.password || '',
+      email: this.accountDetail.email,
+      roleIds: [1]
+    }
+
+    if (!this.accountDetail.id) {
+      this.accountsService.createAccount(createAccountRequest).subscribe(value => {
+        this.toast.success(value.message, 'Thông báo');
+        this.activeModal.close(value);
+      });
+    } else {
+      this.accountsService.updateAccount(updateAccountRequest).subscribe(value => {
+        this.toast.success(value.message, 'Thông báo');
+        this.activeModal.close(value);
+      });
+    }
   }
 
   dismiss() {

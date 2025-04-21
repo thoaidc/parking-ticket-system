@@ -7,6 +7,7 @@ import com.dct.parkingticket.dto.auth.AccountDTO;
 import com.dct.parkingticket.dto.mapping.IAccountDTO;
 import com.dct.parkingticket.dto.mapping.IRoleDTO;
 import com.dct.parkingticket.dto.request.BaseRequestDTO;
+import com.dct.parkingticket.dto.request.ChangeAccountPasswordRequestDTO;
 import com.dct.parkingticket.dto.request.CreateAccountRequestDTO;
 import com.dct.parkingticket.dto.request.UpdateAccountRequestDTO;
 import com.dct.parkingticket.dto.request.UpdateAccountStatusRequestDTO;
@@ -166,6 +167,33 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public BaseResponseDTO updateAccountStatus(UpdateAccountStatusRequestDTO request) {
         accountRepository.updateAccountStatusById(request.getAccountId(), request.getStatus());
+        return BaseResponseDTO.builder().ok();
+    }
+
+    @Override
+    public BaseResponseDTO changePasswordForAdmin(ChangeAccountPasswordRequestDTO request) {
+        Optional<Account> accountOptional = accountRepository.findById(request.getId());
+
+        if (accountOptional.isEmpty()) {
+            throw new BaseBadRequestException(ENTITY_NAME, ExceptionConstants.ACCOUNT_NOT_EXISTED);
+        }
+
+        Account account = accountOptional.get();
+        String oldPassword = account.getPassword();
+        String oldPasswordConfirm = request.getOldPassword();
+        String newPassword = request.getNewPassword();
+
+        if (!passwordEncoder.matches(oldPasswordConfirm, oldPassword)) {
+            throw new BaseBadRequestException(ENTITY_NAME, ExceptionConstants.OLD_PASSWORD_INVALID);
+        }
+
+        if (Objects.equals(oldPasswordConfirm, newPassword)) {
+            throw new BaseBadRequestException(ENTITY_NAME, ExceptionConstants.NEW_PASSWORD_DUPLICATED);
+        }
+
+        account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+
         return BaseResponseDTO.builder().ok();
     }
 
