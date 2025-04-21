@@ -3,11 +3,12 @@ package com.dct.parkingticket.constants;
 public interface Esp32Constants {
 
     interface Action {
-        int TICKET_ACTIVE = 1;
-        int TICKET_LOCKED = 2;
-        int TICKET_EXPIRED = 3;
-        int TICKET_INVALID = 4;
-        int TICKET_NOT_FOUND = 5;
+        int WRITE_NFC = 1;
+        int READ_TICKET_ACTIVE = 2;
+        int READ_TICKET_LOCKED = 3;
+        int READ_TICKET_EXPIRED = 4;
+        int READ_TICKET_INVALID = 5;
+        int READ_TICKET_NOT_FOUND = 6;
     }
 
     interface TicketStatus {

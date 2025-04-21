@@ -53,7 +53,7 @@ public class TicketManagementServiceImpl implements TicketManagementService {
         Message message = new Message();
 
         if (ticketOptional.isEmpty()) {
-            message.setAction(Esp32Constants.Action.TICKET_NOT_FOUND);
+            message.setAction(Esp32Constants.Action.READ_TICKET_NOT_FOUND);
             message.setMessage(Esp32Constants.Response.TICKET_NOT_FOUND);
             saveTicketScanLog(uid, Esp32Constants.Response.TICKET_NOT_FOUND);
             mqttProducer.sendToEsp32(JsonUtils.toJsonString(message));
@@ -64,25 +64,25 @@ public class TicketManagementServiceImpl implements TicketManagementService {
 
         switch (ticket.getStatus()) {
             case Esp32Constants.TicketStatus.ACTIVE -> {
-                message.setAction(Esp32Constants.Action.TICKET_ACTIVE);
+                message.setAction(Esp32Constants.Action.READ_TICKET_ACTIVE);
                 message.setMessage(Esp32Constants.Response.TICKET_ACTIVE);
                 saveTicketScanLog(uid, null);
             }
 
             case Esp32Constants.TicketStatus.LOCKED -> {
-                message.setAction(Esp32Constants.Action.TICKET_LOCKED);
+                message.setAction(Esp32Constants.Action.READ_TICKET_LOCKED);
                 message.setMessage(Esp32Constants.Response.TICKET_LOCKED);
                 saveTicketScanLog(uid, Esp32Constants.Response.TICKET_LOCKED);
             }
 
             case Esp32Constants.TicketStatus.EXPIRED -> {
-                message.setAction(Esp32Constants.Action.TICKET_EXPIRED);
+                message.setAction(Esp32Constants.Action.READ_TICKET_EXPIRED);
                 message.setMessage(Esp32Constants.Response.TICKET_EXPIRED);
                 saveTicketScanLog(uid, Esp32Constants.Response.TICKET_EXPIRED);
             }
 
             default -> {
-                message.setAction(Esp32Constants.Action.TICKET_INVALID);
+                message.setAction(Esp32Constants.Action.READ_TICKET_INVALID);
                 message.setMessage(Esp32Constants.Response.TICKET_INVALID);
                 saveTicketScanLog(uid, Esp32Constants.Response.TICKET_INVALID);
             }
@@ -93,7 +93,10 @@ public class TicketManagementServiceImpl implements TicketManagementService {
 
     @Override
     public void writeUidToNFC(String uid) {
-
+        Message message = new Message();
+        message.setAction(Esp32Constants.Action.WRITE_NFC);
+        message.setMessage(uid);
+        mqttProducer.sendToEsp32(JsonUtils.toJsonString(message));
     }
 
     @Async

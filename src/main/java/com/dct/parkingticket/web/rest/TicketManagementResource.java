@@ -30,6 +30,12 @@ public class TicketManagementResource {
         return ticketManagementService.getAllTicketsWithPaging(requestDTO);
     }
 
+    @PostMapping("/write-nfc/{uid}")
+    public BaseResponseDTO writeUIDtoNFC(@PathVariable String uid) {
+        ticketManagementService.writeUidToNFC(uid);
+        return BaseResponseDTO.builder().ok();
+    }
+
     @PostMapping
     public BaseResponseDTO createNewTicket() {
         return ticketManagementService.createNewTicket();

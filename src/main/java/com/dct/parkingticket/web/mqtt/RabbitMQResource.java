@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/p/common/mqtt")
+@RequestMapping("/api/common/mqtt")
 public class RabbitMQResource {
 
     private static final Logger log = LoggerFactory.getLogger(RabbitMQResource.class);
@@ -24,13 +24,13 @@ public class RabbitMQResource {
     }
 
     @PostMapping
-    public BaseResponseDTO sendMessage(@RequestParam("action") int action, @RequestParam("uid") String uid) {
-        Message message = new Message();
-        message.setAction(action);
-        message.setMessage(uid);
+    public BaseResponseDTO sendMessage(@RequestParam("action") int action, @RequestParam("message") String message) {
+        Message mes = new Message();
+        mes.setAction(action);
+        mes.setMessage(message);
 
-        mqttService.sendToEsp32(JsonUtils.toJsonString(message));
-        log.info("Send to ESP32: " + JsonUtils.toJsonString(message));
+        mqttService.sendToEsp32(JsonUtils.toJsonString(mes));
+        log.info("Send to ESP32: " + JsonUtils.toJsonString(mes));
 
         return BaseResponseDTO.builder().ok();
     }
