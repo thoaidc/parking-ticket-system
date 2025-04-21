@@ -46,19 +46,17 @@ public class MqttConfig {
     @Bean
     public MqttPahoClientFactory mqttClientFactory() {
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
-
         MqttConnectOptions options = new MqttConnectOptions();
+
         options.setServerURIs(new String[] {brokerUrl});
         options.setUserName(username);
         options.setPassword(password.toCharArray());
-
-        // Có thể thêm các tùy chọn kết nối khác
         options.setAutomaticReconnect(true);
-        options.setCleanSession(true);
+        options.setCleanSession(false);
         options.setConnectionTimeout(30);
-        options.setKeepAliveInterval(60);
-
+        options.setKeepAliveInterval(45);
         factory.setConnectionOptions(options);
+
         return factory;
     }
 
