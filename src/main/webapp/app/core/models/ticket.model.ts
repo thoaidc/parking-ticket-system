@@ -112,7 +112,19 @@ export interface TicketScanLogFilter extends Pagination {
   result?: string;
 }
 
+export interface TicketScanLogsReportFilter {
+  fromDate: string;
+  toDate: string;
+  type: string;
+}
+
 export interface UpdateTicketStatusRequest {
   uid: string;
   status: string;
+}
+
+export interface TicketScanLogsReport {
+  time: string,
+  totalLogSuccess: number,
+  totalLogError: number
 }

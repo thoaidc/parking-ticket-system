@@ -2,9 +2,9 @@
   <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
     <div class="menu">
       <div [ngClass]="isSidebarShown ? 'menu-profile' : 'menu-profile-custom'">
-        <img *ngIf="isSidebarShown" src="assets/images/logo/favicon.ico" class="logo-img" alt=""/>
+        <img *ngIf="isSidebarShown" src="assets/images/logo/logo_full.png" class="logo-img" alt=""/>
         <span (click)="toggleAppSidebar()" *ngIf="isSidebarShown" [innerHTML]="ICON_CLOSE_SIDEBAR | safeHtml"></span>
-        <img *ngIf="!isSidebarShown" src="assets/images/logo/favicon.ico" class="logo-img-custom" alt="" />
+        <img *ngIf="!isSidebarShown" src="assets/images/logo/logo.png" class="logo-img-custom" alt="" />
       </div>
     </div>
 

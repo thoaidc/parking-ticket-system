@@ -1,49 +1,32 @@
-<div class="router-link">
-  <span [innerHTML]="ICON_DASHBOARD | safeHtml" class="d-flex"></span>
-  <span class="fw-bolder fs-4 text-dark-emphasis ps-2">Trang chủ</span>
-</div>
 <div class="chart-container">
-  <label class="title-feature mt-3">Thống kê khách hàng</label>
-<!--  <div class="field-search">-->
-<!--    <div class="search-citeria">-->
-<!--      <jhi-date-filter-->
-<!--        [class]="periods == 8 ? 'col-9' : 'col-3'"-->
-<!--        (timeChange)="onTimeChange($event)"-->
-<!--        [periods]="periods"-->
-<!--        [clearable]="false"-->
-<!--      >-->
-<!--      </jhi-date-filter>-->
-<!--      <div class="type-report item-search">-->
-<!--        <span>Loại thống kê</span>-->
-<!--        <div class="select-search-custom">-->
-<!--          <ng-select-->
-<!--            [items]="listType"-->
-<!--            bindLabel="name"-->
-<!--            bindValue="value"-->
-<!--            [(ngModel)]="filterOTPCount.type"-->
-<!--            (ngModelChange)="onChangeValue()"-->
-<!--          >-->
-<!--          </ng-select>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="item-search">-->
-<!--        <span>Hệ thống</span>-->
-<!--        <div class="select-search-custom">-->
-<!--          <ng-select-->
-<!--            [items]="systemList"-->
-<!--            bindLabel="name"-->
-<!--            bindValue="id"-->
-<!--            [(ngModel)]="filterOTPCount.systemId"-->
-<!--            placeholder="Chọn hệ thống"-->
-<!--            autocomplete="off"-->
-<!--            (ngModelChange)="getListOTPCountByType()"-->
-<!--          >-->
-<!--          </ng-select>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
+  <label class="title-feature">Thống kê sử dụng thẻ vé xe</label>
+  <div class="field-search">
+    <div class="search-citeria">
+      <app-date-filter
+        [class]="periods == 8 ? 'col-9' : 'col-3'"
+        (timeChange)="onTimeChange($event)"
+        [periods]="periods"
+        [clearable]="false"
+      >
+      </app-date-filter>
+
+      <div class="type-report item-search">
+        <span>Loại thống kê</span>
+        <div class="select-search-custom">
+          <ng-select
+            [items]="listType"
+            bindLabel="name"
+            bindValue="value"
+            [clearable]="false"
+            [(ngModel)]="ticketScanLogsFilter.type"
+            (ngModelChange)="onChangeValue()"
+          >
+          </ng-select>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="form-chart overflow-auto mt-3">
-<!--    <canvas id="canvas" height="100%">{{ chart }}</canvas>-->
+    <canvas id="canvas" height="100%">{{ chart }}</canvas>
   </div>
 </div>
