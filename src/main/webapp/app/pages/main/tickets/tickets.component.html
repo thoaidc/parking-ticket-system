@@ -13,10 +13,11 @@
       <span>Trạng thái</span>
       <div class="select-search-custom">
         <ng-select
-          [items]="Object.values(TicketStatus)"
+          [items]="TICKET_STATUS"
           bindLabel="name"
           bindValue="value"
           [(ngModel)]="ticketsFilter.status"
+          [clearable]="false"
           (ngModelChange)="onSearch()"
         >
         </ng-select>

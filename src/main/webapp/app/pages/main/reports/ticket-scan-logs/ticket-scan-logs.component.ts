@@ -6,7 +6,9 @@ import {
   TicketScanLogFilter,
   TicketScanLogResultType,
   SearchTicketScanLogRequest,
-  TicketScanLogType
+  TicketScanLogType,
+  TICKET_SCAN_LOG_RESULT_TYPE,
+  TICKET_SCAN_LOG_TYPE
 } from '../../../../core/models/ticket.model';
 import {TicketsService} from '../../../../core/services/tickets.service';
 import {Authorities} from '../../../../constants/authorities.constants';
@@ -46,7 +48,9 @@ export class TicketScanLogsComponent implements OnInit {
   ticketScanLogs: TicketScanLog[] = [];
   logsFilter: TicketScanLogFilter = {
     page: 1,
-    size: 10
+    size: 10,
+    result: '',
+    type: ''
   };
 
   constructor(
@@ -63,7 +67,9 @@ export class TicketScanLogsComponent implements OnInit {
     this.periods = 1;
     this.logsFilter = {
       page: 1,
-      size: 10
+      size: 10,
+      result: '',
+      type: ''
     };
 
     this.onSearch();
@@ -124,7 +130,7 @@ export class TicketScanLogsComponent implements OnInit {
   protected readonly ICON_RELOAD = ICON_RELOAD;
   protected readonly Authorities = Authorities;
   protected readonly PAGINATION_PAGE_SIZE = PAGINATION_PAGE_SIZE;
-  protected readonly Object = Object;
   protected readonly TicketScanLogResultType = TicketScanLogResultType;
-  protected readonly TicketScanLogType = TicketScanLogType;
+  protected readonly TICKET_SCAN_LOG_RESULT_TYPE = TICKET_SCAN_LOG_RESULT_TYPE;
+  protected readonly TICKET_SCAN_LOG_TYPE = TICKET_SCAN_LOG_TYPE;
 }

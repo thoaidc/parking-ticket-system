@@ -13,11 +13,12 @@
       <span>Kết quả quét</span>
       <div class="select-search-custom">
         <ng-select
-          [items]="Object.values(TicketScanLogResultType)"
-          bindLabel="label"
+          [items]="TICKET_SCAN_LOG_RESULT_TYPE"
+          bindLabel="name"
           bindValue="value"
           [(ngModel)]="logsFilter.result"
           placeholder="Kết quả quét"
+          [clearable]="false"
           (ngModelChange)="onSearch()"
         ></ng-select>
       </div>
@@ -27,10 +28,11 @@
       <span>Hành động quét</span>
       <div class="select-search-custom">
         <ng-select
-          [items]="Object.values(TicketScanLogType)"
-          bindLabel="label"
+          [items]="TICKET_SCAN_LOG_TYPE"
+          bindLabel="name"
           bindValue="value"
           [(ngModel)]="logsFilter.type"
+          [clearable]="false"
           placeholder="Hành động quét"
           (ngModelChange)="onSearch()"
         ></ng-select>

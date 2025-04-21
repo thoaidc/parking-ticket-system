@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import {
   SearchTicketRequest,
   Ticket,
+  TICKET_STATUS,
   TicketFilter,
   TicketStatus,
   UpdateTicketStatusRequest
@@ -49,7 +50,8 @@ export class TicketsComponent implements OnInit {
   totalItems: any = 0;
   ticketsFilter: TicketFilter = {
     page: 1,
-    size: 20
+    size: 20,
+    status: ''
   }
 
   isLoading = false;
@@ -69,7 +71,8 @@ export class TicketsComponent implements OnInit {
   onReload() {
     this.ticketsFilter = {
       page: 1,
-      size: 20
+      size: 20,
+      status: ''
     }
 
     this.onSearch();
@@ -168,7 +171,6 @@ export class TicketsComponent implements OnInit {
     });
   }
 
-  protected readonly Object = Object;
   protected readonly ICON_PLAY = ICON_PLAY;
   protected readonly ICON_STOP = ICON_STOP;
   protected readonly ICON_RELOAD = ICON_RELOAD;
@@ -176,5 +178,6 @@ export class TicketsComponent implements OnInit {
   protected readonly ICON_DELETE = ICON_DELETE;
   protected readonly Authorities = Authorities;
   protected readonly TicketStatus = TicketStatus;
+  protected readonly TICKET_STATUS = TICKET_STATUS;
   protected readonly PAGINATION_PAGE_SIZE = PAGINATION_PAGE_SIZE;
 }
