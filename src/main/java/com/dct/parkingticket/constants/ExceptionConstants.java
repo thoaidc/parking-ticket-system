@@ -92,4 +92,8 @@ public interface ExceptionConstants {
     String CONTENT_NOT_BLANK = "exception.data.content.notBlank";
     String CONTENT_MAX_LENGTH = "exception.data.content.maxLength";
     String DEVICE_ID_NOT_BLANK = "exception.data.deviceId.notBlank";
+
+    // Esp32 validate
+    String UID_NOT_BLANK = "exception.ticket.uid.notBlank";
+    String UID_LENGTH_INVALID = "exception.ticket.uid.lengthInvalid";
 }

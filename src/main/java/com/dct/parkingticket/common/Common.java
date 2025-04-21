@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,19 @@ public class Common {
         } catch (Exception e) {
             log.error("[{}] - Could not set entity auditing info. {}", ENTITY_NAME, e.getMessage());
         }
+    }
+
+    public static String generateUniqueUid() {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder uid = new StringBuilder(6);
+        SecureRandom random = new SecureRandom();
+
+        for (int i = 0; i < 6; i++) {
+            int index = random.nextInt(characters.length());
+            uid.append(characters.charAt(index));
+        }
+
+        return uid.toString();
     }
 
     public static <T> Map<String, Class<?>> getObjectFields(Class<T> mappingClass) {

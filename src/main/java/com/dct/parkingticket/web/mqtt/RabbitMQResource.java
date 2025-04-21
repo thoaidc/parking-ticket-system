@@ -30,7 +30,7 @@ public class RabbitMQResource {
         message.setMessage(uid);
 
         mqttService.sendToEsp32(JsonUtils.toJsonString(message));
-        log.info("Send to ESP32: " + message.getMessage());
+        log.info("Send to ESP32: " + JsonUtils.toJsonString(message));
 
         return BaseResponseDTO.builder().ok();
     }
