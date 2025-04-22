@@ -55,7 +55,7 @@ export class TicketWriteNfcComponent implements OnInit, OnDestroy {
     if (result && result.status) {
       this.isSuccess = true;
     } else {
-      this.toast.error('Ghi dữ liệu thất bại', 'Thông báo');
+      this.toast.error(result.message || 'Ghi dữ liệu thất bại', 'Thông báo');
     }
   }
 

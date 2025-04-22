@@ -68,6 +68,12 @@ public class MqttConsumer {
                 log.info("Response result for write NFC: {}", responseJson);
                 handleResultWriteNFC(responseJson);
             }
+
+            case Esp32Constants.RequestAction.RESPONSE_RESULT_WRITE_NFC_ERROR -> {
+                String responseJson = ticketRequest.getMessage();
+                log.info("Response result for write NFC error: {}", responseJson);
+                messagingTemplate.convertAndSend(FE_TOPIC, JsonUtils.toJsonString(new FeResponse(false, responseJson)));
+            }
         }
     }
 
@@ -76,7 +82,7 @@ public class MqttConsumer {
 
         if (Objects.isNull(response)) {
             log.error("Missing response from ESP32 when write NFC");
-            FeResponse feResponse = new FeResponse(false, "Missing response from ESP32 when write NFC");
+            FeResponse feResponse = new FeResponse(false, "Không có phản hồi từ Esp32");
             messagingTemplate.convertAndSend(FE_TOPIC, JsonUtils.toJsonString(feResponse));
             return;
         }
@@ -96,7 +102,7 @@ public class MqttConsumer {
         }
 
         log.error("Write NFC failed, UID card maybe null or invalid");
-        FeResponse feResponse = new FeResponse(false, "Write NFC failed, UID card maybe null or invalid");
+        FeResponse feResponse = new FeResponse(false, "Ghi thất bại, UID không hợp lệ hoặc bị lỗi");
         messagingTemplate.convertAndSend(FE_TOPIC, JsonUtils.toJsonString(feResponse));
     }
 }

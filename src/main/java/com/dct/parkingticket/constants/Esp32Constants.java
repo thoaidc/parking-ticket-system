@@ -22,6 +22,7 @@ public interface Esp32Constants {
     interface RequestAction {
         int SCAN_TICKET_NFC = 1;
         int RESPONSE_RESULT_WRITE_NFC = 2;
+        int RESPONSE_RESULT_WRITE_NFC_ERROR = 3;
     }
 
     interface Response {
