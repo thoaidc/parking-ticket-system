@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {catchError, map, Observable, of} from 'rxjs';
 import {ApplicationConfigService} from '../config/application-config.service';
 import {
   API_TICKETS_MANAGEMENT,
-  API_TICKETS_SCAN_LOGS,
+  API_TICKETS_SCAN_LOGS, API_TICKETS_SCAN_LOGS_STATISTICS,
   API_TICKETS_UPDATE_STATUS,
   API_TICKETS_WRITE_NFC
 } from '../../constants/api.constants';
 import {BaseResponse} from '../models/response.model';
 import {createSearchRequestParams} from '../utils/request.util';
-import {SearchTicketRequest, SearchTicketScanLogRequest, Ticket, TicketScanLog} from '../models/ticket.model';
+import {
+  SearchTicketRequest,
+  SearchTicketScanLogRequest,
+  Ticket,
+  TicketScanLog, TicketScanLogsReport,
+  TicketScanLogsReportFilter
+} from '../models/ticket.model';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +32,7 @@ export class TicketsService {
   private ticketWriteNFCUrl = this.applicationConfigService.getEndpointFor(API_TICKETS_WRITE_NFC);
   private ticketUpdateStatusUrl = this.applicationConfigService.getEndpointFor(API_TICKETS_UPDATE_STATUS);
   private ticketScanLogsUrl = this.applicationConfigService.getEndpointFor(API_TICKETS_SCAN_LOGS);
+  private ticketScanLogStatisticUrl = this.applicationConfigService.getEndpointFor(API_TICKETS_SCAN_LOGS_STATISTICS);
 
   getTicketsWithPaging(searchTicketRequest: SearchTicketRequest): Observable<BaseResponse<Ticket[]>> {
     const params = createSearchRequestParams(searchTicketRequest);
@@ -47,5 +54,20 @@ export class TicketsService {
 
   deleteTicket(uid: string): Observable<BaseResponse<any>> {
     return this.http.delete<BaseResponse<any>>(`${this.ticketsUrl}/${uid}`);
+  }
+
+  getTicketScanLogStatistics(statisticFilter: TicketScanLogsReportFilter): Observable<TicketScanLogsReport[]> {
+    const params = createSearchRequestParams(statisticFilter);
+    return this.http.get<BaseResponse<TicketScanLogsReport[]>>(`${this.ticketScanLogStatisticUrl}`, { params: params })
+      .pipe(
+        map(response => {
+          if (response && response.status && response.result as TicketScanLogsReport[]) {
+            return response.result as TicketScanLogsReport[];
+          }
+
+          return [];
+        }),
+        catchError(() => of([]))
+      );
   }
 }

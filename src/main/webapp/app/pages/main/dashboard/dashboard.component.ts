@@ -3,7 +3,11 @@ import {SafeHtmlPipe} from '../../../shared/pipes/safe-html.pipe';
 import {DateFilterComponent} from '../../../shared/components/date-filter/date-filter.component';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule} from '@angular/forms';
-import {TicketScanLogsReport, TicketScanLogsReportFilter} from '../../../core/models/ticket.model';
+import {
+  TICKET_SCAN_LOG_TYPE,
+  TicketScanLogsReport,
+  TicketScanLogsReportFilter
+} from '../../../core/models/ticket.model';
 import dayjs from 'dayjs/esm';
 import {ToastrService} from 'ngx-toastr';
 import {UtilsService} from '../../../shared/utils/utils.service';
@@ -54,9 +58,8 @@ export class DashboardComponent implements OnInit {
   ];
 
   ticketScanLogsFilter: TicketScanLogsReportFilter = {
-    fromDate: '',
-    toDate: '',
-    type: 'HOURS'
+    groupType: 'HOURS',
+    type: ''
   };
 
   fromDate: dayjs.Dayjs | any;
@@ -94,7 +97,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onChangeValue() {
-    if (!this.ticketScanLogsFilter.type) {
+    if (!this.ticketScanLogsFilter.groupType) {
       this.toastr.error('Loại thống kê không được để trống', 'Thông báo');
       return;
     }
@@ -117,6 +120,7 @@ export class DashboardComponent implements OnInit {
       if (this.fromDate.length <= 9 && this.fromDate.length != 0) {
         return;
       }
+
       this.fromDate = dayjs(this.fromDate, 'DD/MM/YYYY');
     }
 
@@ -124,12 +128,13 @@ export class DashboardComponent implements OnInit {
       if (this.toDate.length <= 9 && this.toDate.length != 0) {
         return;
       }
+
       this.toDate = dayjs(this.toDate, 'DD/MM/YYYY');
     }
 
     if (this.toDate.diff(this.fromDate, 'day') > 31) {
-      if (this.ticketScanLogsFilter.type != 'HOURS') {
-        this.ticketScanLogsFilter.type = 'MONTH';
+      if (this.ticketScanLogsFilter.groupType != 'HOURS') {
+        this.ticketScanLogsFilter.groupType = 'MONTH';
         this.disabledType(true);
       }
     } else {
@@ -139,10 +144,10 @@ export class DashboardComponent implements OnInit {
     this.getTicketScanLogsCountByType();
   }
 
-  disabledType(isDisabledMonth: any) {
+  disabledType(isDisabledMonth: boolean) {
     this.listType.forEach(type => {
       if (type.value === 'DAY') {
-        type.disabled = !!isDisabledMonth;
+        type.disabled = isDisabledMonth;
       }
     });
 
@@ -150,61 +155,48 @@ export class DashboardComponent implements OnInit {
   }
 
   getTicketScanLogsCountByType() {
-    this.ticketScanLogsFilter.fromDate = this.utilService.convertToDateString(this.fromDate, 'YYYY-MM-DD');
-    this.ticketScanLogsFilter.toDate = this.utilService.convertToDateString(this.toDate, 'YYYY-MM-DD');
-    this.ticketScanLogs = [
-      {
-        time: '8',
-        totalLogSuccess: 30,
-        totalLogError: 2
-      },
-      {
-        time: '9',
-        totalLogSuccess: 45,
-        totalLogError: 1
-      },
-      {
-        time: '10',
-        totalLogSuccess: 40,
-        totalLogError: 3
-      },
-      {
-        time: '11',
-        totalLogSuccess: 35,
-        totalLogError: 4
+    this.ticketScanLogsFilter.fromDate = this.utilService.convertToDateString(this.fromDate, 'YYYY-MM-DD HH:mm:ss');
+    this.ticketScanLogsFilter.toDate = this.utilService.convertToDateString(this.toDate, 'YYYY-MM-DD HH:mm:ss');
+    this.ticketScanLogs = [];
+
+    this.ticketService.getTicketScanLogStatistics(this.ticketScanLogsFilter).subscribe(ticketScanLogsReport => {
+      if (ticketScanLogsReport && ticketScanLogsReport.length > 0) {
+        this.ticketScanLogs = ticketScanLogsReport;
+        this.changeChartValue();
+      } else {
+        this.toastr.warning('Không tìm thấy dữ liệu thống kê', 'Thông báo');
       }
-    ];
-
-    this.ticketScanLogsFilter.type = 'HOURS'
-
-    // this.ticketService.getTicketScanLogsCountByType(this.ticketScanLogsFilter).subscribe(response => {
-    //   if (response && response.status && response.result) {
-    //     this.ticketScanLogs = response.result;
-    //     this.changeChartValue();
-    //   }
-    // });
-
-    this.changeChartValue();
+    });
   }
 
   changeChartValue() {
-    let label: string[] = [''];
-    let totalLogSuccess: number[] = [0];
-    let totalLogError: number[] = [0];
+    let label: string[] = [];
+    let totalLogSuccess: number[] = [];
+    let totalLogError: number[] = [];
 
-    this.ticketScanLogs.forEach(value => {
-      totalLogSuccess.push(value.totalLogSuccess || 0);
-      totalLogError.push(value.totalLogError || 0);
+    this.ticketScanLogs.forEach(log => {
+      totalLogSuccess.push(log.totalLogSuccess || 0);
+      totalLogError.push(log.totalLogError || 0);
 
-      if (this.ticketScanLogsFilter.type === 'MONTH') {
-        label.push('Tháng ' + value.time);
-      } else if (this.ticketScanLogsFilter.type === 'DAY') {
-        label.push(this.utilService.convertToDateString(value.time, 'DD/MM') || value.time);
-      } else {
-        label.push(value.time + 'h');
+      switch (this.ticketScanLogsFilter.type) {
+        case 'MONTH':
+          label.push('Tháng ' + log.time);
+          break;
+        case 'DAY':
+          label.push(this.utilService.convertToDateString(log.time, 'DD/MM') || log.time);
+          break;
+        case 'HOURS':
+          label.push(log.time + 'h');
+          break;
+        default:
+          label.push('-');
       }
     });
 
+    this.rewriteChart(label, totalLogSuccess, totalLogError);
+  }
+
+  rewriteChart(label: string[], totalLogSuccess: number[], totalLogError: number[]) {
     if (this.chart) {
       this.chart.destroy();
     }
@@ -220,7 +212,7 @@ export class DashboardComponent implements OnInit {
             backgroundColor: '#a22600',
             borderColor: '#a22600',
             borderWidth: 1,
-            maxBarThickness: 70,
+            maxBarThickness: 70
           },
           {
             label: 'Không hợp lệ',
@@ -228,9 +220,9 @@ export class DashboardComponent implements OnInit {
             backgroundColor: '#003d60',
             borderColor: '#003d60',
             borderWidth: 1,
-            maxBarThickness: 70,
-          },
-        ],
+            maxBarThickness: 70
+          }
+        ]
       },
       options: {
         responsive: true,
@@ -239,23 +231,23 @@ export class DashboardComponent implements OnInit {
           y: {
             beginAtZero: true,
             ticks: {
-              stepSize: 5,
-            },
+              stepSize: 5
+            }
           },
           x: {
             ticks: {
               autoSkip: false,
               maxRotation: this.ticketScanLogsFilter.type !== 'HOURS' ? this.getRotationAngle(this.ticketScanLogs) : 0,
               minRotation: this.ticketScanLogsFilter.type !== 'HOURS' ? this.getRotationAngle(this.ticketScanLogs) : 0,
-            },
-          },
+            }
+          }
         },
         plugins: {
           tooltip: {
-            enabled: this.ticketScanLogs.length > 0,
-          },
-        },
-      },
+            enabled: this.ticketScanLogs.length > 0
+          }
+        }
+      }
     });
   }
 
@@ -266,4 +258,6 @@ export class DashboardComponent implements OnInit {
 
     return 0;
   }
+
+  protected readonly TICKET_SCAN_LOG_TYPE = TICKET_SCAN_LOG_TYPE;
 }

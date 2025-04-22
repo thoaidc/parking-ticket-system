@@ -21,6 +21,9 @@ public class BaseRequestDTO implements Serializable {
     private Integer page;
     private Integer size;
     private String sort;
+    private String fromDate;
+    private String toDate;
+    private String keyword;
 
     public Pageable getPageable() {
         if (page == null || size == null || page < 0 || size <= 0) {
@@ -70,5 +73,29 @@ public class BaseRequestDTO implements Serializable {
 
     public void setSort(String sort) {
         this.sort = sort;
+    }
+
+    public String getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(String fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(String toDate) {
+        this.toDate = toDate;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

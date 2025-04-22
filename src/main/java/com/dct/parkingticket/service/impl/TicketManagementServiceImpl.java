@@ -7,7 +7,9 @@ import com.dct.parkingticket.constants.ExceptionConstants;
 import com.dct.parkingticket.dto.esp32.Message;
 import com.dct.parkingticket.dto.mapping.ITicketDTO;
 import com.dct.parkingticket.dto.mapping.ITicketScanLogDTO;
+import com.dct.parkingticket.dto.mapping.TicketScanLogStatisticDTO;
 import com.dct.parkingticket.dto.request.BaseRequestDTO;
+import com.dct.parkingticket.dto.request.TicketScanLogStatisticRequestDTO;
 import com.dct.parkingticket.dto.response.BaseResponseDTO;
 import com.dct.parkingticket.entity.Ticket;
 import com.dct.parkingticket.entity.TicketScanLog;
@@ -15,8 +17,8 @@ import com.dct.parkingticket.exception.BaseBadRequestException;
 import com.dct.parkingticket.repositories.TicketRepository;
 import com.dct.parkingticket.repositories.TicketScanLogRepository;
 import com.dct.parkingticket.service.TicketManagementService;
-
 import com.dct.parkingticket.service.mqtt.MqttProducer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -187,5 +189,11 @@ public class TicketManagementServiceImpl implements TicketManagementService {
         }
 
         return BaseResponseDTO.builder().ok(ticketScanLogRepository.findAllNonPaging());
+    }
+
+    @Override
+    public BaseResponseDTO getTicketScanLogsStatistic(TicketScanLogStatisticRequestDTO request) {
+        List<TicketScanLogStatisticDTO> results = ticketScanLogRepository.getLogStats(request);
+        return BaseResponseDTO.builder().ok(results);
     }
 }

@@ -113,9 +113,10 @@ export interface TicketScanLogFilter extends Pagination {
 }
 
 export interface TicketScanLogsReportFilter {
-  fromDate: string;
-  toDate: string;
-  type: string;
+  fromDate?: string;
+  toDate?: string;
+  type?: string;
+  groupType: string;
 }
 
 export interface UpdateTicketStatusRequest {

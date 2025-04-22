@@ -66,6 +66,8 @@ public class DataUtils {
         public QueryBuilder params(Map<String, Object> params) {
             if (Objects.nonNull(params)) {
                 this.params = params;
+            } else {
+                this.params = new HashMap<>();
             }
 
             return this;

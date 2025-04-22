@@ -18,6 +18,21 @@
             bindLabel="name"
             bindValue="value"
             [clearable]="false"
+            [(ngModel)]="ticketScanLogsFilter.groupType"
+            (ngModelChange)="onChangeValue()"
+          >
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="type-report item-search">
+        <span>Hành động quét thẻ</span>
+        <div class="select-search-custom">
+          <ng-select
+            [items]="TICKET_SCAN_LOG_TYPE"
+            bindLabel="name"
+            bindValue="value"
+            [clearable]="false"
             [(ngModel)]="ticketScanLogsFilter.type"
             (ngModelChange)="onChangeValue()"
           >

@@ -35,10 +35,13 @@ public interface Esp32Constants {
     interface TicketScanType {
         String CHECKIN = "CHECKIN";
         String CHECKOUT = "CHECKOUT";
+        String PATTERN = "^(CHECKIN|CHECKOUT)$";
     }
 
     interface TicketScanResult {
         String VALID = "SCAN_VALID";
         String ERROR = "SCAN_ERROR";
     }
+
+    String GROUP_TYPE_PATTERN = "^(MONTH|DAY|HOURS)$";
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TicketScanLogRepository extends JpaRepository<TicketScanLog, Integer> {
+public interface TicketScanLogRepository extends JpaRepository<TicketScanLog, Integer>, TicketScanLogCustomRepository {
 
     @Query(
         value = "SELECT * FROM ticket_scan_log WHERE uid = ?1 AND result = ?2 ORDER BY scan_time DESC LIMIT 1",
