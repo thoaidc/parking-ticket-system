@@ -24,7 +24,7 @@
             "index": "src/main/webapp/index.html",
             "main": "src/main/webapp/main.ts",
             "polyfills": [
-              "zone.js"
+              "src/main/webapp/polyfills.ts"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -108,8 +108,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": [
-              "zone.js",
-              "zone.js/testing"
+              "src/main/webapp/polyfills.ts"
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
