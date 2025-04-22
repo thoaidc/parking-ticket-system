@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { filter, first, switchMap } from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
@@ -23,8 +22,7 @@ export class WebsocketService implements OnDestroy {
 
   constructor() {
     this.client = new Client({
-      // Using SockJS as transport fallback
-      webSocketFactory: () => new SockJS(this.SOCKET_SERVER_URL),
+      brokerURL: this.SOCKET_SERVER_URL,
       // Auto reconnect after 5 seconds if connection is lost
       reconnectDelay: 5000,
       // Heartbeat to keep connection (milliseconds)
