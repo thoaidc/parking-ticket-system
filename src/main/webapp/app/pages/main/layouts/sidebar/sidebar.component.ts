@@ -14,6 +14,7 @@ import {NgClass, NgFor, NgIf} from '@angular/common';
 import {HasAuthorityDirective} from '../../../../shared/directives/has-authority.directive';
 import {slideUp} from '../../../../shared/composables/slideCommonStyles';
 import {SIDEBAR_ROUTES} from './sidebar.route';
+import {StateStorageService} from '../../../../core/services/state-storage.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -39,7 +40,9 @@ export class SidebarComponent implements AfterViewInit{
   @Input() isSidebarShown!: boolean;
   @Output() isSidebarShownChange = new EventEmitter<boolean>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private stateService: StateStorageService) {
+    this.latestUrl = this.stateService.getPreviousPage() || '';
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -118,8 +121,9 @@ export class SidebarComponent implements AfterViewInit{
       return;
     }
 
-    this.router.navigate([path]).then();
     this.latestUrl = path;
+    this.stateService.savePreviousPage(path);
+    this.router.navigate([path]).then();
   }
 
   toggleAppSidebar() {

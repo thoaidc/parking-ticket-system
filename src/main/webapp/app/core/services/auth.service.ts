@@ -116,7 +116,6 @@ export class AuthService {
     const previousUrl = this.stateStorageService.getPreviousPage();
 
     if (previousUrl) {
-      this.stateStorageService.clearPreviousPage();
       this.router.navigateByUrl(previousUrl).then();
     }
   }

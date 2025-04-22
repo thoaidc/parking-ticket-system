@@ -6,14 +6,14 @@ export class StateStorageService {
   private previousPageKey = LOCAL_PREVIOUS_PAGE_URL_KEY;
 
   savePreviousPage(url: string): void {
-    sessionStorage.setItem(this.previousPageKey, url);
+    localStorage.setItem(this.previousPageKey, url);
   }
 
   getPreviousPage(): string | null {
-    return sessionStorage.getItem(this.previousPageKey) as string | null;
+    return localStorage.getItem(this.previousPageKey) as string | null;
   }
 
   clearPreviousPage(): void {
-    sessionStorage.removeItem(this.previousPageKey);
+    localStorage.removeItem(this.previousPageKey);
   }
 }

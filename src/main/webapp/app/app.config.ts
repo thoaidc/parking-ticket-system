@@ -13,7 +13,6 @@ import {
   withFetch
 } from '@angular/common/http';
 import {AuthExpiredInterceptorFn} from './core/interceptors/auth-expired.interceptor';
-import {ErrorHandlerInterceptorFn} from './core/interceptors/error-handler.interceptor';
 import {ApiInterceptorFn} from './core/interceptors/api.interceptor';
 import {provideToastr} from 'ngx-toastr';
 import {provideAnimations} from '@angular/platform-browser/animations';
@@ -47,7 +46,6 @@ import {NgbDateDayjsAdapter} from './core/config/datepicker.config';
  *
  * Therefore, order interceptors by their role:
  *    - {@link AuthExpiredInterceptorFn}: Handle expired authentication
- *    - {@link ErrorHandlerInterceptorFn}: Handle global errors
  *    - {@link ApiInterceptorFn}: Logging / modify URLs
  */
 export const appConfig: ApplicationConfig = {
@@ -63,7 +61,6 @@ export const appConfig: ApplicationConfig = {
       withFetch(), // To let HttpClient use Fetch API instead of XMLHttpRequest (XHR)
       withInterceptors([
         AuthExpiredInterceptorFn,
-        ErrorHandlerInterceptorFn,
         ApiInterceptorFn
       ])
     )

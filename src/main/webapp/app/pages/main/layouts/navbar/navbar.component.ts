@@ -3,6 +3,9 @@ import {AuthService} from '../../../../core/services/auth.service';
 import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
 import {NgIf} from '@angular/common';
 import {ICON_ENGLISH, ICON_LOGOUT, ICON_NOTIFICATION, ICON_VIETNAMESE} from '../../../../shared/utils/icon';
+import {ToastrService} from 'ngx-toastr';
+import {Router} from '@angular/router';
+import {StateStorageService} from '../../../../core/services/state-storage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,7 +22,12 @@ export class NavbarComponent implements OnInit {
   showDropdown = '';
   userName: string | null = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private stateService: StateStorageService,
+    private toast: ToastrService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getUserName();
@@ -51,7 +59,15 @@ export class NavbarComponent implements OnInit {
   }
 
   logOut() {
-    this.authService.logout();
+    this.authService.logout().subscribe((success: boolean) => {
+      if (success) {
+        this.stateService.clearPreviousPage();
+        this.toast.success('Đăng xuất thành công', 'Thông báo');
+        this.router.navigate(['/login']).then();
+      } else {
+        this.toast.error('Đăng xuất thất bại', 'Thông báo');
+      }
+    });
   }
 
   protected readonly ICON_LOGOUT = ICON_LOGOUT;

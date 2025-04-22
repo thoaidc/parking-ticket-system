@@ -4,6 +4,7 @@ import {AuthService} from './core/services/auth.service';
 import {LOCAL_USER_AUTHORITIES_KEY} from './constants/local-storage.constants';
 import {Subscription} from 'rxjs';
 import {WebsocketService} from './core/services/websocket.service';
+import {StateStorageService} from './core/services/state-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -15,11 +16,19 @@ import {WebsocketService} from './core/services/websocket.service';
 export class AppComponent implements OnInit, OnDestroy {
   private stateSubscription: Subscription | null = null;
 
-  constructor(private authService: AuthService, private router: Router, private websocketService: WebsocketService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private websocketService: WebsocketService,
+    private stateService: StateStorageService
+  ) {
     authService.authenticate().subscribe(account => {
       if (account) {
         localStorage.setItem(LOCAL_USER_AUTHORITIES_KEY, JSON.stringify(account.authorities));
-        this.router.navigate(['']).then();
+
+        if (this.stateService.getPreviousPage()) {
+          this.router.navigate([this.stateService.getPreviousPage()]).then();
+        }
       }
     });
   }
