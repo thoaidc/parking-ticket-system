@@ -178,7 +178,7 @@ export class DashboardComponent implements OnInit {
       totalLogSuccess.push(log.totalLogSuccess || 0);
       totalLogError.push(log.totalLogError || 0);
 
-      switch (this.ticketScanLogsFilter.type) {
+      switch (this.ticketScanLogsFilter.groupType) {
         case 'MONTH':
           label.push('Tháng ' + log.time);
           break;
@@ -231,7 +231,7 @@ export class DashboardComponent implements OnInit {
           y: {
             beginAtZero: true,
             ticks: {
-              stepSize: 5
+              autoSkip: true
             }
           },
           x: {
