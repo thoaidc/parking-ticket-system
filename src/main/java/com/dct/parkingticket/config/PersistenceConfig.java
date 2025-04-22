@@ -16,6 +16,8 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.sql.DataSource;
@@ -52,7 +54,9 @@ public class PersistenceConfig {
 
         return () -> {
             // Get the current username from the SecurityContext, using a default value if no user is authenticated
-            String credential = SecurityContextHolder.getContext().getAuthentication().getName();
+            SecurityContext context = SecurityContextHolder.getContext();
+            Authentication authentication = Objects.nonNull(context) ? context.getAuthentication() : null;
+            String credential = Objects.nonNull(authentication) ? authentication.getName() : BaseConstants.ANONYMOUS_USER;
             String createdBy = Objects.equals(BaseConstants.ANONYMOUS_USER, credential) ? null : credential;
             return Optional.of(Optional.ofNullable(createdBy).orElse(BaseConstants.DEFAULT_CREATOR));
         };

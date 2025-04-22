@@ -93,14 +93,6 @@ public class TicketManagementServiceImpl implements TicketManagementService {
         mqttProducer.sendToEsp32(JsonUtils.toJsonString(message));
     }
 
-    @Override
-    public void writeUidToNFC(String uid) {
-        Message message = new Message();
-        message.setAction(Esp32Constants.Action.WRITE_NFC);
-        message.setMessage(uid);
-        mqttProducer.sendToEsp32(JsonUtils.toJsonString(message));
-    }
-
     @Async
     protected void saveTicketScanLog(String uid, String error) {
         Optional<TicketScanLog> lastScanLogOpt = ticketScanLogRepository.findTopByUidAndResultOrderByScanTimeDesc(
@@ -137,18 +129,18 @@ public class TicketManagementServiceImpl implements TicketManagementService {
     @Override
     @Transactional
     public BaseResponseDTO createNewTicket() {
-        Ticket ticket = new Ticket();
+        Message message = new Message();
         String uid = Common.generateUniqueUid();
 
         while (ticketRepository.existsByUid(uid)) {
             uid = Common.generateUniqueUid();
         }
 
-        ticket.setUid(uid);
-        ticket.setStatus(Esp32Constants.TicketStatus.ACTIVE);
-        ticketRepository.save(ticket);
+        message.setMessage(uid);
+        message.setAction(Esp32Constants.Action.WRITE_NFC);
+        mqttProducer.sendToEsp32(JsonUtils.toJsonString(message));
 
-        return BaseResponseDTO.builder().ok(ticket);
+        return BaseResponseDTO.builder().ok(uid);
     }
 
     @Override

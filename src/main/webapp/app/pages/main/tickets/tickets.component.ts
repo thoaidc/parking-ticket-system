@@ -11,7 +11,7 @@ import {
   UpdateTicketStatusRequest
 } from '../../../core/models/ticket.model';
 import {UtilsService} from '../../../shared/utils/utils.service';
-import {ICON_DELETE, ICON_PLAY, ICON_RELOAD, ICON_SEARCH, ICON_STOP} from '../../../shared/utils/icon';
+import {ICON_DELETE, ICON_PLAY, ICON_PLUS, ICON_RELOAD, ICON_SEARCH, ICON_STOP} from '../../../shared/utils/icon';
 import {Authorities} from '../../../constants/authorities.constants';
 import {ModalConfirmDialogComponent} from '../../../shared/modals/modal-confirm-dialog/modal-confirm-dialog.component';
 import {DateFilterComponent} from '../../../shared/components/date-filter/date-filter.component';
@@ -125,6 +125,17 @@ export class TicketsComponent implements OnInit {
     this.searchTickets();
   }
 
+  createNewTicket() {
+    this.ticketsService.createNewTicketAndWriteNFC().subscribe(response => {
+      if (response && response.status && response.result as string) {
+        this.toast.success('Tạo yêu cầu thành công, vui lòng để thẻ vào trong đầu đọc NFC', 'Thông báo');
+        console.log("Ticket UID: ", response.result);
+      } else {
+        this.toast.error('Tạo yêu cầu thất bại. Vui lòng thử lại sau', 'Thông báo');
+      }
+    });
+  }
+
   updateTicketStatus(uid: string, status: string) {
     this.modalRef = this.modalService.open(ModalConfirmDialogComponent, { backdrop: 'static' });
 
@@ -180,4 +191,5 @@ export class TicketsComponent implements OnInit {
   protected readonly TicketStatus = TicketStatus;
   protected readonly TICKET_STATUS = TICKET_STATUS;
   protected readonly PAGINATION_PAGE_SIZE = PAGINATION_PAGE_SIZE;
+    protected readonly ICON_PLUS = ICON_PLUS;
 }

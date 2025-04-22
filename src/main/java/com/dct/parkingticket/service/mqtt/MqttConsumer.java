@@ -5,6 +5,9 @@ import com.dct.parkingticket.constants.Esp32Constants;
 import com.dct.parkingticket.constants.RabbitMQConstants;
 import com.dct.parkingticket.dto.esp32.MqttMessageEvent;
 import com.dct.parkingticket.dto.esp32.Esp32Request;
+import com.dct.parkingticket.dto.esp32.ResultWriteNFCResponse;
+import com.dct.parkingticket.entity.Ticket;
+import com.dct.parkingticket.repositories.TicketRepository;
 import com.dct.parkingticket.service.TicketManagementService;
 
 import org.slf4j.Logger;
@@ -21,11 +24,14 @@ public class MqttConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(MqttConsumer.class);
     private final TicketManagementService ticketManagementService;
+    private final TicketRepository ticketRepository;
     private final RabbitMQProducer rabbitMQProducer;
 
     public MqttConsumer(TicketManagementService ticketManagementService,
+                        TicketRepository ticketRepository,
                         RabbitMQProducer rabbitMQProducer) {
         this.ticketManagementService = ticketManagementService;
+        this.ticketRepository = ticketRepository;
         this.rabbitMQProducer = rabbitMQProducer;
     }
 
@@ -56,9 +62,37 @@ public class MqttConsumer {
             }
 
             case Esp32Constants.RequestAction.RESPONSE_RESULT_WRITE_NFC -> {
-                log.info("Response result for write NFC: {}", ticketRequest.getMessage());
-                rabbitMQProducer.sendMessage(RabbitMQConstants.RoutingKey.NOTIFICATION, ticketRequest.getMessage());
+                String responseJson = ticketRequest.getMessage();
+                log.info("Response result for write NFC: {}", responseJson);
+                handleResultWriteNFC(responseJson);
             }
         }
+    }
+
+    private void handleResultWriteNFC(String responseJson) {
+        ResultWriteNFCResponse response = JsonUtils.parseJson(responseJson, ResultWriteNFCResponse.class);
+
+        if (Objects.isNull(response)) {
+            log.error("Missing response from ESP32 when write NFC");
+            rabbitMQProducer.sendMessage(RabbitMQConstants.RoutingKey.NOTIFICATION, "error");
+            return;
+        }
+
+        if (response.isSuccess()) {
+            String uid = response.getUid();
+
+            if (StringUtils.hasText(uid) && uid.length() == 6) {
+                Ticket ticket = new Ticket();
+                ticket.setUid(uid);
+                ticket.setStatus(Esp32Constants.TicketStatus.ACTIVE);
+                ticketRepository.save(ticket);
+                rabbitMQProducer.sendMessage(RabbitMQConstants.RoutingKey.NOTIFICATION, "success");
+                log.info("Save ticket success after write NFC: {}", uid);
+                return;
+            }
+        }
+
+        log.error("Write NFC failed, UID card maybe null or invalid");
+        rabbitMQProducer.sendMessage(RabbitMQConstants.RoutingKey.NOTIFICATION, "error");
     }
 }

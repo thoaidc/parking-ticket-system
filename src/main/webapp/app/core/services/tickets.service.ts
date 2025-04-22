@@ -29,7 +29,6 @@ export class TicketsService {
   ) {}
 
   private ticketsUrl = this.applicationConfigService.getEndpointFor(API_TICKETS_MANAGEMENT);
-  private ticketWriteNFCUrl = this.applicationConfigService.getEndpointFor(API_TICKETS_WRITE_NFC);
   private ticketUpdateStatusUrl = this.applicationConfigService.getEndpointFor(API_TICKETS_UPDATE_STATUS);
   private ticketScanLogsUrl = this.applicationConfigService.getEndpointFor(API_TICKETS_SCAN_LOGS);
   private ticketScanLogStatisticUrl = this.applicationConfigService.getEndpointFor(API_TICKETS_SCAN_LOGS_STATISTICS);
@@ -44,8 +43,8 @@ export class TicketsService {
     return this.http.get<BaseResponse<TicketScanLog[]>>(`${this.ticketScanLogsUrl}`, { params: params });
   }
 
-  writeNFC(uid: string): Observable<BaseResponse<any>> {
-    return this.http.post<BaseResponse<any>>(`${this.ticketWriteNFCUrl}/${uid}`, {});
+  createNewTicketAndWriteNFC(): Observable<BaseResponse<any>> {
+    return this.http.post<BaseResponse<any>>(`${this.ticketsUrl}`, {});
   }
 
   updateTicketsStatus(updateTicketStatusRequest: any): Observable<BaseResponse<any>> {

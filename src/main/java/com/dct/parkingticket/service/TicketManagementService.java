@@ -8,8 +8,6 @@ public interface TicketManagementService {
 
     void scanTicket(String uid);
 
-    void writeUidToNFC(String uid);
-
     BaseResponseDTO createNewTicket();
 
     BaseResponseDTO getAllTicketsWithPaging(BaseRequestDTO request);

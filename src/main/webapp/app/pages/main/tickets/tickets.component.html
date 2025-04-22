@@ -1,4 +1,11 @@
-<label class="title-feature">Danh sách thẻ vé xe</label>
+<div class="title-feature form-space-between">
+  <span>Danh sách thẻ vé xe</span>
+  <button class="success-button-dialog ms-3" (click)="createNewTicket()" *hasAuthorities="Authorities.SYSTEM">
+    <span [innerHTML]="ICON_PLUS | safeHtml"></span>
+    Tạo thẻ vé mới
+  </button>
+</div>
+
 <div class="field-search">
   <div class="search-citeria">
     <app-date-filter
