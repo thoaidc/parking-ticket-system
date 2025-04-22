@@ -21,6 +21,7 @@ import {DatePipe, DecimalPipe, NgClass, NgFor, NgIf} from '@angular/common';
 import {HasAuthorityDirective} from '../../../shared/directives/has-authority.directive';
 import {FormsModule} from '@angular/forms';
 import {PAGINATION_PAGE_SIZE} from '../../../constants/common.constants';
+import {TicketWriteNfcComponent} from './ticket-write-nfc/ticket-write-nfc.component';
 
 @Component({
   selector: 'app-tickets-management',
@@ -128,8 +129,8 @@ export class TicketsComponent implements OnInit {
   createNewTicket() {
     this.ticketsService.createNewTicketAndWriteNFC().subscribe(response => {
       if (response && response.status && response.result as string) {
-        this.toast.success('Tạo yêu cầu thành công, vui lòng để thẻ vào trong đầu đọc NFC', 'Thông báo');
-        console.log("Ticket UID: ", response.result);
+        this.modalRef = this.modalService.open(TicketWriteNfcComponent, { backdrop: 'static' });
+        this.modalRef.componentInstance.UID = response.result;
       } else {
         this.toast.error('Tạo yêu cầu thất bại. Vui lòng thử lại sau', 'Thông báo');
       }

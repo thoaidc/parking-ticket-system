@@ -2,7 +2,7 @@ package com.dct.parkingticket.service.mqtt;
 
 import com.dct.parkingticket.common.JsonUtils;
 import com.dct.parkingticket.constants.Esp32Constants;
-import com.dct.parkingticket.constants.RabbitMQConstants;
+import com.dct.parkingticket.dto.esp32.FeResponse;
 import com.dct.parkingticket.dto.esp32.MqttMessageEvent;
 import com.dct.parkingticket.dto.esp32.Esp32Request;
 import com.dct.parkingticket.dto.esp32.ResultWriteNFCResponse;
@@ -13,6 +13,7 @@ import com.dct.parkingticket.service.TicketManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -23,16 +24,17 @@ import java.util.Objects;
 public class MqttConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(MqttConsumer.class);
+    private static final String FE_TOPIC = "/topic/esp32";
     private final TicketManagementService ticketManagementService;
     private final TicketRepository ticketRepository;
-    private final RabbitMQProducer rabbitMQProducer;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public MqttConsumer(TicketManagementService ticketManagementService,
                         TicketRepository ticketRepository,
-                        RabbitMQProducer rabbitMQProducer) {
+                        SimpMessagingTemplate messagingTemplate) {
         this.ticketManagementService = ticketManagementService;
         this.ticketRepository = ticketRepository;
-        this.rabbitMQProducer = rabbitMQProducer;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @EventListener
@@ -74,7 +76,8 @@ public class MqttConsumer {
 
         if (Objects.isNull(response)) {
             log.error("Missing response from ESP32 when write NFC");
-            rabbitMQProducer.sendMessage(RabbitMQConstants.RoutingKey.NOTIFICATION, "error");
+            FeResponse feResponse = new FeResponse(false, "Missing response from ESP32 when write NFC");
+            messagingTemplate.convertAndSend(FE_TOPIC, JsonUtils.toJsonString(feResponse));
             return;
         }
 
@@ -86,13 +89,14 @@ public class MqttConsumer {
                 ticket.setUid(uid);
                 ticket.setStatus(Esp32Constants.TicketStatus.ACTIVE);
                 ticketRepository.save(ticket);
-                rabbitMQProducer.sendMessage(RabbitMQConstants.RoutingKey.NOTIFICATION, "success");
+                messagingTemplate.convertAndSend(FE_TOPIC, JsonUtils.toJsonString(new FeResponse(true, "")));
                 log.info("Save ticket success after write NFC: {}", uid);
                 return;
             }
         }
 
         log.error("Write NFC failed, UID card maybe null or invalid");
-        rabbitMQProducer.sendMessage(RabbitMQConstants.RoutingKey.NOTIFICATION, "error");
+        FeResponse feResponse = new FeResponse(false, "Write NFC failed, UID card maybe null or invalid");
+        messagingTemplate.convertAndSend(FE_TOPIC, JsonUtils.toJsonString(feResponse));
     }
 }

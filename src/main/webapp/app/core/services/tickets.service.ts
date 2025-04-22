@@ -4,9 +4,9 @@ import {catchError, map, Observable, of} from 'rxjs';
 import {ApplicationConfigService} from '../config/application-config.service';
 import {
   API_TICKETS_MANAGEMENT,
-  API_TICKETS_SCAN_LOGS, API_TICKETS_SCAN_LOGS_STATISTICS,
+  API_TICKETS_SCAN_LOGS,
+  API_TICKETS_SCAN_LOGS_STATISTICS,
   API_TICKETS_UPDATE_STATUS,
-  API_TICKETS_WRITE_NFC
 } from '../../constants/api.constants';
 import {BaseResponse} from '../models/response.model';
 import {createSearchRequestParams} from '../utils/request.util';

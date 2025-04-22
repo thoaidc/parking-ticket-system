@@ -57,7 +57,6 @@ export const appConfig: ApplicationConfig = {
     provideTranslateService(),
     provideAnimations(),
     provideToastr(),
-    //MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     { provide: LOCALE_ID, useValue: 'en' }, // Locale configuration
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter }, // Date adapter
     provideHttpClient(
