@@ -89,7 +89,13 @@
   <div class="from-pagination">
     <div class="total">
       <span class="label-total">Tổng: {{ totalItems | number }}</span>
-      <ng-select [items]="PAGINATION_PAGE_SIZE" [(ngModel)]="rolesFilter.size" (ngModelChange)="getRoles()"></ng-select>
+      <ng-select
+        [isOpen]="false"
+        [items]="PAGINATION_PAGE_SIZE"
+        [(ngModel)]="rolesFilter.size"
+        (ngModelChange)="getRoles()"
+      >
+      </ng-select>
     </div>
     <ngb-pagination
       class="pagination"

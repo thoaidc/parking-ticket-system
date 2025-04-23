@@ -192,5 +192,5 @@ export class TicketsComponent implements OnInit {
   protected readonly TicketStatus = TicketStatus;
   protected readonly TICKET_STATUS = TICKET_STATUS;
   protected readonly PAGINATION_PAGE_SIZE = PAGINATION_PAGE_SIZE;
-    protected readonly ICON_PLUS = ICON_PLUS;
+  protected readonly ICON_PLUS = ICON_PLUS;
 }

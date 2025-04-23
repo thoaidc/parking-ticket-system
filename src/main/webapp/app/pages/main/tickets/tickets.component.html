@@ -25,6 +25,7 @@
           bindValue="value"
           [(ngModel)]="ticketsFilter.status"
           [clearable]="false"
+          [isOpen]="false"
           (ngModelChange)="onSearch()"
         >
         </ng-select>
@@ -75,7 +76,6 @@
           <td class="text-center">{{ ticket.uid }}</td>
           <td class="text-center" [ngClass]="ticket.status === TicketStatus.ACTIVE ? 'success-color' : 'danger-color'">
             <span *ngIf="ticket.status === TicketStatus.ACTIVE">Đang hoạt động</span>
-            <span *ngIf="ticket.status === TicketStatus.EXPIRED">Hết hạn</span>
             <span *ngIf="ticket.status === TicketStatus.LOCKED">Đã bị khóa</span>
           </td>
           <td class="text-center">{{ ticket.createdDate | date: 'dd/MM/yyyy HH:mm' }}</td>
@@ -113,7 +113,13 @@
 <div class="from-pagination">
   <div class="total">
     <span class="label-total">Tổng: {{ totalItems | number }}</span>
-    <ng-select [items]="PAGINATION_PAGE_SIZE" [(ngModel)]="ticketsFilter.size" (ngModelChange)="searchTickets()"></ng-select>
+    <ng-select
+      [isOpen]="false"
+      [items]="PAGINATION_PAGE_SIZE"
+      [(ngModel)]="ticketsFilter.size"
+      (ngModelChange)="searchTickets()"
+    >
+    </ng-select>
   </div>
   <ngb-pagination
     class="pagination"

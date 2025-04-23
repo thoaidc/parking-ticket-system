@@ -12,7 +12,6 @@ export interface Ticket {
 
 export enum TicketStatus {
   ACTIVE = 'ACTIVE',
-  EXPIRED = 'EXPIRED',
   LOCKED = 'LOCKED',
   DELETED = 'DELETED'
 }
@@ -25,10 +24,6 @@ export const TICKET_STATUS = [
   {
     value: TicketStatus.ACTIVE,
     name: 'Hoạt động',
-  },
-  {
-    value: TicketStatus.EXPIRED,
-    name: 'Hết hạn',
   },
   {
     value: TicketStatus.LOCKED,

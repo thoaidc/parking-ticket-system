@@ -22,8 +22,10 @@ export const MAIN_ROUTES: Routes = [
     canActivate: [AuthGuardFn]
   },
   {
-    path: 'reports',
-    loadChildren: () => REPORT_ROUTES,
+    path: 'ticket-scan-logs',
+    title: 'Nhật ký sử dụng thẻ',
+    pathMatch: 'full',
+    loadComponent: () => import('./reports/ticket-scan-logs/ticket-scan-logs.component').then(m => m.TicketScanLogsComponent),
     canActivate: [AuthGuardFn]
   }
 ];
@@ -44,37 +46,3 @@ export const ADMIN_ROUTES: Routes = [
     canActivate: [AuthGuardFn]
   },
 ];
-
-export const REPORT_ROUTES: Routes = [
-  {
-    path: 'ticket-scan-logs',
-    title: 'Nhật ký sử dụng thẻ',
-    pathMatch: 'full',
-    loadComponent: () => import('./reports/ticket-scan-logs/ticket-scan-logs.component').then(m => m.TicketScanLogsComponent),
-    canActivate: [AuthGuardFn]
-  },
-  // {
-  //   path: 'customers',
-  //   title: 'Thống kê khách hàng đăng ký',
-  //   pathMatch: 'full',
-  //   loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
-  //   canActivate: [AuthGuardFn]
-  // }
-];
-
-// export const SYSTEM_MANAGEMENT_ROUTES: Routes = [
-//   {
-//     path: '',
-//     title: 'Trang chủ',
-//     pathMatch: 'full',
-//     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
-//     canActivate: [AuthGuardFn]
-//   },
-//   {
-//     path: '',
-//     title: 'Trang chủ',
-//     pathMatch: 'full',
-//     loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
-//     canActivate: [AuthGuardFn]
-//   },
-// ];

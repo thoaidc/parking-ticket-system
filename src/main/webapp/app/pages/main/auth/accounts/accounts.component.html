@@ -22,7 +22,8 @@
           [items]="ACCOUNT_STATUS"
           bindLabel="name"
           bindValue="value"
-          clearable="false"
+          [clearable]="false"
+          [isOpen]="false"
           placeholder="Chọn trạng thái"
           [(ngModel)]="accountsFilter.status"
           (ngModelChange)="onSearch()"
@@ -132,7 +133,13 @@
 <div class="from-pagination">
   <div class="total">
     <span class="label-total">Tổng: {{ totalItems | number }}</span>
-    <ng-select [items]="PAGINATION_PAGE_SIZE" [(ngModel)]="accountsFilter.size" (ngModelChange)="getAccounts()"></ng-select>
+    <ng-select
+      [isOpen]="false"
+      [items]="PAGINATION_PAGE_SIZE"
+      [(ngModel)]="accountsFilter.size"
+      (ngModelChange)="getAccounts()"
+    >
+    </ng-select>
   </div>
   <ngb-pagination
     class="pagination"

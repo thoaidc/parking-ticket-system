@@ -1,13 +1,8 @@
 import {
-  ICON_CONFIG,
   ICON_DASHBOARD,
   ICON_ADMIN_MANAGEMENT,
   ICON_CHART,
-  ICON_HISTORY_LOG,
-  ICON_OTP,
-  ICON_SYSTEM,
   ICON_USER_PERMISSION,
-  ICON_LIST,
   ICON_USER, ICON_CUSTOMER_CARD,
 } from '../../../../shared/utils/icon';
 import {
@@ -16,11 +11,8 @@ import {
   SIDEBAR_ADMIN_AUTHORIZATION_ROLES_MANAGEMENT_TITLE,
   SIDEBAR_CLASS_DROPDOWN,
   SIDEBAR_CLASS_DROPDOWN_ITEM,
-  SIDEBAR_CONFIGS_TITLE,
-  SIDEBAR_HOME_TITLE, SIDEBAR_REPORTS_CUSTOMERS_TITLE, SIDEBAR_REPORTS_TICKET_SCAN_LOGS_TITLE,
-  SIDEBAR_REPORTS_TITLE,
-  SIDEBAR_SYSTEM_LOGGING_MANAGEMENT_TITLE,
-  SIDEBAR_SYSTEM_MANAGEMENT_TITLE,
+  SIDEBAR_HOME_TITLE,
+  SIDEBAR_REPORTS_TICKET_SCAN_LOGS_TITLE,
   SIDEBAR_TICKETS_MANAGEMENT_TITLE
 } from '../../../../constants/sidebar.constant';
 import {Authorities} from '../../../../constants/authorities.constants';
@@ -49,7 +41,7 @@ export const SIDEBAR_ROUTES: SidebarNavItem[] = [
         icon: ICON_USER,
         class: SIDEBAR_CLASS_DROPDOWN_ITEM,
         isExternalLink: false,
-        permission: Authorities.ACCOUNT,
+        permission: Authorities.ACCOUNT
       },
       {
         path: '/roles',
@@ -57,9 +49,9 @@ export const SIDEBAR_ROUTES: SidebarNavItem[] = [
         icon: ICON_USER_PERMISSION,
         class: SIDEBAR_CLASS_DROPDOWN_ITEM,
         isExternalLink: false,
-        permission: Authorities.ROLE,
+        permission: Authorities.ROLE
       }
-    ],
+    ]
   },
   {
     path: '/tickets',
@@ -67,58 +59,14 @@ export const SIDEBAR_ROUTES: SidebarNavItem[] = [
     icon: ICON_CUSTOMER_CARD,
     class: SIDEBAR_CLASS_DROPDOWN_ITEM,
     isExternalLink: false,
-    permission: [],
+    permission: [Authorities.SYSTEM]
   },
   {
-    path: '/reports',
-    title: SIDEBAR_REPORTS_TITLE,
-    icon: ICON_LIST,
-    class: SIDEBAR_CLASS_DROPDOWN,
+    path: '/ticket-scan-logs',
+    title: SIDEBAR_REPORTS_TICKET_SCAN_LOGS_TITLE,
+    icon: ICON_CHART,
+    class: SIDEBAR_CLASS_DROPDOWN_ITEM,
     isExternalLink: false,
-    permission: Authorities.REPORT,
-    submenu: [
-      {
-        path: '/ticket-scan-logs',
-        title: SIDEBAR_REPORTS_TICKET_SCAN_LOGS_TITLE,
-        icon: ICON_CHART,
-        class: SIDEBAR_CLASS_DROPDOWN_ITEM,
-        isExternalLink: false,
-        permission: Authorities.REPORT
-      },
-      {
-        path: '/customers',
-        title: SIDEBAR_REPORTS_CUSTOMERS_TITLE,
-        icon: ICON_OTP,
-        class: SIDEBAR_CLASS_DROPDOWN_ITEM,
-        isExternalLink: false,
-        permission: Authorities.REPORT
-      },
-    ],
-  },
-  {
-    path: '/system',
-    title: SIDEBAR_SYSTEM_MANAGEMENT_TITLE,
-    icon: ICON_SYSTEM,
-    class: SIDEBAR_CLASS_DROPDOWN,
-    isExternalLink: false,
-    permission: [Authorities.SYSTEM],
-    submenu: [
-      {
-        path: '/configs',
-        title: SIDEBAR_CONFIGS_TITLE,
-        icon: ICON_CONFIG,
-        class: SIDEBAR_CLASS_DROPDOWN_ITEM,
-        isExternalLink: false,
-        permission: Authorities.SYSTEM,
-      },
-      {
-        path: '/logs',
-        title: SIDEBAR_SYSTEM_LOGGING_MANAGEMENT_TITLE,
-        icon: ICON_HISTORY_LOG,
-        class: SIDEBAR_CLASS_DROPDOWN_ITEM,
-        isExternalLink: false,
-        permission: Authorities.SYSTEM_VIEW_LOGS,
-      },
-    ],
+    permission: Authorities.REPORT
   }
 ];

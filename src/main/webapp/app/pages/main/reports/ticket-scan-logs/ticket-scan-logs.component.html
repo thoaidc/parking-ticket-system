@@ -19,6 +19,7 @@
           [(ngModel)]="logsFilter.result"
           placeholder="Kết quả quét"
           [clearable]="false"
+          [isOpen]="false"
           (ngModelChange)="onSearch()"
         ></ng-select>
       </div>
@@ -33,6 +34,7 @@
           bindValue="value"
           [(ngModel)]="logsFilter.type"
           [clearable]="false"
+          [isOpen]="false"
           placeholder="Hành động quét"
           (ngModelChange)="onSearch()"
         ></ng-select>
@@ -83,7 +85,13 @@
 <div class="from-pagination">
   <div class="total">
     <span class="label-total">Tổng: {{ totalItems | number }}</span>
-    <ng-select [items]="PAGINATION_PAGE_SIZE" [(ngModel)]="logsFilter.size" (ngModelChange)="getTicketScanLogs()"></ng-select>
+    <ng-select
+      [isOpen]="false"
+      [items]="PAGINATION_PAGE_SIZE"
+      [(ngModel)]="logsFilter.size"
+      (ngModelChange)="getTicketScanLogs()"
+    >
+    </ng-select>
   </div>
   <ngb-pagination
     class="pagination"
