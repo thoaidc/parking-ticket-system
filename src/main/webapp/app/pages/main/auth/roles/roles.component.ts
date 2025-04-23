@@ -41,6 +41,7 @@ export class RolesComponent implements OnInit {
   rolesFilter: RolesFilter = {
     page: 1,
     size: 10,
+    keyword: ''
   };
 
   user: any;
@@ -72,6 +73,10 @@ export class RolesComponent implements OnInit {
     const searchRoleRequest: RolesFilter = {
       ...this.rolesFilter,
       page: this.rolesFilter.page - 1
+    }
+
+    if (this.rolesFilter.keyword) {
+      searchRoleRequest.keyword = this.rolesFilter.keyword;
     }
 
     this.roleService.getRoles(searchRoleRequest).subscribe(response => {
