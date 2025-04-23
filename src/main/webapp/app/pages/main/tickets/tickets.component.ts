@@ -55,8 +55,8 @@ export class TicketsComponent implements OnInit {
     size: 10,
     status: '',
     keyword: '',
-    fromDate: dayjs(),
-    toDate: dayjs()
+    fromDate: dayjs().startOf('day'),
+    toDate: dayjs().endOf('day')
   }
 
   isLoading = false;
@@ -80,8 +80,8 @@ export class TicketsComponent implements OnInit {
       size: 10,
       status: '',
       keyword: '',
-      fromDate: dayjs(),
-      toDate: dayjs()
+      fromDate: dayjs().startOf('day'),
+      toDate: dayjs().endOf('day')
     }
 
     this.onSearch();

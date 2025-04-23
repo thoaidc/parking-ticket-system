@@ -2,11 +2,12 @@ package com.dct.parkingticket.service.impl;
 
 import com.dct.parkingticket.common.Common;
 import com.dct.parkingticket.constants.AccountConstants;
+import com.dct.parkingticket.constants.BaseConstants;
 import com.dct.parkingticket.constants.ExceptionConstants;
 import com.dct.parkingticket.dto.auth.AccountDTO;
 import com.dct.parkingticket.dto.mapping.IAccountDTO;
 import com.dct.parkingticket.dto.mapping.IRoleDTO;
-import com.dct.parkingticket.dto.request.BaseRequestDTO;
+import com.dct.parkingticket.dto.request.AccountFilterSearchRequestDTO;
 import com.dct.parkingticket.dto.request.ChangeAccountPasswordRequestDTO;
 import com.dct.parkingticket.dto.request.CreateAccountRequestDTO;
 import com.dct.parkingticket.dto.request.UpdateAccountRequestDTO;
@@ -27,6 +28,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,14 +58,33 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public BaseResponseDTO getAccountsWithPaging(BaseRequestDTO request) {
+    public BaseResponseDTO getAccountsWithPaging(AccountFilterSearchRequestDTO request) {
+        String fromDate = request.getFromDateSearch(), toDate = request.getToDateSearch();
+        String status = request.getStatus(), keyword = request.getKeyword();
+
+        if (Objects.nonNull(status) && !status.matches(BaseConstants.REGEX.ACCOUNT_STATUS_PATTERN)) {
+            status = null;
+        }
+
+        if (StringUtils.hasText(keyword)) {
+            keyword = "%" + keyword + "%";
+        } else {
+            keyword = null;
+        }
+
         if (request.getPageable().isPaged()) {
-            Page<IAccountDTO> accountsWithPaged = accountRepository.findAllWithPaging(request.getPageable());
+            Page<IAccountDTO> accountsWithPaged = accountRepository.findAllWithPaging(
+                status,
+                keyword,
+                fromDate,
+                toDate,
+                request.getPageable()
+            );
             List<IAccountDTO> accounts = accountsWithPaged.getContent();
             return BaseResponseDTO.builder().total(accountsWithPaged.getTotalElements()).ok(accounts);
         }
 
-        return BaseResponseDTO.builder().ok(accountRepository.findAllNonPaging());
+        return BaseResponseDTO.builder().ok(accountRepository.findAllNonPaging(status, keyword, fromDate, toDate));
     }
 
     @Override

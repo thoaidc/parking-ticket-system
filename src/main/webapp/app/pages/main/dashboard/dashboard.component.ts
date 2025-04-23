@@ -22,6 +22,7 @@ import {
   Legend,
   Title,
 } from 'chart.js';
+import {Dayjs} from 'dayjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,7 +38,7 @@ import {
 })
 export class DashboardComponent implements OnInit {
   public chart: any;
-  periods: any = 4;
+  periods: any = 1;
 
   listType: { value: string, name: string, disabled: boolean }[] = [
     {
@@ -62,8 +63,8 @@ export class DashboardComponent implements OnInit {
     type: ''
   };
 
-  fromDate: dayjs.Dayjs | any;
-  toDate: dayjs.Dayjs | any;
+  fromDate: Dayjs = dayjs().startOf('day');
+  toDate: Dayjs = dayjs().endOf('day');
   ticketScanLogs: TicketScanLogsReport[] = [];
 
   constructor(
@@ -73,9 +74,6 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fromDate = dayjs(dayjs().subtract(1, 'month'), 'DD/MM/YYYY');
-    this.toDate = dayjs(dayjs(), 'DD/MM/YYYY');
-
     Chart.register(
       BarController,
       BarElement,
@@ -116,22 +114,6 @@ export class DashboardComponent implements OnInit {
       }
     }
 
-    if (typeof this.fromDate == 'string') {
-      if (this.fromDate.length <= 9 && this.fromDate.length != 0) {
-        return;
-      }
-
-      this.fromDate = dayjs(this.fromDate, 'DD/MM/YYYY');
-    }
-
-    if (typeof this.toDate == 'string') {
-      if (this.toDate.length <= 9 && this.toDate.length != 0) {
-        return;
-      }
-
-      this.toDate = dayjs(this.toDate, 'DD/MM/YYYY');
-    }
-
     if (this.toDate.diff(this.fromDate, 'day') > 31) {
       if (this.ticketScanLogsFilter.groupType != 'HOURS') {
         this.ticketScanLogsFilter.groupType = 'MONTH';
@@ -155,8 +137,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getTicketScanLogsCountByType() {
-    this.ticketScanLogsFilter.fromDate = this.utilService.convertToDateString(this.fromDate, 'YYYY-MM-DD HH:mm:ss');
-    this.ticketScanLogsFilter.toDate = this.utilService.convertToDateString(this.toDate, 'YYYY-MM-DD HH:mm:ss');
+    this.ticketScanLogsFilter.fromDate = this.utilService.convertToDateString(this.fromDate.toString(), 'YYYY-MM-DD HH:mm:ss');
+    this.ticketScanLogsFilter.toDate = this.utilService.convertToDateString(this.toDate.toString(), 'YYYY-MM-DD HH:mm:ss');
     this.ticketScanLogs = [];
 
     this.ticketService.getTicketScanLogStatistics(this.ticketScanLogsFilter).subscribe(ticketScanLogsReport => {

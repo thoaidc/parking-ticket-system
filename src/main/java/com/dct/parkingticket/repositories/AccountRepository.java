@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,22 +20,47 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query(
         value = """
-            SELECT id, username, fullname, email, phone, status, created_by as createdBy, created_date as createdDate
-            FROM account WHERE status <> 'DELETED'
+            SELECT a.id, a.username, a.fullname, a.email, a.phone, a.status,
+                   a.created_by as createdBy, a.created_date as createdDate
+            FROM account a
+            WHERE status <> 'DELETED'
+                AND (:status IS NULL OR a.status = :status)
+                AND (:keyword IS NULL OR (a.username LIKE :keyword OR a.fullname LIKE :keyword OR a.email LIKE :keyword))
+                AND (:fromDate IS NULL OR a.created_date >= :fromDate)
+                AND (:toDate IS NULL OR a.created_date <= :toDate)
+            ORDER BY a.created_date DESC
         """,
         nativeQuery = true
     )
-    Page<IAccountDTO> findAllWithPaging(Pageable pageable);
+    Page<IAccountDTO> findAllWithPaging(
+        @Param("status") String status,
+        @Param("keyword") String keyword,
+        @Param("fromDate") String fromDate,
+        @Param("toDate") String toDate,
+        Pageable pageable
+    );
 
     @Query(
         value = """
-            SELECT id, username, fullname, email, phone, status, created_by as createdBy, created_date as createdDate
-            FROM account
-            WHERE status <> 'DELETED' LIMIT 20
+            SELECT a.id, a.username, a.fullname, a.email, a.phone, a.status,
+                   a.created_by as createdBy, a.created_date as createdDate
+            FROM account a
+            WHERE status <> 'DELETED'
+                AND (:status IS NULL OR a.status = :status)
+                AND (:keyword IS NULL OR (a.username LIKE :keyword OR a.fullname LIKE :keyword OR a.email LIKE :keyword))
+                AND (:fromDate IS NULL OR a.created_date >= :fromDate)
+                AND (:toDate IS NULL OR a.created_date <= :toDate)
+            ORDER BY a.created_date DESC
+            LIMIT 20
         """,
         nativeQuery = true
     )
-    List<IAccountDTO> findAllNonPaging();
+    List<IAccountDTO> findAllNonPaging(
+        @Param("status") String status,
+        @Param("keyword") String keyword,
+        @Param("fromDate") String fromDate,
+        @Param("toDate") String toDate
+    );
 
     @Query(
         value = """

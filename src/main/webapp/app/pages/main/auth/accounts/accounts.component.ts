@@ -61,10 +61,11 @@ export class AccountsComponent implements OnInit {
   AccountStatus = AccountStatus;
   accountsFilter: AccountsFilter = {
     page: 1,
-    size: 20,
+    size: 10,
     status: '',
-    fromDate: dayjs(),
-    toDate: dayjs(),
+    keyword: '',
+    fromDate: dayjs().startOf('day'),
+    toDate: dayjs().endOf('day')
   };
   accounts: Account[] = [];
   totalItems = 0;
@@ -96,10 +97,11 @@ export class AccountsComponent implements OnInit {
     this.periods = 1;
     this.accountsFilter = {
       page: 1,
-      size: 20,
+      size: 10,
       status: '',
-      fromDate: dayjs(),
-      toDate: dayjs()
+      keyword: '',
+      fromDate: dayjs().startOf('day'),
+      toDate: dayjs().endOf('day')
     };
 
     this.onSearch();
@@ -120,9 +122,12 @@ export class AccountsComponent implements OnInit {
   getAccounts() {
     const searchAccountsRequest: SearchAccountRequest = {
       page: this.accountsFilter.page - 1,
-      size: this.accountsFilter.size,
-      keyword: this.accountsFilter.keyword
+      size: this.accountsFilter.size
     };
+
+    if (this.accountsFilter.keyword) {
+      searchAccountsRequest.keyword = this.accountsFilter.keyword;
+    }
 
     if (Object.values(AccountStatus).includes(this.accountsFilter.status as AccountStatus)) {
       searchAccountsRequest.status = this.accountsFilter.status;

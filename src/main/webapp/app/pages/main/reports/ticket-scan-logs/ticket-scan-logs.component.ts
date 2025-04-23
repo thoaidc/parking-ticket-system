@@ -52,8 +52,8 @@ export class TicketScanLogsComponent implements OnInit {
     size: 10,
     result: '',
     type: '',
-    fromDate: dayjs(),
-    toDate: dayjs()
+    fromDate: dayjs().startOf('day'),
+    toDate: dayjs().endOf('day')
   };
 
   constructor(
@@ -73,8 +73,8 @@ export class TicketScanLogsComponent implements OnInit {
       size: 10,
       result: '',
       type: '',
-      fromDate: dayjs(),
-      toDate: dayjs()
+      fromDate: dayjs().startOf('day'),
+      toDate: dayjs().endOf('day')
     };
 
     this.onSearch();

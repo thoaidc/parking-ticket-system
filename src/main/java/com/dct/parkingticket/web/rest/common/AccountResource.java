@@ -4,6 +4,7 @@ import com.dct.parkingticket.aop.annotation.CheckAuthorize;
 import com.dct.parkingticket.constants.ExceptionConstants;
 import com.dct.parkingticket.constants.RoleConstants;
 import com.dct.parkingticket.dto.auth.AccountDTO;
+import com.dct.parkingticket.dto.request.AccountFilterSearchRequestDTO;
 import com.dct.parkingticket.dto.request.BaseRequestDTO;
 import com.dct.parkingticket.dto.request.ChangeAccountPasswordRequestDTO;
 import com.dct.parkingticket.dto.request.CreateAccountRequestDTO;
@@ -47,7 +48,7 @@ public class AccountResource {
 
     @GetMapping
     @CheckAuthorize(authorities = RoleConstants.Account.VIEW)
-    public BaseResponseDTO getAccountsWithPaging(@ModelAttribute BaseRequestDTO request) {
+    public BaseResponseDTO getAccountsWithPaging(@ModelAttribute AccountFilterSearchRequestDTO request) {
         return accountService.getAccountsWithPaging(request);
     }
 
