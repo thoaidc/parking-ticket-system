@@ -10,10 +10,10 @@ export interface Account {
   phone?: string;
   address?: string;
   deviceId?: string;
-  createdTime?: string;
-  updatedTime?: string;
   createdBy?: string;
+  createdDate?: string;
   lastModifiedBy?: string;
+  lastModifiedDate?: string;
   authorities?: string[];
 }
 
@@ -102,7 +102,7 @@ export interface UpdateAccountRequest {
 }
 
 export interface UpdateAccountStatusRequest {
-  id: number;
+  accountId: number;
   status: string;
 }
 

@@ -148,7 +148,7 @@ export class AccountsComponent implements OnInit {
     });
   }
 
-  onAccountDetail(accountId?: number) {
+  onAccountDetail(accountId?: number, isOnlyView?: boolean) {
     let roles: string[] = JSON.parse(localStorage.getItem(LOCAL_USER_AUTHORITIES_KEY) || '') as string[];
 
     if (roles && (!roles.includes(Authorities.ACCOUNT_VIEW) || !roles.includes(Authorities.ROLE_VIEW))) {
@@ -158,10 +158,11 @@ export class AccountsComponent implements OnInit {
 
     this.modalRef = this.modalService.open(ModalAccountInfoComponent, { size: 'lg', backdrop: 'static' });
     this.modalRef.componentInstance.accountId = accountId || 0;
+    this.modalRef.componentInstance.isOnlyView = isOnlyView;
     this.modalRef.closed.subscribe(() => this.getAccounts());
   }
 
-  updateUserStatus(accountId: any, status: any) {
+  updateUserStatus(accountId: number, status: string) {
     this.modalRef = this.modalService.open(ModalConfirmDialogComponent, { backdrop: 'static' });
 
     switch (status) {
@@ -180,7 +181,7 @@ export class AccountsComponent implements OnInit {
 
     this.modalRef.closed.subscribe((isConfirmed?: boolean) => {
       if (isConfirmed) {
-        const request: UpdateAccountStatusRequest = { id: accountId, status: status };
+        const request: UpdateAccountStatusRequest = { accountId: accountId, status: status };
 
         this.accountService.updateAccountStatus(request).subscribe(response => {
           if (response && response.status) {

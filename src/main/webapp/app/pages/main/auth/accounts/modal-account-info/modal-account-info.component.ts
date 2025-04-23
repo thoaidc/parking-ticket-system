@@ -15,7 +15,6 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {
   AccountDetail,
   AccountStatus,
-  Authority,
   CreateAccountRequest,
   UpdateAccountRequest
 } from '../../../../../core/models/account.model';
@@ -37,14 +36,13 @@ import {Role, RolesFilter} from '../../../../../core/models/role.model';
 })
 export class ModalAccountInfoComponent implements OnInit {
   accountId: number = 0;
-  accountDetail: AccountDetail = { id: 0, username: '', email: '', status: AccountStatus.ACTIVE };
-
-  accountData = { username: '', fullname: '', email: '', password: '', phone: '', roles: [] }
-
+  accountDetail: AccountDetail = { id: 0, username: '', email: '', password: '', status: AccountStatus.ACTIVE };
   roles: Role[] = [];
+  password: string = '';
   isLoading = false;
   hiddenPassword = true;
   isOnlyView: boolean = true;
+  authorities: number[] = [];
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -62,6 +60,10 @@ export class ModalAccountInfoComponent implements OnInit {
       this.accountsService.getAccountDetail(this.accountId).subscribe(response => {
         if (response) {
           this.accountDetail = response;
+
+          if (this.accountDetail.authorities) {
+            this.authorities = this.accountDetail.authorities.map(authority => authority.id);
+          }
         }
       });
     }
@@ -69,7 +71,7 @@ export class ModalAccountInfoComponent implements OnInit {
     this.getRoles();
   }
 
-  compareRoles = (a: Authority, b: Authority) => a && b && a.id === b.id;
+  // compareRoles = (a: Authority, b: Authority) => a && b && a.id === b.id;
 
   onSave() {
     if (!this.accountDetail.username) {
@@ -82,7 +84,7 @@ export class ModalAccountInfoComponent implements OnInit {
       return;
     }
 
-    if (this.accountDetail.id > 0) {
+    if (!this.accountDetail.id || this.accountDetail.id <= 0) {
       if (!this.accountDetail.password) {
         this.toast.error('Mật khẩu không được để trống', 'Thông báo');
         return;
@@ -91,7 +93,7 @@ export class ModalAccountInfoComponent implements OnInit {
       }
     }
 
-    if (!this.accountDetail.authorities || this.accountDetail.authorities.length == 0) {
+    if (!this.authorities || this.authorities.length == 0) {
       this.toast.error('Vai trò không được để trống', 'Thông báo');
       return;
     }
@@ -99,17 +101,18 @@ export class ModalAccountInfoComponent implements OnInit {
     const updateAccountRequest: UpdateAccountRequest = {
       id: this.accountDetail.id,
       username: this.accountDetail.username,
-      phone: this.accountDetail.phone,
+      fullname: this.accountDetail.fullname,
       email: this.accountDetail.email,
       status: this.accountDetail.status,
-      roleIds: this.accountDetail.authorities.map(authority => authority.id)
+      roleIds: this.authorities
     }
 
     const createAccountRequest: CreateAccountRequest = {
       username: this.accountDetail.username,
       password: this.accountDetail.password || '',
+      fullname: this.accountDetail.fullname,
       email: this.accountDetail.email,
-      roleIds: [1]
+      roleIds: this.authorities
     }
 
     if (!this.accountDetail.id) {

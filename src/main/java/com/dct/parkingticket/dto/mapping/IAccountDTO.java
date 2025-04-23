@@ -9,4 +9,6 @@ public interface IAccountDTO {
     String getPhone();
     String getStatus();
     String getDeviceId();
+    String getCreatedBy();
+    String getCreatedDate();
 }

@@ -18,13 +18,20 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query(
-        value = "SELECT id, username, fullname, email, phone, status FROM account WHERE status <> 'DELETED'",
+        value = """
+            SELECT id, username, fullname, email, phone, status, created_by as createdBy, created_date as createdDate
+            FROM account WHERE status <> 'DELETED'
+        """,
         nativeQuery = true
     )
     Page<IAccountDTO> findAllWithPaging(Pageable pageable);
 
     @Query(
-        value = "SELECT id, username, fullname, email, phone, status FROM account WHERE status <> 'DELETED' LIMIT 20",
+        value = """
+            SELECT id, username, fullname, email, phone, status, created_by as createdBy, created_date as createdDate
+            FROM account
+            WHERE status <> 'DELETED' LIMIT 20
+        """,
         nativeQuery = true
     )
     List<IAccountDTO> findAllNonPaging();
@@ -47,15 +54,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
         nativeQuery = true
     )
     Optional<IAuthenticationDTO> findAuthenticationByUsername(String username);
-
-    @Query(
-        value = """
-            SELECT a.id, a.username, a.password, a.email, a.status, a.device_id as deviceId
-            FROM account a WHERE a.email = ?1 AND status <> 'DELETED'
-        """,
-        nativeQuery = true
-    )
-    Optional<IAuthenticationDTO> findAuthenticationByEmail(String email);
 
     boolean existsByUsernameOrEmail(String username, String email);
 

@@ -1,6 +1,10 @@
 <div class="title-feature form-space-between">
   <span>Danh sách tài khoản</span>
-  <button class="success-button-dialog ms-3" (click)="onAccountDetail()" *hasAuthorities="Authorities.ACCOUNT_CREATE">
+  <button
+    class="success-button-dialog ms-3"
+    (click)="onAccountDetail(0, false)"
+    *hasAuthorities="Authorities.ACCOUNT_CREATE"
+  >
     <span [innerHTML]="ICON_PLUS | safeHtml"></span>
     Tạo tài khoản
   </button>
@@ -70,26 +74,26 @@
     <tbody>
       <ng-container *ngFor="let account of accounts; index as i">
         <tr [ngClass]="{ 'odd-row': i % 2 === 1, 'even-row': i % 2 === 0 }" class="table-custom-body">
-          <td class="text-center" (click)="onAccountDetail(account.id)">{{ i + 1 + (accountsFilter.page - 1) * accountsFilter.size }}</td>
-          <td class="text-center" (click)="onAccountDetail(account.id)">{{ account.username }}</td>
-          <td class="text-center" (click)="onAccountDetail(account.id)">{{ account.fullname }}</td>
-          <td class="text-center" (click)="onAccountDetail(account.id)"
+          <td class="text-center" (click)="onAccountDetail(account.id, true)">{{ i + 1 + (accountsFilter.page - 1) * accountsFilter.size }}</td>
+          <td class="text-center" (click)="onAccountDetail(account.id, true)">{{ account.username }}</td>
+          <td class="text-center" (click)="onAccountDetail(account.id, true)">{{ account.fullname }}</td>
+          <td class="text-center" (click)="onAccountDetail(account.id, true)"
               [ngClass]="account.status === AccountStatus.ACTIVE ? 'success-color' : 'danger-color'"
           >
             <span *ngIf="account.status === AccountStatus.ACTIVE">Đang hoạt động</span>
             <span *ngIf="account.status === AccountStatus.INACTIVE">Ngưng hoạt động</span>
             <span *ngIf="account.status === AccountStatus.LOCKED">Đã bị khóa</span>
           </td>
-          <td class="text-center" (click)="onAccountDetail(account.id)">
-            {{ account.createdTime | date: 'dd/MM/yyyy' }}
+          <td class="text-center" (click)="onAccountDetail(account.id, true)">
+            {{ account.createdDate | date: 'dd/MM/yyyy' }}
           </td>
-          <td class="text-center" (click)="onAccountDetail(account.id)">{{ account.createdBy }}</td>
+          <td class="text-center" (click)="onAccountDetail(account.id, true)">{{ account.createdBy }}</td>
           <td>
             <div class="action-table">
               <ng-container>
                 <span
                   [innerHTML]="ICON_UPDATE | safeHtml"
-                  (click)="onAccountDetail(account.id)"
+                  (click)="onAccountDetail(account.id, false)"
                   ngbTooltip="Cập nhật tài khoản"
                   *hasAuthorities="Authorities.ACCOUNT_UPDATE"
                 ></span>
@@ -98,13 +102,13 @@
                 <span
                   *ngIf="account.status === AccountStatus.ACTIVE && account.username.toLowerCase() !== userName.toLowerCase()"
                   [innerHTML]="ICON_STOP | safeHtml"
-                  (click)="updateUserStatus(account.id, AccountStatus.INACTIVE)"
+                  (click)="updateUserStatus(account.id || 0, AccountStatus.INACTIVE)"
                   ngbTooltip="Dừng hoạt động"
                 ></span>
                 <span
                   *ngIf="account.status === AccountStatus.INACTIVE && account.username.toLowerCase() !== userName.toLowerCase()"
                   [innerHTML]="ICON_PLAY | safeHtml"
-                  (click)="updateUserStatus(account.id, AccountStatus.ACTIVE)"
+                  (click)="updateUserStatus(account.id || 0, AccountStatus.ACTIVE)"
                   ngbTooltip="Cấp phép hoạt động"
                 ></span>
               </ng-container>

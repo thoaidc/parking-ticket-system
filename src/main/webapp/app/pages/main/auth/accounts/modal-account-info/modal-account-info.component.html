@@ -11,11 +11,12 @@
         <input
           id="username-login"
           class="form-control"
-          [(ngModel)]="accountData.username"
+          [(ngModel)]="accountDetail.username"
           type="text"
           placeholder="Tên đăng nhập"
           alphanumericOnly
           autocomplete="off"
+          [disabled]="isOnlyView"
         />
       </div>
     </div>
@@ -23,7 +24,14 @@
     <div class="item-search w-50">
       <label for="fullname">Họ và tên</label>
       <div class="input-text-custom">
-        <input id="fullname" class="form-control" [(ngModel)]="accountData.fullname" type="text" placeholder="Tên đầy đủ"/>
+        <input
+          id="fullname"
+          class="form-control"
+          [(ngModel)]="accountDetail.fullname"
+          type="text"
+          placeholder="Tên đầy đủ"
+          [disabled]="isOnlyView"
+        />
       </div>
     </div>
 
@@ -33,10 +41,11 @@
         <input
           id="email-login"
           class="form-control"
-          [(ngModel)]="accountData.email"
+          [(ngModel)]="accountDetail.email"
           type="email"
           placeholder="Email"
           autocomplete="off"
+          [disabled]="isOnlyView"
         />
       </div>
     </div>
@@ -52,10 +61,10 @@
         [multiple]="true"
         [selectableGroup]="true"
         placeholder="Chọn vai trò"
-        [(ngModel)]="accountData.roles"
-        [compareWith]="compareRoles"
+        [(ngModel)]="authorities"
         [closeOnSelect]="false"
         name="roleList"
+        [disabled]="isOnlyView"
       >
       </ng-select>
     </div>
@@ -68,7 +77,7 @@
         <input
           id="password-login"
           class="form-control"
-          [(ngModel)]="accountData.password"
+          [(ngModel)]="accountDetail.password"
           type="text"
           placeholder="Mật khẩu"
           alphanumericOnly
@@ -76,6 +85,7 @@
           [specialCharacter]="true"
           autocomplete="off"
           name="password"
+          [disabled]="isOnlyView"
         />
         <div *ngIf="!hiddenPassword" class="display-password" (click)="hiddenPassword = !hiddenPassword">
           <span [innerHTML]="ICON_EYE | safeHtml"></span>
