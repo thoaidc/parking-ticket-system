@@ -52,8 +52,9 @@ export class TicketsComponent implements OnInit {
   totalItems: any = 0;
   ticketsFilter: TicketFilter = {
     page: 1,
-    size: 20,
+    size: 10,
     status: '',
+    keyword: '',
     fromDate: dayjs(),
     toDate: dayjs()
   }
@@ -73,10 +74,14 @@ export class TicketsComponent implements OnInit {
   }
 
   onReload() {
+    this.periods = 1;
     this.ticketsFilter = {
       page: 1,
-      size: 20,
-      status: ''
+      size: 10,
+      status: '',
+      keyword: '',
+      fromDate: dayjs(),
+      toDate: dayjs()
     }
 
     this.onSearch();
@@ -102,6 +107,10 @@ export class TicketsComponent implements OnInit {
 
     if (Object.values(TicketStatus).includes(this.ticketsFilter.status as TicketStatus)) {
       searchTicketsRequest.status = this.ticketsFilter.status;
+    }
+
+    if (this.ticketsFilter.keyword) {
+      searchTicketsRequest.keyword = this.ticketsFilter.keyword;
     }
 
     if (this.ticketsFilter.fromDate) {

@@ -1,5 +1,9 @@
 package com.dct.parkingticket.dto.request;
 
+import com.dct.parkingticket.common.DateUtils;
+import com.dct.parkingticket.constants.DatetimeConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -7,6 +11,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
 /**
@@ -18,6 +23,7 @@ public class BaseRequestDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+    private static final Logger log = LoggerFactory.getLogger(BaseRequestDTO.class);
     private Integer page;
     private Integer size;
     private String sort;
@@ -49,6 +55,38 @@ public class BaseRequestDTO implements Serializable {
         }
 
         return PageRequest.of(page, size);
+    }
+
+    public String getFromDateSearch() {
+        if (StringUtils.hasText(fromDate)) {
+            try {
+                return DateUtils.ofLocalDateTime(
+                    fromDate,
+                    DatetimeConstants.Formatter.DEFAULT,
+                    DatetimeConstants.ZoneID.ASIA_HO_CHI_MINH
+                ).toString();
+            } catch (DateTimeParseException e) {
+                log.error("Could not parse fromDate from request, skip filter by fromDate. {}", e.getMessage());
+            }
+        }
+
+        return null;
+    }
+
+    public String getToDateSearch() {
+        if (StringUtils.hasText(toDate)) {
+            try {
+                return DateUtils.ofLocalDateTime(
+                    toDate,
+                    DatetimeConstants.Formatter.DEFAULT,
+                    DatetimeConstants.ZoneID.ASIA_HO_CHI_MINH
+                ).toString();
+            } catch (DateTimeParseException e) {
+                log.error("Could not parse toDate from request, skip filter by toDate. {}", e.getMessage());
+            }
+        }
+
+        return null;
     }
 
     public Integer getPage() {

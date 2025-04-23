@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,20 +23,44 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     @Query(
         value = """
             SELECT t.id, t.status, t.uid, t.created_by as createdBy, t.created_date as createdDate
-            FROM ticket t WHERE status <> 'DELETED'
+            FROM ticket t
+            WHERE status <> 'DELETED'
+                AND (:status IS NULL OR t.status = :status)
+                AND (:keyword IS NULL OR t.uid LIKE :keyword)
+                AND (:fromDate IS NULL OR t.created_date >= :fromDate)
+                AND (:toDate IS NULL OR t.created_date <= :toDate)
+            ORDER BY t.created_date DESC
         """,
         nativeQuery = true
     )
-    Page<ITicketDTO> findAllWithPaging(Pageable pageable);
+    Page<ITicketDTO> findAllWithPaging(
+        @Param("status") String status,
+        @Param("keyword") String keyword,
+        @Param("fromDate") String fromDate,
+        @Param("toDate") String toDate,
+        Pageable pageable
+    );
 
     @Query(
         value = """
             SELECT t.id, t.status, t.uid, t.created_by as createdBy, t.created_date as createdDate
-            FROM ticket t WHERE status <> 'DELETED' LIMIT 20
+            FROM ticket t
+            WHERE status <> 'DELETED'
+                AND (:status IS NULL OR t.status = :status)
+                AND (:keyword IS NULL OR t.uid LIKE :keyword)
+                AND (:fromDate IS NULL OR t.created_date >= :fromDate)
+                AND (:toDate IS NULL OR t.created_date <= :toDate)
+            ORDER BY t.created_date DESC
+            LIMIT 20
         """,
         nativeQuery = true
     )
-    List<ITicketDTO> findAllNonPaging();
+    List<ITicketDTO> findAllNonPaging(
+        @Param("status") String status,
+        @Param("keyword") String keyword,
+        @Param("fromDate") String fromDate,
+        @Param("toDate") String toDate
+    );
 
     @Modifying
     @Query(value = "UPDATE ticket SET status = ?2 WHERE uid = ?1", nativeQuery = true)

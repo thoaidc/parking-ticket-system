@@ -1,7 +1,7 @@
 package com.dct.parkingticket.web.rest;
 
+import com.dct.parkingticket.dto.esp32.TicketFilterRequestDTO;
 import com.dct.parkingticket.dto.esp32.TicketScanLogFilterRequestDTO;
-import com.dct.parkingticket.dto.request.BaseRequestDTO;
 import com.dct.parkingticket.dto.request.TicketScanLogStatisticRequestDTO;
 import com.dct.parkingticket.dto.request.UpdateTicketStatusRequestDTO;
 import com.dct.parkingticket.dto.response.BaseResponseDTO;
@@ -29,7 +29,7 @@ public class TicketManagementResource {
     }
 
     @GetMapping
-    public BaseResponseDTO getAllTicketsWithPaging(@ModelAttribute BaseRequestDTO requestDTO) {
+    public BaseResponseDTO getAllTicketsWithPaging(@ModelAttribute TicketFilterRequestDTO requestDTO) {
         return ticketManagementService.getAllTicketsWithPaging(requestDTO);
     }
 

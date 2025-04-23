@@ -1,5 +1,6 @@
 package com.dct.parkingticket.service;
 
+import com.dct.parkingticket.dto.esp32.TicketFilterRequestDTO;
 import com.dct.parkingticket.dto.esp32.TicketScanLogFilterRequestDTO;
 import com.dct.parkingticket.dto.request.BaseRequestDTO;
 import com.dct.parkingticket.dto.request.TicketScanLogStatisticRequestDTO;
@@ -11,7 +12,7 @@ public interface TicketManagementService {
 
     BaseResponseDTO createNewTicket();
 
-    BaseResponseDTO getAllTicketsWithPaging(BaseRequestDTO request);
+    BaseResponseDTO getAllTicketsWithPaging(TicketFilterRequestDTO request);
 
     BaseResponseDTO updateTicketStatus(String uid, String status);
 

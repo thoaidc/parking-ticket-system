@@ -1,17 +1,15 @@
 package com.dct.parkingticket.service.impl;
 
 import com.dct.parkingticket.common.Common;
-import com.dct.parkingticket.common.DateUtils;
 import com.dct.parkingticket.common.JsonUtils;
-import com.dct.parkingticket.constants.DatetimeConstants;
 import com.dct.parkingticket.constants.Esp32Constants;
 import com.dct.parkingticket.constants.ExceptionConstants;
 import com.dct.parkingticket.dto.esp32.Message;
+import com.dct.parkingticket.dto.esp32.TicketFilterRequestDTO;
 import com.dct.parkingticket.dto.esp32.TicketScanLogFilterRequestDTO;
 import com.dct.parkingticket.dto.mapping.ITicketDTO;
 import com.dct.parkingticket.dto.mapping.ITicketScanLogDTO;
 import com.dct.parkingticket.dto.mapping.TicketScanLogStatisticDTO;
-import com.dct.parkingticket.dto.request.BaseRequestDTO;
 import com.dct.parkingticket.dto.request.TicketScanLogStatisticRequestDTO;
 import com.dct.parkingticket.dto.response.BaseResponseDTO;
 import com.dct.parkingticket.entity.Ticket;
@@ -141,14 +139,33 @@ public class TicketManagementServiceImpl implements TicketManagementService {
     }
 
     @Override
-    public BaseResponseDTO getAllTicketsWithPaging(BaseRequestDTO request) {
+    public BaseResponseDTO getAllTicketsWithPaging(TicketFilterRequestDTO request) {
+        String fromDate = request.getFromDateSearch(), toDate = request.getToDateSearch();
+        String status = request.getStatus(), keyword = request.getKeyword();
+
+        if (Objects.nonNull(status) && !status.matches(Esp32Constants.TicketStatus.PATTERN)) {
+            status = null;
+        }
+
+        if (StringUtils.hasText(keyword)) {
+            keyword = "%" + keyword + "%";
+        } else {
+            keyword = null;
+        }
+
         if (request.getPageable().isPaged()) {
-            Page<ITicketDTO> ticketsWithPaged = ticketRepository.findAllWithPaging(request.getPageable());
+            Page<ITicketDTO> ticketsWithPaged = ticketRepository.findAllWithPaging(
+                status,
+                keyword,
+                fromDate,
+                toDate,
+                request.getPageable()
+            );
             List<ITicketDTO> tickets = ticketsWithPaged.getContent();
             return BaseResponseDTO.builder().total(ticketsWithPaged.getTotalElements()).ok(tickets);
         }
 
-        return BaseResponseDTO.builder().ok(ticketRepository.findAllNonPaging());
+        return BaseResponseDTO.builder().ok(ticketRepository.findAllNonPaging(status, keyword, fromDate, toDate));
     }
 
     @Override
@@ -171,7 +188,7 @@ public class TicketManagementServiceImpl implements TicketManagementService {
 
     @Override
     public BaseResponseDTO getAllScanLogsWithPaging(TicketScanLogFilterRequestDTO request) {
-        String fromDate = request.getFromDate(), toDate = request.getToDate();
+        String fromDate = request.getFromDateSearch(), toDate = request.getToDateSearch();
         String type = request.getType(), result = request.getResult();
 
         if (Objects.nonNull(type) && !type.matches(Esp32Constants.TicketScanType.PATTERN)) {
@@ -180,26 +197,6 @@ public class TicketManagementServiceImpl implements TicketManagementService {
 
         if (Objects.nonNull(result) && !result.matches(Esp32Constants.TicketScanResult.PATTERN)) {
             result = null;
-        }
-
-        if (StringUtils.hasText(fromDate)) {
-            fromDate = DateUtils.ofLocalDateTime(
-                fromDate,
-                DatetimeConstants.Formatter.DEFAULT,
-                DatetimeConstants.ZoneID.ASIA_HO_CHI_MINH
-            ).toString();
-        } else {
-            fromDate = null;
-        }
-
-        if (StringUtils.hasText(toDate)) {
-            toDate = DateUtils.ofLocalDateTime(
-                toDate,
-                DatetimeConstants.Formatter.DEFAULT,
-                DatetimeConstants.ZoneID.ASIA_HO_CHI_MINH
-            ).toString();
-        } else {
-            toDate = null;
         }
 
         if (request.getPageable().isPaged()) {
