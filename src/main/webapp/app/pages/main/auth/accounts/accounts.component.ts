@@ -130,12 +130,12 @@ export class AccountsComponent implements OnInit {
 
     if (this.accountsFilter.fromDate) {
       const fromDate = this.accountsFilter.fromDate.toString();
-      searchAccountsRequest.fromDate = this.utilsService.convertToDateString(fromDate, 'YYYY/MM/DD');
+      searchAccountsRequest.fromDate = this.utilsService.convertToDateString(fromDate, 'YYYY-MM-DD HH:mm:ss');
     }
 
     if (this.accountsFilter.toDate) {
       const toDate = this.accountsFilter.toDate.toString();
-      searchAccountsRequest.toDate = this.utilsService.convertToDateString(toDate, 'YYYY/MM/DD');
+      searchAccountsRequest.toDate = this.utilsService.convertToDateString(toDate, 'YYYY-MM-DD HH:mm:ss');
     }
 
     this.accountService.getAccountsWithPaging(searchAccountsRequest).subscribe((response) => {

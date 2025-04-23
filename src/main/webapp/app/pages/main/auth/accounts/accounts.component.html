@@ -23,7 +23,6 @@
           bindLabel="name"
           bindValue="value"
           [clearable]="false"
-          [isOpen]="false"
           placeholder="Chọn trạng thái"
           [(ngModel)]="accountsFilter.status"
           (ngModelChange)="onSearch()"
@@ -134,7 +133,6 @@
   <div class="total">
     <span class="label-total">Tổng: {{ totalItems | number }}</span>
     <ng-select
-      [isOpen]="false"
       [items]="PAGINATION_PAGE_SIZE"
       [(ngModel)]="accountsFilter.size"
       (ngModelChange)="getAccounts()"

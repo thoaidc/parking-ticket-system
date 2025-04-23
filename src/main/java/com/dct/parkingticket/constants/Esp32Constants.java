@@ -6,17 +6,15 @@ public interface Esp32Constants {
         int WRITE_NFC = 1;
         int READ_TICKET_ACTIVE = 2;
         int READ_TICKET_LOCKED = 3;
-        int READ_TICKET_EXPIRED = 4;
-        int READ_TICKET_INVALID = 5;
-        int READ_TICKET_NOT_FOUND = 6;
+        int READ_TICKET_INVALID = 4;
+        int READ_TICKET_NOT_FOUND = 5;
     }
 
     interface TicketStatus {
         String ACTIVE = "ACTIVE";
-        String EXPIRED = "EXPIRED";
         String LOCKED = "LOCKED";
         String DELETED = "DELETED";
-        String PATTERN = "^(ACTIVE|EXPIRED|LOCKED|DELETED)$";
+        String PATTERN = "^(ACTIVE|LOCKED|DELETED)$";
     }
 
     interface RequestAction {
@@ -42,6 +40,7 @@ public interface Esp32Constants {
     interface TicketScanResult {
         String VALID = "SCAN_VALID";
         String ERROR = "SCAN_ERROR";
+        String PATTERN = "^(SCAN_VALID|SCAN_ERROR)$";
     }
 
     String GROUP_TYPE_PATTERN = "^(MONTH|DAY|HOURS)$";

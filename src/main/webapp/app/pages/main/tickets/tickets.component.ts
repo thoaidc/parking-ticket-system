@@ -22,6 +22,7 @@ import {HasAuthorityDirective} from '../../../shared/directives/has-authority.di
 import {FormsModule} from '@angular/forms';
 import {PAGINATION_PAGE_SIZE} from '../../../constants/common.constants';
 import {TicketWriteNfcComponent} from './ticket-write-nfc/ticket-write-nfc.component';
+import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'app-tickets-management',
@@ -52,7 +53,9 @@ export class TicketsComponent implements OnInit {
   ticketsFilter: TicketFilter = {
     page: 1,
     size: 20,
-    status: ''
+    status: '',
+    fromDate: dayjs(),
+    toDate: dayjs()
   }
 
   isLoading = false;
@@ -103,12 +106,12 @@ export class TicketsComponent implements OnInit {
 
     if (this.ticketsFilter.fromDate) {
       const fromDate = this.ticketsFilter.fromDate.toString();
-      searchTicketsRequest.fromDate = this.utilsService.convertToDateString(fromDate, 'YYYY/MM/DD');
+      searchTicketsRequest.fromDate = this.utilsService.convertToDateString(fromDate, 'YYYY-MM-DD HH:mm:ss');
     }
 
     if (this.ticketsFilter.toDate) {
       const toDate = this.ticketsFilter.toDate.toString();
-      searchTicketsRequest.toDate = this.utilsService.convertToDateString(toDate, 'YYYY/MM/DD');
+      searchTicketsRequest.toDate = this.utilsService.convertToDateString(toDate, 'YYYY-MM-DD HH:mm:ss');
     }
 
     this.ticketsService.getTicketsWithPaging(searchTicketsRequest).subscribe((response) => {

@@ -25,7 +25,6 @@
           bindValue="value"
           [(ngModel)]="ticketsFilter.status"
           [clearable]="false"
-          [isOpen]="false"
           (ngModelChange)="onSearch()"
         >
         </ng-select>
@@ -114,7 +113,6 @@
   <div class="total">
     <span class="label-total">Tổng: {{ totalItems | number }}</span>
     <ng-select
-      [isOpen]="false"
       [items]="PAGINATION_PAGE_SIZE"
       [(ngModel)]="ticketsFilter.size"
       (ngModelChange)="searchTickets()"

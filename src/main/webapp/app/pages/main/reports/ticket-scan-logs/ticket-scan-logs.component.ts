@@ -21,6 +21,7 @@ import {SafeHtmlPipe} from '../../../../shared/pipes/safe-html.pipe';
 import {HasAuthorityDirective} from '../../../../shared/directives/has-authority.directive';
 import {NgbPagination} from '@ng-bootstrap/ng-bootstrap';
 import {PAGINATION_PAGE_SIZE} from '../../../../constants/common.constants';
+import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'app-ticket-scan-logs',
@@ -50,7 +51,9 @@ export class TicketScanLogsComponent implements OnInit {
     page: 1,
     size: 10,
     result: '',
-    type: ''
+    type: '',
+    fromDate: dayjs(),
+    toDate: dayjs()
   };
 
   constructor(
@@ -69,7 +72,9 @@ export class TicketScanLogsComponent implements OnInit {
       page: 1,
       size: 10,
       result: '',
-      type: ''
+      type: '',
+      fromDate: dayjs(),
+      toDate: dayjs()
     };
 
     this.onSearch();
@@ -103,12 +108,12 @@ export class TicketScanLogsComponent implements OnInit {
 
     if (this.logsFilter.fromDate) {
       const fromDate = this.logsFilter.fromDate.toString();
-      searchTicketScanLogsRequest.fromDate = this.utilsService.convertToDateString(fromDate, 'YYYY/MM/DD');
+      searchTicketScanLogsRequest.fromDate = this.utilsService.convertToDateString(fromDate, 'YYYY-MM-DD HH:mm:ss');
     }
 
     if (this.logsFilter.toDate) {
       const toDate = this.logsFilter.toDate.toString();
-      searchTicketScanLogsRequest.toDate = this.utilsService.convertToDateString(toDate, 'YYYY/MM/DD');
+      searchTicketScanLogsRequest.toDate = this.utilsService.convertToDateString(toDate, 'YYYY-MM-DD HH:mm:ss');
     }
 
     this.ticketService.getTicketScanLogsWithPaging(searchTicketScanLogsRequest).subscribe((response) => {

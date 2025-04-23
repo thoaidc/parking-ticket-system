@@ -1,10 +1,13 @@
 package com.dct.parkingticket.service.impl;
 
 import com.dct.parkingticket.common.Common;
+import com.dct.parkingticket.common.DateUtils;
 import com.dct.parkingticket.common.JsonUtils;
+import com.dct.parkingticket.constants.DatetimeConstants;
 import com.dct.parkingticket.constants.Esp32Constants;
 import com.dct.parkingticket.constants.ExceptionConstants;
 import com.dct.parkingticket.dto.esp32.Message;
+import com.dct.parkingticket.dto.esp32.TicketScanLogFilterRequestDTO;
 import com.dct.parkingticket.dto.mapping.ITicketDTO;
 import com.dct.parkingticket.dto.mapping.ITicketScanLogDTO;
 import com.dct.parkingticket.dto.mapping.TicketScanLogStatisticDTO;
@@ -75,12 +78,6 @@ public class TicketManagementServiceImpl implements TicketManagementService {
                 message.setAction(Esp32Constants.Action.READ_TICKET_LOCKED);
                 message.setMessage(Esp32Constants.Response.TICKET_LOCKED);
                 saveTicketScanLog(uid, Esp32Constants.Response.TICKET_LOCKED);
-            }
-
-            case Esp32Constants.TicketStatus.EXPIRED -> {
-                message.setAction(Esp32Constants.Action.READ_TICKET_EXPIRED);
-                message.setMessage(Esp32Constants.Response.TICKET_EXPIRED);
-                saveTicketScanLog(uid, Esp32Constants.Response.TICKET_EXPIRED);
             }
 
             default -> {
@@ -173,14 +170,51 @@ public class TicketManagementServiceImpl implements TicketManagementService {
     }
 
     @Override
-    public BaseResponseDTO getAllScanLogsWithPaging(BaseRequestDTO request) {
+    public BaseResponseDTO getAllScanLogsWithPaging(TicketScanLogFilterRequestDTO request) {
+        String fromDate = request.getFromDate(), toDate = request.getToDate();
+        String type = request.getType(), result = request.getResult();
+
+        if (Objects.nonNull(type) && !type.matches(Esp32Constants.TicketScanType.PATTERN)) {
+            type = null;
+        }
+
+        if (Objects.nonNull(result) && !result.matches(Esp32Constants.TicketScanResult.PATTERN)) {
+            result = null;
+        }
+
+        if (StringUtils.hasText(fromDate)) {
+            fromDate = DateUtils.ofLocalDateTime(
+                fromDate,
+                DatetimeConstants.Formatter.DEFAULT,
+                DatetimeConstants.ZoneID.ASIA_HO_CHI_MINH
+            ).toString();
+        } else {
+            fromDate = null;
+        }
+
+        if (StringUtils.hasText(toDate)) {
+            toDate = DateUtils.ofLocalDateTime(
+                toDate,
+                DatetimeConstants.Formatter.DEFAULT,
+                DatetimeConstants.ZoneID.ASIA_HO_CHI_MINH
+            ).toString();
+        } else {
+            toDate = null;
+        }
+
         if (request.getPageable().isPaged()) {
-            Page<ITicketScanLogDTO> logsWithPaged = ticketScanLogRepository.findAllWithPaging(request.getPageable());
+            Page<ITicketScanLogDTO> logsWithPaged = ticketScanLogRepository.findAllWithPaging(
+                type,
+                result,
+                fromDate,
+                toDate,
+                request.getPageable()
+            );
             List<ITicketScanLogDTO> logs = logsWithPaged.getContent();
             return BaseResponseDTO.builder().total(logsWithPaged.getTotalElements()).ok(logs);
         }
 
-        return BaseResponseDTO.builder().ok(ticketScanLogRepository.findAllNonPaging());
+        return BaseResponseDTO.builder().ok(ticketScanLogRepository.findAllNonPaging(type, result, fromDate, toDate));
     }
 
     @Override
