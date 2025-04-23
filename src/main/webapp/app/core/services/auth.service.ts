@@ -99,9 +99,7 @@ export class AuthService {
     this.userIdentity = account;
     this.authenticationState.next(account);
 
-    if (account) {
-      this.navigateToPreviousPage();
-    } else {
+    if (!account) {
       this.accountCache$ = null;
     }
   }

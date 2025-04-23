@@ -1,5 +1,7 @@
 package com.dct.parkingticket.web.rest;
 
+import com.dct.parkingticket.aop.annotation.CheckAuthorize;
+import com.dct.parkingticket.constants.RoleConstants;
 import com.dct.parkingticket.dto.esp32.TicketFilterRequestDTO;
 import com.dct.parkingticket.dto.esp32.TicketScanLogFilterRequestDTO;
 import com.dct.parkingticket.dto.request.TicketScanLogStatisticRequestDTO;
@@ -29,31 +31,37 @@ public class TicketManagementResource {
     }
 
     @GetMapping
+    @CheckAuthorize(authorities = RoleConstants.Ticket.VIEW)
     public BaseResponseDTO getAllTicketsWithPaging(@ModelAttribute TicketFilterRequestDTO requestDTO) {
         return ticketManagementService.getAllTicketsWithPaging(requestDTO);
     }
 
     @PostMapping
+    @CheckAuthorize(authorities = RoleConstants.Ticket.CREATE)
     public BaseResponseDTO createNewTicket() {
         return ticketManagementService.createNewTicket();
     }
 
     @PutMapping("/status")
+    @CheckAuthorize(authorities = RoleConstants.Ticket.UPDATE)
     public BaseResponseDTO updateTicketStatus(@Valid @RequestBody UpdateTicketStatusRequestDTO requestDTO) {
         return ticketManagementService.updateTicketStatus(requestDTO.getUid(), requestDTO.getStatus());
     }
 
     @DeleteMapping("/{uid}")
+    @CheckAuthorize(authorities = RoleConstants.Ticket.DELETE)
     public BaseResponseDTO deleteTicketByUid(@PathVariable String uid) {
         return ticketManagementService.deleteTicket(uid);
     }
 
     @GetMapping("/logs")
+    @CheckAuthorize(authorities = RoleConstants.Reports.REPORT_TICKET_SCAN_LOGS)
     public BaseResponseDTO getAllTicketScanLogsWithPaging(@ModelAttribute TicketScanLogFilterRequestDTO requestDTO) {
         return ticketManagementService.getAllScanLogsWithPaging(requestDTO);
     }
 
     @GetMapping("/logs/statistics")
+    @CheckAuthorize(authorities = RoleConstants.Reports.REPORT_TICKET_SCAN_LOG_STATS)
     public BaseResponseDTO getTicketScanLogsStatistic(@ModelAttribute TicketScanLogStatisticRequestDTO requestDTO) {
         return ticketManagementService.getTicketScanLogsStatistic(requestDTO);
     }

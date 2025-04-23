@@ -2,8 +2,6 @@
 export enum Authorities {
 
   SYSTEM = '01',
-  SYSTEM_VIEW = '0101',
-  SYSTEM_VIEW_LOGS = '0102',
 
   ACCOUNT = '02',
   ACCOUNT_VIEW = '0201',
@@ -17,7 +15,13 @@ export enum Authorities {
   ROLE_UPDATE = '0303',
   ROLE_DELETE = '0304',
 
-  CUSTOMER = '',
-  REPORT = '',
-  CONFIG = '',
+  TICKET = '04',
+  TICKET_VIEW = '0401',
+  TICKET_CREATE = '0402',
+  TICKET_UPDATE = '0403',
+  TICKET_DELETE = '0404',
+
+  REPORTS = '05',
+  REPORT_TICKET_SCAN_LOG_STATS = '0501',
+  REPORT_TICKET_SCAN_LOGS = '0502'
 }

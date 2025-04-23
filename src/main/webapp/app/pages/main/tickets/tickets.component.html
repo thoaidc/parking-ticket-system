@@ -1,6 +1,6 @@
 <div class="title-feature form-space-between">
   <span>Danh sách thẻ vé xe</span>
-  <button class="success-button-dialog ms-3" (click)="createNewTicket()" *hasAuthorities="Authorities.SYSTEM">
+  <button class="success-button-dialog ms-3" (click)="createNewTicket()" *hasAuthorities="Authorities.TICKET_CREATE">
     <span [innerHTML]="ICON_PLUS | safeHtml"></span>
     Tạo thẻ vé mới
   </button>
@@ -56,7 +56,7 @@
   </div>
 </div>
 
-<div class="table-responsive">
+<div class="table-responsive" *hasAuthorities="Authorities.TICKET_VIEW">
   <table class="table editing-table">
     <thead>
       <tr class="table-custom-header">
@@ -81,7 +81,7 @@
           <td class="text-center">{{ ticket.createdBy }}</td>
           <td>
             <div class="action-table">
-              <ng-container *hasAuthorities="Authorities.SYSTEM">
+              <ng-container *hasAuthorities="Authorities.TICKET_UPDATE">
                 <span
                   *ngIf="ticket.status == TicketStatus.ACTIVE"
                   [innerHTML]="ICON_STOP | safeHtml"
@@ -99,7 +99,7 @@
                 [innerHTML]="ICON_DELETE | safeHtml"
                 ngbTooltip="Xóa thẻ"
                 (click)="deleteTicket(ticket.uid)"
-                *hasAuthorities="Authorities.SYSTEM"
+                *hasAuthorities="Authorities.TICKET_DELETE"
               ></span>
             </div>
           </td>

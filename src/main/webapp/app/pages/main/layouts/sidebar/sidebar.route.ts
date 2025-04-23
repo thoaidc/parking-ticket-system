@@ -25,7 +25,7 @@ export const SIDEBAR_ROUTES: SidebarNavItem[] = [
     icon: ICON_DASHBOARD,
     class: SIDEBAR_CLASS_DROPDOWN_ITEM,
     isExternalLink: false,
-    permission: [Authorities.SYSTEM]
+    permission: [Authorities.REPORT_TICKET_SCAN_LOG_STATS]
   },
   {
     path: '/admin',
@@ -59,7 +59,7 @@ export const SIDEBAR_ROUTES: SidebarNavItem[] = [
     icon: ICON_CUSTOMER_CARD,
     class: SIDEBAR_CLASS_DROPDOWN_ITEM,
     isExternalLink: false,
-    permission: [Authorities.SYSTEM]
+    permission: [Authorities.TICKET]
   },
   {
     path: '/ticket-scan-logs',
@@ -67,6 +67,6 @@ export const SIDEBAR_ROUTES: SidebarNavItem[] = [
     icon: ICON_CHART,
     class: SIDEBAR_CLASS_DROPDOWN_ITEM,
     isExternalLink: false,
-    permission: Authorities.REPORT
+    permission: Authorities.REPORT_TICKET_SCAN_LOGS
   }
 ];

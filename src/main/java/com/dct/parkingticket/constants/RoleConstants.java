@@ -34,4 +34,18 @@ public interface RoleConstants {
         String UPDATE = "0303";
         String DELETE = "0304";
     }
+
+    interface Ticket {
+        String TICKET = "04";
+        String VIEW = "0401";
+        String CREATE = "0402";
+        String UPDATE = "0403";
+        String DELETE = "0404";
+    }
+
+    interface Reports {
+        String REPORTS = "05";
+        String REPORT_TICKET_SCAN_LOG_STATS = "0501";
+        String REPORT_TICKET_SCAN_LOGS = "0502";
+    }
 }

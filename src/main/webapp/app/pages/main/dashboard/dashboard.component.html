@@ -41,7 +41,7 @@
       </div>
     </div>
   </div>
-  <div class="form-chart overflow-auto mt-3">
+  <div class="form-chart overflow-auto mt-3" *hasAuthorities="Authorities.REPORT_TICKET_SCAN_LOG_STATS">
     <canvas id="canvas" height="100%">{{ chart }}</canvas>
   </div>
 </div>

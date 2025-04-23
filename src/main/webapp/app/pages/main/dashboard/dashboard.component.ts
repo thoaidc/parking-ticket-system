@@ -23,6 +23,8 @@ import {
   Title,
 } from 'chart.js';
 import {Dayjs} from 'dayjs';
+import {HasAuthorityDirective} from '../../../shared/directives/has-authority.directive';
+import {Authorities} from '../../../constants/authorities.constants';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,7 +33,8 @@ import {Dayjs} from 'dayjs';
     SafeHtmlPipe,
     DateFilterComponent,
     NgSelectModule,
-    FormsModule
+    FormsModule,
+    HasAuthorityDirective
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
@@ -242,4 +245,5 @@ export class DashboardComponent implements OnInit {
   }
 
   protected readonly TICKET_SCAN_LOG_TYPE = TICKET_SCAN_LOG_TYPE;
+  protected readonly Authorities = Authorities;
 }

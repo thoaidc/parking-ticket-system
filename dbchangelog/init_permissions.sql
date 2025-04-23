@@ -47,3 +47,21 @@ INSERT INTO permission (id, name, code, description, parent_id, parent_code, cre
 (11, 'permission.role.create', '0302', 'permission.role.create.description', 9, '03', 'admin'),
 (12, 'permission.role.update', '0303', 'permission.role.update.description', 9, '03', 'admin'),
 (13, 'permission.role.delete', '0304', 'permission.role.delete.description', 9, '03', 'admin');
+
+-- === Manage Tickets ===
+INSERT INTO permission (id, name, code, description, parent_id, parent_code, created_by)
+VALUES (14, 'permission.tickets', '04', 'permission.tickets.description', NULL, NULL, 'admin');
+
+INSERT INTO permission (id, name, code, description, parent_id, parent_code, created_by) VALUES
+(15, 'permission.tickets.view', '0401', 'permission.tickets.view.description', 14, '04', 'admin'),
+(16, 'permission.tickets.create', '0402', 'permission.tickets.create.description', 14, '04', 'admin'),
+(17, 'permission.tickets.update', '0403', 'permission.tickets.update.description', 14, '04', 'admin'),
+(18, 'permission.tickets.delete', '0404', 'permission.tickets.delete.description', 14, '04', 'admin');
+
+-- === Manage Reports ===
+INSERT INTO permission (id, name, code, description, parent_id, parent_code, created_by)
+VALUES (19, 'permission.reports', '05', 'permission.reports.description', NULL, NULL, 'admin');
+
+INSERT INTO permission (id, name, code, description, parent_id, parent_code, created_by) VALUES
+(20, 'permission.reports.ticket.stats', '0501', 'permission.reports.stats.description', 19, '05', 'admin'),
+(21, 'permission.reports.ticket.logs', '0502', 'permission.reports.logs.description', 19, '05', 'admin');
