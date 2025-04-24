@@ -19,7 +19,7 @@ COPY package.json package-lock.json ./
 RUN mvn frontend:npm
 
 # Copy Angular config files
-COPY angular.json server.ts tsconfig*.json ./
+COPY angular.json tsconfig*.json ./
 
 # Copy full source code
 COPY src ./src
@@ -28,7 +28,7 @@ COPY src ./src
 RUN mvn clean package -Pprod -DskipTests
 
 # ==============================
-# STAGE 2: Run JAR
+# STAGE 2: Run Spring Boot and serve Angular with Nginx in one container
 # ==============================
 FROM openjdk:17-jdk-slim
 
@@ -38,17 +38,24 @@ WORKDIR /app
 COPY dbchangelog/init_*.sql ./initdb/
 COPY docker-initdb.sh ./
 
-# Install sqilte3
-RUN apt-get update && apt-get install -y sqlite3
+# Install Nginx and SQLite3
+RUN apt-get update && apt-get install -y nginx sqlite3
+
+# Create nginx user and group
+RUN groupadd -r nginx && useradd -r -g nginx nginx
 
 # Copy Spring Boot JAR from the build stage
-COPY --from=build /app/target/auto-tests-*.jar app.jar
+COPY --from=build /app/target/parkingticket-*.jar app.jar
 
-# Copy static Angular build files (already integrated by Spring Boot)
-COPY --from=build /app/target/classes/static /app/static
+# Copy the built Angular app into Nginx's default directory
+COPY --from=build /app/target/classes/static /usr/share/nginx/html
 
-# Expose application port
+# Copy configure Nginx file
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose necessary ports (8080 for Spring Boot, 80 for Nginx serving Angular)
 EXPOSE 8080
+EXPOSE 80
 
-# Run the Spring Boot app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Start both Spring Boot app and Nginx in the same container
+CMD service nginx start && java -jar app.jar

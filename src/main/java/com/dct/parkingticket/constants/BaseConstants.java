@@ -46,6 +46,7 @@ public interface BaseConstants {
     interface STATIC_RESOURCES {
 
         String[] PATHS = {
+            "/**",
             "/**.js",
             "/**.css",
             "/**.svg",
