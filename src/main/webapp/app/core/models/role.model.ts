@@ -1,4 +1,4 @@
-import {Pagination} from './request.model';
+import {BaseFilterRequest} from './request.model';
 
 export interface Role {
   id: number;
@@ -6,15 +6,12 @@ export interface Role {
   code: string;
 }
 
-export interface RoleDetail {
-  id: number;
-  name: string;
-  code: string;
+export interface RoleDetail extends Role {
   createdByStr?: string;
   createdDateStr?: string;
   lastModifiedByStr?: string;
   lastModifiedDateStr?: string;
-  permissions?: number[];
+  permissions: number[];
 }
 
 export interface CreateRoleRequest {
@@ -27,10 +24,9 @@ export interface UpdateRoleRequest extends CreateRoleRequest {
   id: number;
 }
 
-export interface RolesFilter extends Pagination {
+export interface RolesFilter extends BaseFilterRequest {
   code?: string;
   name?: string;
-  keyword?: string;
 }
 
 export interface TreeViewItem {

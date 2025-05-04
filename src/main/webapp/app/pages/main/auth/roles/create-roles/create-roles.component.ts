@@ -29,10 +29,10 @@ import {ICON_ATTENTION} from '../../../../../shared/utils/icon';
 })
 export class CreateRolesComponent implements OnInit {
   Authority = Authorities;
-  roleDetail: RoleDetail = { id: 0, name: '', code: '' };
+  roleDetail: RoleDetail = { id: 0, name: '', code: '', permissions: [] };
   totalItems = 0;
   roleId: number = 0;
-  children: any = [];
+  children: TreeViewItem[] = [];
   listSelected: number[] = [];
   disableButton = false;
   isView = false;

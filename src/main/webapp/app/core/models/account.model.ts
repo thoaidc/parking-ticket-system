@@ -1,47 +1,48 @@
-import {Dayjs} from 'dayjs';
-import {Pagination} from './request.model';
-
-export interface Account {
-  id?: number;
-  username: string;
-  status: string;
-  fullname?: string;
-  email?: string;
-  createdBy?: string;
-  createdDate?: string;
-  lastModifiedBy?: string;
-  lastModifiedDate?: string;
-  authorities?: string[];
-}
-
-export interface Authority {
-  id: number;
-  name?: string;
-  code: string;
-}
-
-export interface AccountDetail {
-  id: number;
+export interface Authentication {
   email: string;
   username: string;
   status: string;
-  password?: string;
-  fullname?: string;
+  token: string;
+  authorities: string[];
+}
+
+export interface Account {
+  id: number;
+  fullname: string;
+  username: string;
+  email: string;
+  status: string;
+  createdBy: string;
+  createdDate: string;
+}
+
+export interface AccountDetail extends Account {
   createdByStr?: string;
   createdDateStr?: string;
   lastModifiedByStr?: string;
   lastModifiedDateStr?: string;
-  authorities?: Authority[];
+  accountRoles?: Authority[];
+}
+
+export interface Authority {
+  id: number;
+  name: string;
+  code: string;
 }
 
 export enum AccountStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
-  LOCKED = 'LOCKED',
-  DELETED = 'DELETED'
+  LOCKED = 'LOCKED'
 }
 
-export const ACCOUNT_STATUS = [
+export const AccountStatusMap: Record<string, string> = {
+  ACTIVE: 'Hoạt động',
+  INACTIVE: 'Dừng hoạt động',
+  LOCKED: 'Đã bị khóa'
+}
+
+export const ACCOUNT_STATUS_SELECTION = [
   {
     value: '',
     name: 'Tất cả',
@@ -52,7 +53,7 @@ export const ACCOUNT_STATUS = [
   },
   {
     value: AccountStatus.INACTIVE,
-    name: 'Ngưng hoạt động',
+    name: 'Dừng hoạt động',
   },
   {
     value: AccountStatus.LOCKED,
@@ -60,32 +61,11 @@ export const ACCOUNT_STATUS = [
   }
 ];
 
-export interface SearchAccountRequest extends Pagination {
-  status?: string;
-  fromDate?: string;
-  toDate?: string;
-  keyword?: string;
-}
-
-export interface AccountsFilter extends Pagination {
-  status?: string;
-  fromDate?: Dayjs;
-  toDate?: Dayjs;
-  keyword?: string;
-}
-
-export interface CreateAccountRequest {
-  username: string;
-  email: string;
-  password: string;
-  fullname?: string;
-  roleIds: number[];
-}
-
-export interface UpdateAccountRequest {
+export interface SaveAccountRequest {
   id: number;
   username: string;
   email: string;
+  password: string;
   fullname?: string;
   roleIds: number[];
 }

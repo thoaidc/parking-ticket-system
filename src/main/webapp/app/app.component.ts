@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {AuthService} from './core/services/auth.service';
-import {LOCAL_USER_AUTHORITIES_KEY} from './constants/local-storage.constants';
 import {Subscription} from 'rxjs';
 import {WebsocketService} from './core/services/websocket.service';
 
@@ -20,12 +19,12 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private websocketService: WebsocketService
   ) {
-    authService.authenticate().subscribe(account => {
-      if (account) {
-        localStorage.setItem(LOCAL_USER_AUTHORITIES_KEY, JSON.stringify(account.authorities));
-        this.router.navigate(['/']).then();
-      }
-    });
+    if (this.authService.hasToken()) {
+      this.authService.authenticate().subscribe();
+      this.authService.navigateToPreviousPage();
+    } else {
+      this.router.navigate(['/login']).then();
+    }
   }
 
   ngOnInit(): void {

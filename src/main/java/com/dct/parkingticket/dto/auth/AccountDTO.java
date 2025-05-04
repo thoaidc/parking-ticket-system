@@ -17,7 +17,7 @@ public class AccountDTO extends AuditingEntityDTO {
     private String phone;
     private String status;
     private String deviceId;
-    private List<IRoleDTO> authorities = new ArrayList<>();
+    private List<IRoleDTO> accountRoles = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -83,11 +83,11 @@ public class AccountDTO extends AuditingEntityDTO {
         this.deviceId = deviceId;
     }
 
-    public List<IRoleDTO> getAuthorities() {
-        return authorities;
+    public List<IRoleDTO> getAccountRoles() {
+        return accountRoles;
     }
 
-    public void setAuthorities(List<IRoleDTO> authorities) {
-        this.authorities = authorities;
+    public void setAccountRoles(List<IRoleDTO> accountRoles) {
+        this.accountRoles = accountRoles;
     }
 }

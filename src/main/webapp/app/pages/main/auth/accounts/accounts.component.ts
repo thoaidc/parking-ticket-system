@@ -6,11 +6,10 @@ import { ToastrService } from 'ngx-toastr';
 import { ModalChangePasswordComponent } from './modal-change-password/modal-change-password.component';
 import {
   Account,
-  ACCOUNT_STATUS,
+  ACCOUNT_STATUS_SELECTION,
   AccountStatus,
   UpdateAccountStatusRequest
 } from '../../../../core/models/account.model';
-import {AccountsFilter, SearchAccountRequest} from '../../../../core/models/account.model';
 import {AccountsService} from '../../../../core/services/accounts.service';
 import {UtilsService} from '../../../../shared/utils/utils.service';
 import {AuthService} from '../../../../core/services/auth.service';
@@ -33,8 +32,10 @@ import {FormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {DateFilterComponent} from '../../../../shared/components/date-filter/date-filter.component';
 import {PAGINATION_PAGE_SIZE} from '../../../../constants/common.constants';
-import {LOCAL_USER_AUTHORITIES_KEY} from '../../../../constants/local-storage.constants';
+import {LOCAL_USERNAME_KEY} from '../../../../constants/local-storage.constants';
 import {BaseResponse} from '../../../../core/models/response.model';
+import {BaseFilterRequest} from '../../../../core/models/request.model';
+import {ModalSaveAccountComponent} from './modal-save-account/modal-save-account.component';
 
 @Component({
   selector: 'app-accounts-management',
@@ -59,7 +60,7 @@ import {BaseResponse} from '../../../../core/models/response.model';
 export class AccountsComponent implements OnInit {
   private modalRef: NgbModalRef | undefined;
   AccountStatus = AccountStatus;
-  accountsFilter: AccountsFilter = {
+  accountsFilter = {
     page: 1,
     size: 10,
     status: '',
@@ -69,7 +70,7 @@ export class AccountsComponent implements OnInit {
   };
   accounts: Account[] = [];
   totalItems = 0;
-  userName = '';
+  username = '';
   periods = 1;
   isLoading = false;
 
@@ -83,14 +84,7 @@ export class AccountsComponent implements OnInit {
 
   ngOnInit(): void {
     this.onReload();
-
-    this.authService.subscribeAuthenticationState().subscribe((account: Account |  null) => {
-      if (account) {
-        this.userName = account.username || '';
-      } else {
-        this.userName = '';
-      }
-    });
+    this.username = localStorage.getItem(LOCAL_USERNAME_KEY) || '';
   }
 
   onReload() {
@@ -120,7 +114,7 @@ export class AccountsComponent implements OnInit {
   }
 
   getAccounts() {
-    const searchAccountsRequest: SearchAccountRequest = {
+    const searchAccountsRequest: BaseFilterRequest = {
       page: this.accountsFilter.page - 1,
       size: this.accountsFilter.size
     };
@@ -153,18 +147,15 @@ export class AccountsComponent implements OnInit {
     });
   }
 
-  onAccountDetail(accountId?: number, isOnlyView?: boolean) {
-    let roles: string[] = JSON.parse(localStorage.getItem(LOCAL_USER_AUTHORITIES_KEY) || '') as string[];
-
-    if (roles && (!roles.includes(Authorities.ACCOUNT_VIEW) || !roles.includes(Authorities.ROLE_VIEW))) {
-      this.toast.error('Bạn không có quyền truy cập chức năng này', 'Thông báo');
-      return;
-    }
-
-    this.modalRef = this.modalService.open(ModalAccountInfoComponent, { size: 'lg', backdrop: 'static' });
+  openModalSaveAccount(accountId?: number) {
+    this.modalRef = this.modalService.open(ModalSaveAccountComponent, { size: 'lg', backdrop: 'static' });
     this.modalRef.componentInstance.accountId = accountId || 0;
-    this.modalRef.componentInstance.isOnlyView = isOnlyView;
     this.modalRef.closed.subscribe(() => this.getAccounts());
+  }
+
+  openModalAccountDetail(accountId: number) {
+    this.modalRef = this.modalService.open(ModalAccountInfoComponent, { size: 'lg', backdrop: 'static' });
+    this.modalRef.componentInstance.accountId = accountId;
   }
 
   updateUserStatus(accountId: number, status: string) {
@@ -206,7 +197,7 @@ export class AccountsComponent implements OnInit {
 
     this.modalRef.closed.subscribe((response?: BaseResponse<any>) => {
       if (response && response.status) {
-        if (account.username.toLowerCase() === this.userName.toLowerCase()) {
+        if (account.username.toLowerCase() === this.username.toLowerCase()) {
           this.toast.success('Đổi mật khẩu thành công, vui lòng đăng nhập lại', 'Thông báo');
           this.authService.logout();
         } else {
@@ -260,5 +251,5 @@ export class AccountsComponent implements OnInit {
   protected readonly Authorities = Authorities;
   protected readonly ICON_DELETE = ICON_DELETE;
   protected readonly PAGINATION_PAGE_SIZE = PAGINATION_PAGE_SIZE;
-  protected readonly ACCOUNT_STATUS = ACCOUNT_STATUS;
+  protected readonly ACCOUNT_STATUS_SELECTION = ACCOUNT_STATUS_SELECTION;
 }

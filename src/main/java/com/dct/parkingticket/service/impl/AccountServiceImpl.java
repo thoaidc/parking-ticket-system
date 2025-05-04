@@ -99,7 +99,7 @@ public class AccountServiceImpl implements AccountService {
         AccountDTO accountDTO = new AccountDTO();
         BeanUtils.copyProperties(account, accountDTO);
         Common.setAuditingInfo(account, accountDTO);
-        accountDTO.setAuthorities(roleService.getAccountRoles(accountId));
+        accountDTO.setAccountRoles(roleService.getAccountRoles(accountId));
 
         return BaseResponseDTO.builder().ok(accountDTO);
     }

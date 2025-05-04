@@ -12,9 +12,12 @@ import {tap} from 'rxjs';
 export const ApiInterceptorFn: HttpInterceptorFn = (request: HttpRequest<any>, next: HttpHandlerFn) => {
   const toast = inject(ToastrService);
   const appConfig = inject(ApplicationConfigService);
-
   const isApiRequest = request.url.startsWith(appConfig.getEndpointFor(''));
-  const modifiedReq = isApiRequest ? request.clone({ withCredentials: true }) : request;
+  let modifiedReq = request;
+
+  if (isApiRequest) {
+    modifiedReq = request.clone({ withCredentials: true });
+  }
 
   return next(modifiedReq).pipe(
     tap({

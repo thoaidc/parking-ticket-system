@@ -5,7 +5,6 @@ import {NgIf} from '@angular/common';
 import {ICON_ENGLISH, ICON_LOGOUT, ICON_NOTIFICATION, ICON_VIETNAMESE} from '../../../../shared/utils/icon';
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
-import {StateStorageService} from '../../../../core/services/state-storage.service';
 import {LOCAL_USERNAME_KEY} from '../../../../constants/local-storage.constants';
 
 @Component({
@@ -21,13 +20,12 @@ import {LOCAL_USERNAME_KEY} from '../../../../constants/local-storage.constants'
 export class NavbarComponent implements OnInit {
   @Input() isSidebarShown!: boolean;
   showDropdown = '';
-  userName: string | null = '';
+  username: string | null = '';
 
   constructor(
-    private authService: AuthService,
-    private stateService: StateStorageService,
+    private router: Router,
     private toast: ToastrService,
-    private router: Router
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -35,12 +33,12 @@ export class NavbarComponent implements OnInit {
   }
 
   getUserName() {
-    let rawUserName = localStorage.getItem(LOCAL_USERNAME_KEY);
+    let rawUsername = localStorage.getItem(LOCAL_USERNAME_KEY);
 
-    if (rawUserName) {
-      this.userName = rawUserName.replace(/^"(.*)"$/, '$1');
+    if (rawUsername) {
+      this.username = rawUsername.replace(/^"(.*)"$/, '$1');
     } else {
-      this.userName = null;
+      this.username = null;
     }
   }
 
@@ -59,10 +57,9 @@ export class NavbarComponent implements OnInit {
     this.showDropdown = this.showDropdown == 'LANGUAGE' ? '' : 'LANGUAGE';
   }
 
-  logOut() {
+  logout() {
     this.authService.logout().subscribe((success: boolean) => {
       if (success) {
-        this.stateService.clearPreviousPage();
         this.toast.success('Đăng xuất thành công', 'Thông báo');
         this.router.navigate(['/login']).then();
       } else {

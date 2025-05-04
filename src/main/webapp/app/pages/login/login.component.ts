@@ -8,7 +8,6 @@ import {LoginRequest} from '../../core/models/login.model';
 import {SafeHtmlPipe} from '../../shared/pipes/safe-html.pipe';
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
-import {LOCAL_USER_AUTHORITIES_KEY, LOCAL_USERNAME_KEY} from '../../constants/local-storage.constants';
 
 @Component({
   selector: 'app-login',
@@ -52,15 +51,13 @@ export class LoginComponent {
 
     this.loginRequest.rememberMe = this.isRememberMe;
 
-    this.authService.authenticate(this.loginRequest, true)
-      .subscribe(account => {
-        if (account) {
-          localStorage.setItem(LOCAL_USERNAME_KEY, account.username);
-          localStorage.setItem(LOCAL_USER_AUTHORITIES_KEY, JSON.stringify(account.authorities));
-          const redirectUrl = this.utilsService.findFirstAccessibleRoute(account.authorities);
-          this.router.navigate([redirectUrl]).then();
-        }
-      });
+    this.authService.authenticate(this.loginRequest, true).subscribe(authentication => {
+      if (authentication) {
+        this.toastr.success('Đăng nhập thành công', 'Thông báo');
+        const redirectUrl = this.utilsService.findFirstAccessibleRoute(authentication.authorities);
+        this.router.navigate([redirectUrl || '/']).then();
+      }
+    });
   }
 
   toggleDisplayPassword() {

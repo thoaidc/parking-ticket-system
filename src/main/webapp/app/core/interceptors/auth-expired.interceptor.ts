@@ -20,8 +20,7 @@ export const AuthExpiredInterceptorFn: HttpInterceptorFn = (request: HttpRequest
       error: (error: HttpErrorResponse) => {
         if (error.status == 401 && !error.url?.includes(API_COMMON_LOGIN)) {
           stateStorageService.savePreviousPage(router.routerState.snapshot.url);
-          authService.logout().subscribe();
-          router.navigate(['/login']).then();
+          authService.logout().subscribe(() => router.navigate(['/login']).then());
         }
       },
     })

@@ -12,12 +12,11 @@ import {BaseResponse} from '../models/response.model';
 import {
   Account,
   AccountDetail,
-  CreateAccountRequest,
-  UpdateAccountRequest,
-  SearchAccountRequest,
   UpdateAccountStatusRequest,
-  UpdateAccountPasswordRequest
+  UpdateAccountPasswordRequest,
+  SaveAccountRequest
 } from '../models/account.model';
+import {BaseFilterRequest} from '../models/request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -33,16 +32,16 @@ export class AccountsService {
   private accountStatusUrl = this.applicationConfigService.getEndpointFor(API_COMMON_ACCOUNTS_UPDATE_STATUS);
   private accountPasswordUrl = this.applicationConfigService.getEndpointFor(API_COMMON_CHANGE_PASSWORD);
 
-  getAccountsWithPaging(searchRequest: SearchAccountRequest): Observable<BaseResponse<Account[]>> {
+  getAccountsWithPaging(searchRequest: BaseFilterRequest): Observable<BaseResponse<Account[]>> {
     const params = createSearchRequestParams(searchRequest);
     return this.http.get<BaseResponse<Account[]>>(this.accountsUrl, {params: params});
   }
 
-  createAccount(createAccountRequest: CreateAccountRequest): Observable<BaseResponse<any>> {
+  createAccount(createAccountRequest: SaveAccountRequest): Observable<BaseResponse<any>> {
     return this.http.post<BaseResponse<any>>(`${this.accountsUrl}`, createAccountRequest);
   }
 
-  updateAccount(updateAccountRequest: UpdateAccountRequest): Observable<BaseResponse<any>> {
+  updateAccount(updateAccountRequest: SaveAccountRequest): Observable<BaseResponse<any>> {
     return this.http.put<BaseResponse<any>>(`${this.accountsUrl}`, updateAccountRequest);
   }
 
