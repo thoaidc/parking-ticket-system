@@ -34,7 +34,7 @@ import {PAGINATION_PAGE_SIZE} from '../../../../constants/common.constants';
   ]
 })
 export class RolesComponent implements OnInit {
-  totalItems = 0;
+  totalItems: number = 0;
   listSelected: any = [];
   roles: any = [];
   permissions: TreeViewItem[] = [];
@@ -82,8 +82,10 @@ export class RolesComponent implements OnInit {
     this.roleService.getRoles(searchRoleRequest).subscribe(response => {
       if (response && response.status && response.result as Role[]) {
         this.roles = response.result as Role[];
+        this.totalItems = response.total || 0;
       } else {
         this.roles = [];
+        this.totalItems = 0;
       }
     });
   }

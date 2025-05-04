@@ -6,6 +6,7 @@ import {ICON_ENGLISH, ICON_LOGOUT, ICON_NOTIFICATION, ICON_VIETNAMESE} from '../
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
 import {StateStorageService} from '../../../../core/services/state-storage.service';
+import {LOCAL_USERNAME_KEY} from '../../../../constants/local-storage.constants';
 
 @Component({
   selector: 'app-navbar',
@@ -34,7 +35,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getUserName() {
-    let rawUserName = localStorage.getItem('jhi-userName');
+    let rawUserName = localStorage.getItem(LOCAL_USERNAME_KEY);
 
     if (rawUserName) {
       this.userName = rawUserName.replace(/^"(.*)"$/, '$1');
