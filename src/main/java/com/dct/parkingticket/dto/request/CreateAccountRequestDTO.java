@@ -44,19 +44,11 @@ public class CreateAccountRequestDTO extends BaseRequestDTO {
     @Pattern(regexp = BaseConstants.REGEX.PASSWORD_PATTERN, message = ExceptionConstants.PASSWORD_INVALID)
     private String password;
 
-    @Size(min = 1, message = ExceptionConstants.ROLE_PERMISSIONS_NOT_EMPTY)
-    private List<Integer> roleIds = new ArrayList<>();
-
     @Size(max = 100, message = ExceptionConstants.NAME_MAX_LENGTH)
     private String fullname;
 
-    @Size(max = 255, message = ExceptionConstants.ADDRESS_MAX_LENGTH)
-    private String address;
-
-    @Size(min = 6, message = ExceptionConstants.PHONE_MIN_LENGTH)
-    @Size(max = 20, message = ExceptionConstants.PHONE_MAX_LENGTH)
-    @Pattern(regexp = BaseConstants.REGEX.PHONE_PATTERN, message = ExceptionConstants.PHONE_INVALID)
-    private String phone;
+    @Size(min = 1, message = ExceptionConstants.ROLE_PERMISSIONS_NOT_EMPTY)
+    private List<Integer> roleIds = new ArrayList<>();
 
     public String getUsername() {
         return username;
@@ -90,27 +82,11 @@ public class CreateAccountRequestDTO extends BaseRequestDTO {
         this.fullname = fullname;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public List<Integer> getRoleIds() {
         return roleIds;
     }
 
     public void setRoleIds(List<Integer> roleIds) {
         this.roleIds = roleIds;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 }

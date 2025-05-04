@@ -27,8 +27,7 @@ export class LoginComponent {
   loginRequest: LoginRequest = {
     username: '',
     password: '',
-    rememberMe: false,
-    deviceId: 'w498ss78g8gdf'
+    rememberMe: false
   };
 
   constructor(

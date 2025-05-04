@@ -103,7 +103,6 @@ export class ModalAccountInfoComponent implements OnInit {
       username: this.accountDetail.username,
       fullname: this.accountDetail.fullname,
       email: this.accountDetail.email,
-      status: this.accountDetail.status,
       roleIds: this.authorities
     }
 

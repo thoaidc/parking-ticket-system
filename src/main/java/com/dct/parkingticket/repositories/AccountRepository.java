@@ -20,7 +20,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query(
         value = """
-            SELECT a.id, a.username, a.fullname, a.email, a.phone, a.status,
+            SELECT a.id, a.username, a.fullname, a.email, a.status,
                    a.created_by as createdBy, a.created_date as createdDate
             FROM account a
             WHERE status <> 'DELETED'
@@ -42,7 +42,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query(
         value = """
-            SELECT a.id, a.username, a.fullname, a.email, a.phone, a.status,
+            SELECT a.id, a.username, a.fullname, a.email, a.status,
                    a.created_by as createdBy, a.created_date as createdDate
             FROM account a
             WHERE status <> 'DELETED'
@@ -64,7 +64,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query(
         value = """
-            SELECT id, email, fullname, device_id as deviceId, status
+            SELECT id, email, fullname, status
             FROM account
             WHERE username = ?1 AND status <> 'DELETED'
         """,
@@ -74,7 +74,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query(
         value = """
-            SELECT a.id, a.username, a.password, a.email, a.status, a.device_id as deviceId
+            SELECT a.id, a.username, a.password, a.email, a.status
             FROM account a WHERE a.username = ?1 AND status <> 'DELETED'
         """,
         nativeQuery = true
@@ -89,8 +89,4 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Modifying
     @Query(value = "UPDATE account SET status = ?2 WHERE id = ?1", nativeQuery = true)
     void updateAccountStatusById(Integer accountId, String status);
-
-    @Modifying
-    @Query(value = "UPDATE account SET device_id = ?2 WHERE id = ?1", nativeQuery = true)
-    void updateDeviceIdByAccountId(Integer accountId, String deviceId);
 }

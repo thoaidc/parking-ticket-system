@@ -40,17 +40,8 @@ public class Account extends AbstractAuditingEntity {
     @Column(name = "email", length = 100, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "address", length = 512)
-    private String address;
-
-    @Column(name = "phone", length = 20)
-    private String phone;
-
     @Column(name = "status", nullable = false)
     private String status;
-
-    @Column(name = "device_id", length = 45, unique = true)
-    private String deviceId;
 
     @ManyToMany(
         cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH },
@@ -92,23 +83,8 @@ public class Account extends AbstractAuditingEntity {
             return this;
         }
 
-        public Builder address(String address) {
-            instance.address = address;
-            return this;
-        }
-
-        public Builder phone(String phone) {
-            instance.phone = phone;
-            return this;
-        }
-
         public Builder status(String status) {
             instance.status = status;
-            return this;
-        }
-
-        public Builder deviceId(String deviceId) {
-            instance.deviceId = deviceId;
             return this;
         }
 
@@ -154,36 +130,12 @@ public class Account extends AbstractAuditingEntity {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
     }
 
     public List<Role> getRoles() {

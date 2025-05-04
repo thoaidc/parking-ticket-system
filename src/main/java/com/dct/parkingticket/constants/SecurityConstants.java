@@ -22,7 +22,7 @@ public interface SecurityConstants {
      */
     interface TOKEN_PAYLOAD {
         String USER_ID = "userId";
-        String DEVICE_ID = "deviceId";
+        String USERNAME = "username";
         String AUTHORITIES = "authorities";
     }
 

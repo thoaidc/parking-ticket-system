@@ -1,8 +1,6 @@
 
 export enum Authorities {
 
-  SYSTEM = '01',
-
   ACCOUNT = '02',
   ACCOUNT_VIEW = '0201',
   ACCOUNT_CREATE = '0202',

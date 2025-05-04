@@ -7,9 +7,6 @@ export interface Account {
   status: string;
   fullname?: string;
   email?: string;
-  phone?: string;
-  address?: string;
-  deviceId?: string;
   createdBy?: string;
   createdDate?: string;
   lastModifiedBy?: string;
@@ -29,10 +26,7 @@ export interface AccountDetail {
   username: string;
   status: string;
   password?: string;
-  phone?: string;
-  address?: string;
   fullname?: string;
-  deviceId?: string;
   createdByStr?: string;
   createdDateStr?: string;
   lastModifiedByStr?: string;
@@ -85,8 +79,6 @@ export interface CreateAccountRequest {
   email: string;
   password: string;
   fullname?: string;
-  address?: string;
-  phone?: string;
   roleIds: number[];
 }
 
@@ -94,10 +86,7 @@ export interface UpdateAccountRequest {
   id: number;
   username: string;
   email: string;
-  status: string;
-  phone?: string;
   fullname?: string;
-  address?: string;
   roleIds: number[];
 }
 

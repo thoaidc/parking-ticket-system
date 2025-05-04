@@ -9,7 +9,6 @@ public class AuthenticationResponseDTO {
     private String email;
     private String username;
     private String status;
-    private String deviceId;
     private String token;
     private Set<String> authorities = new HashSet<>();
 
@@ -59,13 +58,5 @@ public class AuthenticationResponseDTO {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
     }
 }

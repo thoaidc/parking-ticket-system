@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 public class BaseAuthTokenDTO {
 
     private Authentication authentication; // Contains user authorities information
-    private String deviceId;
+    private String username;
     private Integer userId;
     private Boolean isRememberMe = false;
 
@@ -29,8 +29,8 @@ public class BaseAuthTokenDTO {
             return this;
         }
 
-        public Builder deviceId(String deviceId) {
-            instance.deviceId = deviceId;
+        public Builder username(String username) {
+            instance.username = username;
             return this;
         }
 
@@ -59,12 +59,12 @@ public class BaseAuthTokenDTO {
         this.authentication = authentication;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Integer getUserId() {

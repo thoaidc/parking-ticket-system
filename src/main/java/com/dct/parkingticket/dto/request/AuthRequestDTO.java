@@ -35,8 +35,6 @@ public class AuthRequestDTO extends BaseRequestDTO {
     @Pattern(regexp = BaseConstants.REGEX.PASSWORD_PATTERN, message = ExceptionConstants.PASSWORD_INVALID)
     private String password;
 
-    @NotBlank(message = ExceptionConstants.DEVICE_ID_NOT_BLANK)
-    private String deviceId;
     private boolean rememberMe = false;
 
     public String getUsername() {
@@ -53,14 +51,6 @@ public class AuthRequestDTO extends BaseRequestDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
     }
 
     public boolean getRememberMe() {

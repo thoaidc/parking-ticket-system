@@ -12,7 +12,6 @@ import com.dct.parkingticket.dto.response.BaseResponseDTO;
 import com.dct.parkingticket.entity.Account;
 import com.dct.parkingticket.exception.BaseAuthenticationException;
 import com.dct.parkingticket.exception.BaseBadRequestException;
-import com.dct.parkingticket.repositories.AccountRepository;
 import com.dct.parkingticket.security.jwt.JwtProvider;
 import com.dct.parkingticket.security.model.CustomUserDetails;
 import com.dct.parkingticket.service.AuthenticationService;
@@ -35,9 +34,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import java.util.Objects;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -45,17 +41,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static final Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
     private static final String ENTITY_NAME = "AuthenticationServiceImpl";
     private final AuthenticationManager authenticationManager;
-    private final AccountRepository accountRepository;
     private final JwtProvider tokenProvider;
     private final Security security;
 
     public AuthenticationServiceImpl(JwtProvider tokenProvider,
                                      AuthenticationManager authenticationManager,
-                                     AccountRepository accountRepository,
                                      @Qualifier("security") Security security) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
-        this.accountRepository = accountRepository;
         this.security = security;
     }
 
@@ -102,18 +95,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         AuthenticationResponseDTO results = new AuthenticationResponseDTO();
         BeanUtils.copyProperties(account, results);
         results.setAuthorities(userDetails.getSetAuthorities());
-        String newDeviceId = authRequestDTO.getDeviceId();
-
-        if (!StringUtils.hasText(newDeviceId)) {
-            throw new BaseBadRequestException(ENTITY_NAME, ExceptionConstants.DEVICE_ID_NOT_BLANK);
-        } else if (!Objects.equals(account.getDeviceId(), newDeviceId)) {
-            accountRepository.updateDeviceIdByAccountId(account.getId(), authRequestDTO.getDeviceId());
-        }
 
         BaseAuthTokenDTO authTokenDTO = BaseAuthTokenDTO.builder()
             .authentication(authentication)
             .userId(account.getId())
-            .deviceId(newDeviceId)
+            .username(account.getUsername())
             .rememberMe(authRequestDTO.getRememberMe())
             .build();
 

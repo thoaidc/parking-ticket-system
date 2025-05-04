@@ -7,5 +7,4 @@ public interface IAuthenticationDTO {
     String getPassword();
     String getEmail();
     String getStatus();
-    String getDeviceId();
 }

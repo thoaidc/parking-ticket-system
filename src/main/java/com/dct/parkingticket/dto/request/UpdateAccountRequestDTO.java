@@ -33,18 +33,6 @@ public class UpdateAccountRequestDTO extends BaseRequestDTO {
     @Pattern(regexp = BaseConstants.REGEX.EMAIL_PATTERN, message = ExceptionConstants.EMAIL_INVALID)
     private String email;
 
-    @Size(min = 6, message = ExceptionConstants.PHONE_MIN_LENGTH)
-    @Size(max = 20, message = ExceptionConstants.PHONE_MAX_LENGTH)
-    @Pattern(regexp = BaseConstants.REGEX.PHONE_PATTERN, message = ExceptionConstants.PHONE_INVALID)
-    private String phone;
-
-    @Size(max = 255, message = ExceptionConstants.ADDRESS_MAX_LENGTH)
-    private String address;
-
-    @NotBlank(message = ExceptionConstants.STATUS_NOT_BLANK)
-    @Pattern(regexp = BaseConstants.REGEX.ACCOUNT_STATUS_PATTERN, message = ExceptionConstants.STATUS_INVALID)
-    private String status;
-
     @Size(min = 1, message = ExceptionConstants.ROLE_PERMISSIONS_NOT_EMPTY)
     private List<Integer> roleIds = new ArrayList<>();
 
@@ -86,29 +74,5 @@ public class UpdateAccountRequestDTO extends BaseRequestDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }
