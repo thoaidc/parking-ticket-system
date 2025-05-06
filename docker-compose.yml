@@ -1,14 +1,13 @@
 services:
   app:
-    image: parking-ticket-prod:0.0.1    # Docker image name and version (should match the version in pom.xml for consistency)
-    container_name: parking-ticket-app  # Friendly name for the container
+    image: thoaidc/parking-ticket-management:0.0.1  # Docker image name and version (should match the version in pom.xml for consistency)
+    container_name: parking-ticket-management       # Friendly name for the container
     build:
       context: .                # Use the current directory as the build context
       dockerfile: Dockerfile    # Specify the Dockerfile to use for building the image
     env_file:
       - .env                    # Load environment variables from the .env file
     ports:
-      - "8080:8080"             # Map host port 8080 to container port 8080
       - "4200:80"               # Map port 4200 to serve the Angular frontend on Nginx
     volumes:
       - db:/app/db              # Mount named volume "db" to persist database data at /app/db
