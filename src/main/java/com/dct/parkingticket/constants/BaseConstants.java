@@ -88,7 +88,5 @@ public interface BaseConstants {
         // 091-123-4567
         // +123.456.7890
         String PHONE_PATTERN = "^\\+?(\\d{1,3})(\\s|\\.|-)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9])|([1-9]\\d{1,2}))(\\s|\\.|-)?\\d{3}(\\s|\\.|-)?\\d{3,4}$";
-
-        String ACCOUNT_STATUS_PATTERN = "^(ACTIVE|INACTIVE|LOCKED|DELETED)$";
     }
 }

@@ -1,6 +1,6 @@
 package com.dct.parkingticket.dto.request;
 
-import com.dct.parkingticket.constants.BaseConstants;
+import com.dct.parkingticket.constants.AccountConstants;
 import com.dct.parkingticket.constants.ExceptionConstants;
 
 import jakarta.validation.constraints.Min;
@@ -15,7 +15,7 @@ public class UpdateAccountStatusRequestDTO {
     private Integer accountId;
 
     @NotBlank(message = ExceptionConstants.STATUS_NOT_BLANK)
-    @Pattern(regexp = BaseConstants.REGEX.ACCOUNT_STATUS_PATTERN, message = ExceptionConstants.STATUS_INVALID)
+    @Pattern(regexp = AccountConstants.STATUS.PATTERN, message = ExceptionConstants.STATUS_INVALID)
     private String status;
 
     public Integer getAccountId() {

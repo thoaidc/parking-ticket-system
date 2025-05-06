@@ -2,7 +2,6 @@ package com.dct.parkingticket.service.impl;
 
 import com.dct.parkingticket.common.Common;
 import com.dct.parkingticket.constants.AccountConstants;
-import com.dct.parkingticket.constants.BaseConstants;
 import com.dct.parkingticket.constants.ExceptionConstants;
 import com.dct.parkingticket.dto.auth.AccountDTO;
 import com.dct.parkingticket.dto.mapping.IAccountDTO;
@@ -62,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
         String fromDate = request.getFromDateSearch(), toDate = request.getToDateSearch();
         String status = request.getStatus(), keyword = request.getKeyword();
 
-        if (Objects.nonNull(status) && !status.matches(BaseConstants.REGEX.ACCOUNT_STATUS_PATTERN)) {
+        if (Objects.nonNull(status) && !status.matches(AccountConstants.STATUS.PATTERN)) {
             status = null;
         }
 

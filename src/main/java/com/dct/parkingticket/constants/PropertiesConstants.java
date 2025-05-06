@@ -13,5 +13,4 @@ public interface PropertiesConstants {
     String JPA_PROPERTIES = "dct-base.jpa";
     String SECURITY_CONFIG = "dct-base.security.auth";
     String UPLOAD_RESOURCE_PROPERTIES = "dct-base.resources.upload";
-    String RABBIT_MQ_PROPERTIES = "spring.rabbitmq";
 }

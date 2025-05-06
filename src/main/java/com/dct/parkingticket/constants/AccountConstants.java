@@ -7,5 +7,6 @@ public interface AccountConstants {
         String INACTIVE = "INACTIVE";
         String LOCKED = "LOCKED";
         String DELETED = "DELETED";
+        String PATTERN = "^(ACTIVE|INACTIVE|LOCKED|DELETED)$";
     }
 }

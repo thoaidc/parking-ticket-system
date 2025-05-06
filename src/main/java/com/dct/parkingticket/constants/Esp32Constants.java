@@ -26,7 +26,6 @@ public interface Esp32Constants {
     interface Response {
         String TICKET_ACTIVE = "Thẻ hợp lệ";
         String TICKET_LOCKED = "Thẻ bị khóa";
-        String TICKET_EXPIRED = "Thẻ đã hết hạn";
         String TICKET_INVALID = "Thẻ không hợp lệ";
         String TICKET_NOT_FOUND = "Không tìm thấy thông tin thẻ";
     }
