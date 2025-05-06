@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -38,28 +37,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
         @Param("fromDate") String fromDate,
         @Param("toDate") String toDate,
         Pageable pageable
-    );
-
-    @Query(
-        value = """
-            SELECT a.id, a.username, a.fullname, a.email, a.status,
-                   a.created_by as createdBy, a.created_date as createdDate
-            FROM account a
-            WHERE status <> 'DELETED'
-                AND (:status IS NULL OR a.status = :status)
-                AND (:keyword IS NULL OR (a.username LIKE :keyword OR a.fullname LIKE :keyword OR a.email LIKE :keyword))
-                AND (:fromDate IS NULL OR a.created_date >= :fromDate)
-                AND (:toDate IS NULL OR a.created_date <= :toDate)
-            ORDER BY a.created_date DESC
-            LIMIT 20
-        """,
-        nativeQuery = true
-    )
-    List<IAccountDTO> findAllNonPaging(
-        @Param("status") String status,
-        @Param("keyword") String keyword,
-        @Param("fromDate") String fromDate,
-        @Param("toDate") String toDate
     );
 
     @Query(

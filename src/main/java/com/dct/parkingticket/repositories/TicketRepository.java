@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -39,27 +38,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
         @Param("fromDate") String fromDate,
         @Param("toDate") String toDate,
         Pageable pageable
-    );
-
-    @Query(
-        value = """
-            SELECT t.id, t.status, t.uid, t.created_by as createdBy, t.created_date as createdDate
-            FROM ticket t
-            WHERE status <> 'DELETED'
-                AND (:status IS NULL OR t.status = :status)
-                AND (:keyword IS NULL OR t.uid LIKE :keyword)
-                AND (:fromDate IS NULL OR t.created_date >= :fromDate)
-                AND (:toDate IS NULL OR t.created_date <= :toDate)
-            ORDER BY t.created_date DESC
-            LIMIT 20
-        """,
-        nativeQuery = true
-    )
-    List<ITicketDTO> findAllNonPaging(
-        @Param("status") String status,
-        @Param("keyword") String keyword,
-        @Param("fromDate") String fromDate,
-        @Param("toDate") String toDate
     );
 
     @Modifying

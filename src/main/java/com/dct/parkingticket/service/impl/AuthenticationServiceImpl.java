@@ -17,7 +17,6 @@ import com.dct.parkingticket.security.model.CustomUserDetails;
 import com.dct.parkingticket.service.AuthenticationService;
 
 import jakarta.servlet.http.Cookie;
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -82,7 +81,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    @Transactional
     public BaseResponseDTO authenticate(AuthRequestDTO authRequestDTO) {
         log.debug("Authenticating user: {}", authRequestDTO.getUsername());
         String username = authRequestDTO.getUsername().trim();

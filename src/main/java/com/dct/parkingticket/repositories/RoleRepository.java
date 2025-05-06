@@ -34,16 +34,6 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
     )
     Page<IRoleDTO> findAllWithPaging(@Param("keyword") String keyword, Pageable pageable);
 
-    @Query(
-        value = """
-            SELECT r.id, r.name, r.code FROM role r
-            WHERE :keyword IS NULL OR (r.code LIKE :keyword OR r.name LIKE :keyword)
-            LIMIT 20
-        """,
-        nativeQuery = true
-    )
-    List<IRoleDTO> findAllNonPaging(@Param("keyword") String keyword);
-
     @Query(value = "SELECT r.id, r.name, r.code FROM role r WHERE r.id IN (?1)", nativeQuery = true)
     List<IRoleDTO> findAllByIds(Iterable<Integer> roleIds);
 

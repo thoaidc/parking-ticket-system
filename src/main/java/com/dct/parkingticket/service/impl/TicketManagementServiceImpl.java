@@ -140,32 +140,15 @@ public class TicketManagementServiceImpl implements TicketManagementService {
 
     @Override
     public BaseResponseDTO getAllTicketsWithPaging(TicketFilterRequestDTO request) {
-        String fromDate = request.getFromDateSearch(), toDate = request.getToDateSearch();
-        String status = request.getStatus(), keyword = request.getKeyword();
+        Page<ITicketDTO> ticketsWithPaged = ticketRepository.findAllWithPaging(
+            request.getStatusSearch(Esp32Constants.TicketStatus.PATTERN),
+            request.getKeywordSearch(),
+            request.getFromDateSearch(),
+            request.getToDateSearch(),
+            request.getPageable()
+        );
 
-        if (Objects.nonNull(status) && !status.matches(Esp32Constants.TicketStatus.PATTERN)) {
-            status = null;
-        }
-
-        if (StringUtils.hasText(keyword)) {
-            keyword = "%" + keyword + "%";
-        } else {
-            keyword = null;
-        }
-
-        if (request.getPageable().isPaged()) {
-            Page<ITicketDTO> ticketsWithPaged = ticketRepository.findAllWithPaging(
-                status,
-                keyword,
-                fromDate,
-                toDate,
-                request.getPageable()
-            );
-            List<ITicketDTO> tickets = ticketsWithPaged.getContent();
-            return BaseResponseDTO.builder().total(ticketsWithPaged.getTotalElements()).ok(tickets);
-        }
-
-        return BaseResponseDTO.builder().ok(ticketRepository.findAllNonPaging(status, keyword, fromDate, toDate));
+        return BaseResponseDTO.builder().total(ticketsWithPaged.getTotalElements()).ok(ticketsWithPaged.getContent());
     }
 
     @Override
@@ -188,30 +171,15 @@ public class TicketManagementServiceImpl implements TicketManagementService {
 
     @Override
     public BaseResponseDTO getAllScanLogsWithPaging(TicketScanLogFilterRequestDTO request) {
-        String fromDate = request.getFromDateSearch(), toDate = request.getToDateSearch();
-        String type = request.getType(), result = request.getResult();
+        Page<ITicketScanLogDTO> logsWithPaged = ticketScanLogRepository.findAllWithPaging(
+            request.getTypeSearch(),
+            request.getResultTypeSearch(),
+            request.getFromDateSearch(),
+            request.getToDateSearch(),
+            request.getPageable()
+        );
 
-        if (Objects.nonNull(type) && !type.matches(Esp32Constants.TicketScanType.PATTERN)) {
-            type = null;
-        }
-
-        if (Objects.nonNull(result) && !result.matches(Esp32Constants.TicketScanResult.PATTERN)) {
-            result = null;
-        }
-
-        if (request.getPageable().isPaged()) {
-            Page<ITicketScanLogDTO> logsWithPaged = ticketScanLogRepository.findAllWithPaging(
-                type,
-                result,
-                fromDate,
-                toDate,
-                request.getPageable()
-            );
-            List<ITicketScanLogDTO> logs = logsWithPaged.getContent();
-            return BaseResponseDTO.builder().total(logsWithPaged.getTotalElements()).ok(logs);
-        }
-
-        return BaseResponseDTO.builder().ok(ticketScanLogRepository.findAllNonPaging(type, result, fromDate, toDate));
+        return BaseResponseDTO.builder().total(logsWithPaged.getTotalElements()).ok(logsWithPaged.getContent());
     }
 
     @Override

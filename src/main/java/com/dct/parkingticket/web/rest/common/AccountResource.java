@@ -4,7 +4,6 @@ import com.dct.parkingticket.aop.annotation.CheckAuthorize;
 import com.dct.parkingticket.constants.ExceptionConstants;
 import com.dct.parkingticket.constants.RoleConstants;
 import com.dct.parkingticket.dto.auth.AccountDTO;
-import com.dct.parkingticket.dto.request.AccountFilterSearchRequestDTO;
 import com.dct.parkingticket.dto.request.BaseRequestDTO;
 import com.dct.parkingticket.dto.request.ChangeAccountPasswordRequestDTO;
 import com.dct.parkingticket.dto.request.CreateAccountRequestDTO;
@@ -16,7 +15,6 @@ import com.dct.parkingticket.exception.BaseBadRequestException;
 import com.dct.parkingticket.repositories.PermissionRepository;
 import com.dct.parkingticket.service.AccountService;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -31,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/common/accounts")
@@ -48,7 +47,7 @@ public class AccountResource {
 
     @GetMapping
     @CheckAuthorize(authorities = RoleConstants.Account.VIEW)
-    public BaseResponseDTO getAccountsWithPaging(@ModelAttribute AccountFilterSearchRequestDTO request) {
+    public BaseResponseDTO getAccountsWithPaging(@ModelAttribute BaseRequestDTO request) {
         return accountService.getAccountsWithPaging(request);
     }
 

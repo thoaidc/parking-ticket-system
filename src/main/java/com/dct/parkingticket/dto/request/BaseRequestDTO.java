@@ -2,6 +2,7 @@ package com.dct.parkingticket.dto.request;
 
 import com.dct.parkingticket.common.DateUtils;
 import com.dct.parkingticket.constants.DatetimeConstants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -24,16 +25,17 @@ public class BaseRequestDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(BaseRequestDTO.class);
-    private Integer page;
-    private Integer size;
+    private Integer page = 0;
+    private Integer size = 20;
     private String sort;
     private String fromDate;
     private String toDate;
+    private String status;
     private String keyword;
 
     public Pageable getPageable() {
         if (page == null || size == null || page < 0 || size <= 0) {
-            return Pageable.unpaged();
+            return PageRequest.of(0, 20);
         }
 
         if (StringUtils.hasText(sort)) {
@@ -84,6 +86,22 @@ public class BaseRequestDTO implements Serializable {
             } catch (DateTimeParseException e) {
                 log.error("Could not parse toDate from request, skip filter by toDate. {}", e.getMessage());
             }
+        }
+
+        return null;
+    }
+
+    public String getStatusSearch(String regex) {
+        if (Objects.nonNull(status) && !status.matches(regex)) {
+            return null;
+        }
+
+        return status;
+    }
+
+    public String getKeywordSearch() {
+        if (StringUtils.hasText(keyword)) {
+            return "%" + keyword + "%";
         }
 
         return null;
