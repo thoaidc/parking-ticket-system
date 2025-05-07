@@ -23,10 +23,16 @@ public class Common {
 
         try {
             String createdDate = DateUtils.ofInstant(entity.getCreatedDate())
-                .toString(DatetimeConstants.Formatter.DD_MM_YYYY_HH_MM_SS_DASH);
+                .toStringWithZoneID(
+                    DatetimeConstants.ZoneID.ASIA_HO_CHI_MINH,
+                    DatetimeConstants.Formatter.DD_MM_YYYY_HH_MM_SS_DASH
+                );
 
             String lastModifiedDate = DateUtils.ofInstant(entity.getLastModifiedDate())
-                .toString(DatetimeConstants.Formatter.DD_MM_YYYY_HH_MM_SS_DASH);
+                .toStringWithZoneID(
+                    DatetimeConstants.ZoneID.ASIA_HO_CHI_MINH,
+                    DatetimeConstants.Formatter.DD_MM_YYYY_HH_MM_SS_DASH
+                );
 
             auditingDTO.setCreatedDateStr(createdDate);
             auditingDTO.setLastModifiedDateStr(lastModifiedDate);
