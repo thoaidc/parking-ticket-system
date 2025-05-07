@@ -5,7 +5,10 @@ import {NgIf} from '@angular/common';
 import {ICON_ENGLISH, ICON_LOGOUT, ICON_NOTIFICATION, ICON_VIETNAMESE} from '../../../../shared/utils/icon';
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
-import {LOCAL_USERNAME_KEY} from '../../../../constants/local-storage.constants';
+import {LOCAL_LANG_KEY, LOCAL_USERNAME_KEY} from '../../../../constants/local-storage.constants';
+import {ENGLISH_LANGUAGE, VIETNAMESE_LANGUAGE} from '../../../../constants/locale.constants';
+import {TranslateService} from '@ngx-translate/core';
+import {UtilsService} from '../../../../shared/utils/utils.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,15 +24,19 @@ export class NavbarComponent implements OnInit {
   @Input() isSidebarShown!: boolean;
   showDropdown = '';
   username: string | null = '';
+  currentLanguage: string = '';
 
   constructor(
     private router: Router,
     private toast: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private translateService: TranslateService,
+    private utilsService: UtilsService
   ) {}
 
   ngOnInit(): void {
     this.getUserName();
+    this.changeLanguage(this.utilsService.getDefaultLocale());
   }
 
   getUserName() {
@@ -57,6 +64,12 @@ export class NavbarComponent implements OnInit {
     this.showDropdown = this.showDropdown == 'LANGUAGE' ? '' : 'LANGUAGE';
   }
 
+  changeLanguage(locale: string) {
+    this.currentLanguage = locale === VIETNAMESE_LANGUAGE ? 'Tiếng việt' : 'English'
+    this.translateService.use(locale);
+    localStorage.setItem(LOCAL_LANG_KEY, locale);
+  }
+
   logout() {
     this.authService.logout().subscribe((success: boolean) => {
       if (success) {
@@ -72,4 +85,6 @@ export class NavbarComponent implements OnInit {
   protected readonly ICON_VIETNAMESE = ICON_VIETNAMESE;
   protected readonly ICON_ENGLISH = ICON_ENGLISH;
   protected readonly ICON_NOTIFICATION = ICON_NOTIFICATION;
+  protected readonly VIETNAMESE_LANGUAGE = VIETNAMESE_LANGUAGE;
+  protected readonly ENGLISH_LANGUAGE = ENGLISH_LANGUAGE;
 }

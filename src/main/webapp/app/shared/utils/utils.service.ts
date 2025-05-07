@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import dayjs from 'dayjs/esm';
 import { ToastrService } from 'ngx-toastr';
-import {LOCAL_USER_AUTHORITIES_KEY} from '../../constants/local-storage.constants';
+import {LOCAL_LANG_KEY, LOCAL_USER_AUTHORITIES_KEY} from '../../constants/local-storage.constants';
 import {SIDEBAR_ROUTES} from '../../pages/main/layouts/sidebar/sidebar.route';
 import {SidebarNavItem} from '../../core/models/sidebar.model';
+import {DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES} from '../../constants/locale.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,11 @@ import {SidebarNavItem} from '../../core/models/sidebar.model';
 export class UtilsService {
 
   constructor(private toast: ToastrService) {}
+
+  getDefaultLocale() {
+    const currentLanguage = localStorage.getItem(LOCAL_LANG_KEY) || '';
+    return SUPPORTED_LANGUAGES.includes(currentLanguage) ? currentLanguage : DEFAULT_LANGUAGE;
+  }
 
   convertToDateString(dateString: string, toFormat: string): string {
     const dateFormats = ['MM-DD-YYYY', 'YYYY-MM-DD', 'DD-MM-YYYY', 'YYYY/MM/DD', 'DD/MM/YYYY'];
@@ -141,10 +147,5 @@ export class UtilsService {
     } catch (error) {
       return [];
     }
-  }
-
-  checkAccountPermission(permission: string) {
-    const userRoles = this.getAccountPermissions();
-    return userRoles.includes(permission);
   }
 }

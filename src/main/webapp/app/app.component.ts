@@ -3,6 +3,9 @@ import {Router, RouterOutlet} from '@angular/router';
 import {AuthService} from './core/services/auth.service';
 import {Subscription} from 'rxjs';
 import {WebsocketService} from './core/services/websocket.service';
+import '@angular/localize/init'; // Add initialization for localize (For use TranslateService)
+import {TranslateService} from '@ngx-translate/core';
+import {UtilsService} from './shared/utils/utils.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +20,9 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private websocketService: WebsocketService
+    private websocketService: WebsocketService,
+    private translateService: TranslateService,
+    private utilsService: UtilsService
   ) {
     if (this.authService.hasToken()) {
       this.authService.authenticate().subscribe();
@@ -30,6 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.stateSubscription = this.websocketService.onState().subscribe();
     this.websocketService.connect();
+    this.translateService.use(this.utilsService.getDefaultLocale());
   }
 
   ngOnDestroy(): void {
