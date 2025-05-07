@@ -41,9 +41,9 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query(
         value = """
-            SELECT id, email, fullname, status
-            FROM account
-            WHERE username = ?1 AND status <> 'DELETED'
+            SELECT a.id, a.email, a.username, a.fullname, a.status
+            FROM account a
+            WHERE a.username = ?1 AND a.status <> 'DELETED'
         """,
         nativeQuery = true
     )
