@@ -3,6 +3,7 @@ package com.dct.parkingticket.common.datetime;
 import com.dct.parkingticket.common.DateUtils;
 import com.dct.parkingticket.constants.DatetimeConstants;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import org.springframework.util.StringUtils;
 
 import java.time.Instant;
@@ -22,6 +23,7 @@ import java.util.Objects;
  *
  * @author thoaidc
  */
+@Converter
 public class InstantStringConverterForSQLite implements AttributeConverter<Instant, String> {
 
     @Override
